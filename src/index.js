@@ -6,6 +6,8 @@ import Home from "./Pages/Home";
 import BookDetail from "./Pages/BookDetail";
 import Cart from "./Pages/Cart";
 import Checkout from "./Pages/Checkout";
+import Signin from "./Pages/Signin";
+import Signup from "./Pages/Signup";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -16,6 +18,8 @@ root.render(
         <Route path="1" element={<BookDetail />} />
         <Route path="2" element={<Cart />} />
         <Route path="3" element={<Checkout />} />
+        <Route path="4" element={<Signin />} />
+        <Route path="5" element={<Signup />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
