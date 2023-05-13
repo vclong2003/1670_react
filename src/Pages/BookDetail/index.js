@@ -62,7 +62,14 @@ export default function BookDetail() {
                   href="#tab-pane-1">
                   Description
                 </a>
+                <a
+                  className="nav-item nav-link text-dark"
+                  data-toggle="tab"
+                  href="#tab-pane-2">
+                  Availability
+                </a>
               </div>
+
               <div className="tab-content">
                 <div className="tab-pane fade show active" id="tab-pane-1">
                   <h4 className="mb-3">Product Description</h4>
@@ -79,14 +86,52 @@ export default function BookDetail() {
                     invidunt tempor lorem, ipsum lorem elitr sanctus eirmod
                     takimata dolor ea invidunt.
                   </p>
-                  <p>
-                    Dolore magna est eirmod sanctus dolor, amet diam et eirmod
-                    et ipsum. Amet dolore tempor consetetur sed lorem dolor sit
-                    lorem tempor. Gubergren amet amet labore sadipscing clita
-                    clita diam clita. Sea amet et sed ipsum lorem elitr et, amet
-                    et labore voluptua sit rebum. Ea erat sed et diam takimata
-                    sed justo. Magna takimata justo et amet magna et.
-                  </p>
+                </div>
+                <div className="tab-pane fade" id="tab-pane-2">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <h4 className="mb-4">Stores have this book</h4>
+                      <div className="media mb-4 bg-secondary p-4">
+                        <div className="media-body">
+                          <h5>
+                            <i className="fa fa-map-marker-alt mr-2" /> 123
+                            Street, New York, USA
+                          </h5>
+                          <h6>
+                            <i className="fa fa-phone-alt mr-2" />
+                            <i>0888827768</i>
+                          </h6>
+                          <small>5 items available</small>
+                        </div>
+                      </div>
+                      <div className="media mb-4 bg-secondary p-4">
+                        <div className="media-body">
+                          <h5>
+                            <i className="fa fa-map-marker-alt mr-2" /> 123
+                            Street, New York, USA
+                          </h5>
+                          <h6>
+                            <i className="fa fa-phone-alt mr-2" />
+                            <i>0888827768</i>
+                          </h6>
+                          <small>5 items available</small>
+                        </div>
+                      </div>
+                      <div className="media mb-4 bg-secondary p-4">
+                        <div className="media-body">
+                          <h5>
+                            <i className="fa fa-map-marker-alt mr-2" /> 123
+                            Street, New York, USA
+                          </h5>
+                          <h6>
+                            <i className="fa fa-phone-alt mr-2" />
+                            <i>0888827768</i>
+                          </h6>
+                          <small>5 items available</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

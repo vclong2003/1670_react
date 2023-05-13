@@ -91,17 +91,18 @@ export default function NavigationBar() {
                     Home
                   </a>
                   <a href="shop.html" className="nav-item nav-link">
-                    Your orders
+                    Products
                   </a>
                 </div>
                 <div className="navbar-nav ml-auto py-0 d-none d-lg-block">
                   <a href className="btn px-0 ml-3">
                     <i className="fas fa-shopping-cart text-primary" />
-                    <span
-                      className="badge text-secondary border border-secondary rounded-circle"
-                      style={{ paddingBottom: "2px" }}>
+                    <span className="badge text-secondary border border-secondary rounded-circle ml-1">
                       0
                     </span>
+                  </a>
+                  <a href className="btn px-0 ml-3">
+                    <i className="fas fa-user text-primary" />
                   </a>
                 </div>
               </div>

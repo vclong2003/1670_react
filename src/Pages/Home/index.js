@@ -7,7 +7,8 @@ export default function Home() {
       <NavigationBar />
       <Carousel />
       <Featured />
-      <ProductGrid />
+      <Categories />
+      <NewProducts />
       <Footer />
     </>
   );
@@ -181,101 +182,58 @@ function Carousel() {
   );
 }
 
-function ProductGrid() {
+function Categories() {
   return (
-    <div className="container">
-      <div className="row pb-3">
-        <div className="col-12 pb-1">
-          <div className="d-flex align-items-center justify-content-between mb-4">
-            <div className="ml-2">
-              <div className="btn-group">
-                <button
-                  type="button"
-                  className="btn btn-sm btn-light dropdown-toggle"
-                  data-toggle="dropdown">
-                  Sorting
-                </button>
-                <div className="dropdown-menu dropdown-menu-right">
-                  <a className="dropdown-item" href="#">
-                    Latest
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    Popularity
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    Best Rating
-                  </a>
-                </div>
-              </div>
-              <div className="btn-group ml-2">
-                <button
-                  type="button"
-                  className="btn btn-sm btn-light dropdown-toggle"
-                  data-toggle="dropdown">
-                  Showing
-                </button>
-                <div className="dropdown-menu dropdown-menu-right">
-                  <a className="dropdown-item" href="#">
-                    10
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    20
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    30
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-
-        <PaginationBar />
+    <div className="container-fluid pt-5">
+      <h2 className="section-title position-relative text-uppercase mx-xl-5 mb-4">
+        <span className="bg-secondary pr-3">Categories</span>
+      </h2>
+      <div className="row px-xl-5 pb-3">
+        <CategoryItem />
+        <CategoryItem />
+        <CategoryItem />
+        <CategoryItem />
+        <CategoryItem />
       </div>
     </div>
   );
 }
 
-function PaginationBar() {
+function CategoryItem() {
   return (
-    <div className="col-12">
-      <nav>
-        <ul className="pagination justify-content-center">
-          <li className="page-item disabled">
-            <a className="page-link" href="#">
-              Previous
-            </a>
-          </li>
-          <li className="page-item active">
-            <a className="page-link" href="#">
-              1
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">
-              2
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">
-              3
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">
-              Next
-            </a>
-          </li>
-        </ul>
-      </nav>
+    <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
+      <a className="text-decoration-none" href>
+        <div className="cat-item d-flex align-items-center mb-4">
+          <div
+            className="overflow-hidden"
+            style={{ width: "100px", height: "100px" }}>
+            <img className="img-fluid" src="https://picsum.photos/200" alt="" />
+          </div>
+          <div className="flex-fill pl-3">
+            <h6>Category Name</h6>
+            <small className="text-body">100 Products</small>
+          </div>
+        </div>
+      </a>
+    </div>
+  );
+}
+
+function NewProducts() {
+  return (
+    <div className="container-fluid">
+      <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+        <span class="bg-secondary pr-3">Recently added books</span>
+      </h2>
+      <div className="row px-xl-5">
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+      </div>
     </div>
   );
 }
