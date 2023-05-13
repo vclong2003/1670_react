@@ -1,4 +1,5 @@
 import Footer from "../../Components/Footer";
+import LoadingLayer from "../../Components/LoadingLayer";
 import NavigationBar from "../../Components/NavigationBar";
 
 export default function Console() {
@@ -37,7 +38,7 @@ export default function Console() {
               <h6 className="text-dark m-0">Categories</h6>
             </div>
           </div>
-          <div className="col-lg-9 p-4 bg-light"></div>
+          <div className="col-lg-9 bg-light"></div>
         </div>
       </div>
       <Footer />

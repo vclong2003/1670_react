@@ -222,8 +222,8 @@ function CategoryItem() {
 function NewProducts() {
   return (
     <div className="container-fluid">
-      <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
-        <span class="bg-secondary pr-3">Recently added books</span>
+      <h2 className="section-title position-relative text-uppercase mx-xl-5 mb-4">
+        <span className="bg-secondary pr-3">Recently added books</span>
       </h2>
       <div className="row px-xl-5">
         <ProductItem />
