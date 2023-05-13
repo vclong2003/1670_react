@@ -8,6 +8,8 @@ import Cart from "./Pages/Cart";
 import Checkout from "./Pages/Checkout";
 import Signin from "./Pages/Signin";
 import Signup from "./Pages/Signup";
+import MyOrders from "./Pages/MyOrders";
+import OrderDetail from "./Pages/OrderDetail";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -20,6 +22,8 @@ root.render(
         <Route path="3" element={<Checkout />} />
         <Route path="4" element={<Signin />} />
         <Route path="5" element={<Signup />} />
+        <Route path="6" element={<MyOrders />} />
+        <Route path="7" element={<OrderDetail />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

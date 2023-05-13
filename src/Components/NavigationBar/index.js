@@ -91,7 +91,7 @@ export default function NavigationBar() {
                     Home
                   </a>
                   <a href="shop.html" className="nav-item nav-link">
-                    Shop
+                    Your orders
                   </a>
                 </div>
                 <div className="navbar-nav ml-auto py-0 d-none d-lg-block">
