@@ -93,6 +93,9 @@ export default function NavigationBar() {
                   <a href="shop.html" className="nav-item nav-link">
                     Products
                   </a>
+                  <a href="shop.html" className="nav-item nav-link">
+                    Our Stores
+                  </a>
                 </div>
                 <div className="navbar-nav ml-auto py-0 d-none d-lg-block">
                   <a href className="btn px-0 ml-3">
