@@ -3,6 +3,7 @@ import LoadingLayer from "../../Components/LoadingLayer";
 import NavigationBar from "../../Components/NavigationBar";
 import OrderManagement from "./OrderManagement";
 import ProductManagement from "./ProductManagement";
+import StoreManagement from "./StoreManagement";
 
 export default function Console() {
   return (
@@ -32,7 +33,8 @@ export default function Console() {
           </div>
           <div className="col-lg-10 p-0">
             {/* <OrderManagement /> */}
-            <ProductManagement />
+            {/* <ProductManagement /> */}
+            <StoreManagement />
           </div>
         </div>
       </div>

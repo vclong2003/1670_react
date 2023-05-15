@@ -7,6 +7,7 @@ export default function OrderManagement() {
       <table className="table table-light table-borderless table-hover text-center mb-0">
         <thead className="thead-dark">
           <tr>
+            <th>ID</th>
             <th>Date</th>
             <th>Email</th>
             <th>Total</th>
@@ -27,6 +28,7 @@ export default function OrderManagement() {
 function OrderItem() {
   return (
     <tr>
+      <td className="align-middle">1</td>
       <td className="align-middle">2023-09-10</td>
       <td className="align-middle">vclong2003@gmail.com</td>
       <td className="align-middle">99$</td>

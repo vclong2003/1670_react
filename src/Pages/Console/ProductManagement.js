@@ -7,6 +7,7 @@ export default function ProductManagement() {
       <table className="table table-light table-borderless table-hover text-center mb-0">
         <thead className="thead-dark">
           <tr>
+            <th>ID</th>
             <th>Name</th>
             <th>Author</th>
             <th>Price</th>
@@ -26,6 +27,7 @@ export default function ProductManagement() {
 function ProductItem() {
   return (
     <tr>
+      <td className="align-middle">1</td>
       <td className="align-middle">The Casual Vacancy</td>
       <td className="align-middle">J.K. Rowling</td>
       <td className="align-middle">49$</td>
