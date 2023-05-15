@@ -1,13 +1,13 @@
 import Footer from "../../Components/Footer";
 import NavigationBar from "../../Components/NavigationBar";
 
-export default function BookDetail() {
+export default function ProductDetail() {
   return (
     <>
       <NavigationBar />
       <div className="container-fluid pb-5">
         <div className="row px-xl-5">
-          <div className="col-lg-5 mb-30">
+          <div className="col-lg-4 mb-30">
             <img
               alt=""
               src="https://picsum.photos/500"
@@ -15,7 +15,7 @@ export default function BookDetail() {
               style={{ objectFit: "cover" }}
             />
           </div>
-          <div className="col-lg-7 h-auto mb-30">
+          <div className="col-lg-8 h-auto mb-30">
             <div className="h-100 bg-light p-30">
               <h3>Product Name Goes Here</h3>
               <h4 className="font-weight-semi-bold mb-4">$150.00</h4>

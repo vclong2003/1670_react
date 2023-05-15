@@ -31,8 +31,8 @@ export default function Console() {
             </div>
           </div>
           <div className="col-lg-10 p-0">
-            <OrderManagement />
-            {/* <ProductManagement /> */}
+            {/* <OrderManagement /> */}
+            <ProductManagement />
           </div>
         </div>
       </div>
