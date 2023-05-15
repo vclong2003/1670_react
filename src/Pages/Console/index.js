@@ -2,6 +2,7 @@ import Footer from "../../Components/Footer";
 import LoadingLayer from "../../Components/LoadingLayer";
 import NavigationBar from "../../Components/NavigationBar";
 import OrderManagement from "./OrderManagement";
+import ProductManagement from "./ProductManagement";
 
 export default function Console() {
   return (
@@ -11,7 +12,7 @@ export default function Console() {
         <h5 className="section-title position-relative text-uppercase mb-3">
           <span className="bg-secondary pr-3">Management Console</span>
         </h5>
-        <div className="row px-xl-3">
+        <div className="row px-xl-4">
           <div className="col-lg-2">
             <div className="bg-primary text-secondary p-3">
               <h6 className="text-dark m-0">Orders</h6>
@@ -31,6 +32,7 @@ export default function Console() {
           </div>
           <div className="col-lg-10 p-0">
             <OrderManagement />
+            {/* <ProductManagement /> */}
           </div>
         </div>
       </div>

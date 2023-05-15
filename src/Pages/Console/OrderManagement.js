@@ -1,21 +1,26 @@
 export default function OrderManagement() {
   return (
-    <table className="table table-light table-borderless table-hover text-center mb-0">
-      <thead className="thead-dark">
-        <tr>
-          <th>Date</th>
-          <th>Email</th>
-          <th>Total</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody className="align-middle">
-        <OrderItem />
-        <OrderItem />
-        <OrderItem />
-      </tbody>
-    </table>
+    <>
+      <div className="col-12 p-0 mb-3">
+        <button className="btn btn-primary pl-4 pr-4">Add</button>
+      </div>
+      <table className="table table-light table-borderless table-hover text-center mb-0">
+        <thead className="thead-dark">
+          <tr>
+            <th>Date</th>
+            <th>Email</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody className="align-middle">
+          <OrderItem />
+          <OrderItem />
+          <OrderItem />
+        </tbody>
+      </table>
+    </>
   );
 }
 
