@@ -110,8 +110,8 @@ export default function NavigationBar() {
                   <a
                     href
                     className="btn px-0 ml-3 text-secondary border border-primary pl-2 pr-2 bg-primary">
-                    <i className="fas fa-terminal text-dark" />
-                    <span className="badge text-dark  ml-1">Console</span>
+                    <i className="fa fa-cogs text-dark" />
+                    <span className="badge text-dark  ml-1">Manage</span>
                   </a>
                 </div>
               </div>
