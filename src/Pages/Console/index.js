@@ -1,6 +1,6 @@
 import Footer from "../../Components/Footer";
-import LoadingLayer from "../../Components/LoadingLayer";
 import NavigationBar from "../../Components/NavigationBar";
+import CategoryManagement from "./CategoryManagement";
 import OrderManagement from "./OrderManagement";
 import ProductManagement from "./ProductManagement";
 import StoreManagement from "./StoreManagement";
@@ -34,7 +34,8 @@ export default function Console() {
           <div className="col-lg-10 p-0">
             {/* <OrderManagement /> */}
             {/* <ProductManagement /> */}
-            <StoreManagement />
+            {/* <StoreManagement /> */}
+            <CategoryManagement />
           </div>
         </div>
       </div>
