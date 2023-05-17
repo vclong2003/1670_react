@@ -1,10 +1,9 @@
-import Footer from "../../Components/Footer";
-import NavigationBar from "../../Components/NavigationBar";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
-export default function Products() {
+export default function Product() {
   return (
     <>
-      <NavigationBar />
       {/* Shop Start */}
       <div className="container-fluid">
         <div className="row px-xl-5">
@@ -103,8 +102,6 @@ export default function Products() {
         </div>
       </div>
       {/* Shop End */}
-
-      <Footer />
     </>
   );
 }
@@ -154,20 +151,23 @@ function ProductItem() {
             alt=""
           />
           <div className="product-action">
-            <a className="btn btn-outline-dark btn-square" href>
+            <Link className="btn btn-outline-dark btn-square">
               <i className="fa fa-shopping-cart" />
-            </a>
-            <a className="btn btn-outline-dark btn-square" href>
+            </Link>
+            <Link to="2" className="btn btn-outline-dark btn-square">
               <i className="fa fa-search" />
-            </a>
+            </Link>
           </div>
         </div>
         <div className="text-center py-4">
-          <a className="h6 text-decoration-none text-truncate" href>
+          <Link className="h6 text-decoration-none text-truncate" to="1">
             Product Name Goes Here
-          </a>
+          </Link>
           <div className="d-flex align-items-center justify-content-center mt-2">
-            <h5>$123.00</h5>
+            <p>Conan Doyle</p>
+          </div>
+          <div className="d-flex align-items-center justify-content-center mt-2">
+            <small>$99.99</small>
           </div>
         </div>
       </div>

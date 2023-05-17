@@ -1,10 +1,6 @@
-import Footer from "../../Components/Footer";
-import NavigationBar from "../../Components/NavigationBar";
-
 export default function ProductDetail() {
   return (
     <>
-      <NavigationBar />
       <div className="container-fluid pb-5">
         <div className="row px-xl-5">
           <div className="col-lg-4 mb-30">
@@ -138,7 +134,6 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

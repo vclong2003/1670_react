@@ -1,21 +1,16 @@
-import Footer from "../../Components/Footer";
-import NavigationBar from "../../Components/NavigationBar";
-
 export default function Profile() {
   return (
     <>
-      <NavigationBar />
       <div className="container-fluid">
-        <h3 className="section-title position-relative text-uppercase mb-3">
+        <h4 className="section-title position-relative text-uppercase mb-3">
           <span className="bg-secondary pr-3">Personal Information</span>
-        </h3>
+        </h4>
         <PersonalInformation />
-        <h3 className="section-title position-relative text-uppercase mb-3">
+        <h4 className="section-title position-relative text-uppercase mb-3">
           <span className="bg-secondary pr-3">Your orders</span>
-        </h3>
+        </h4>
         <AllOrders />
       </div>
-      <Footer />
     </>
   );
 }

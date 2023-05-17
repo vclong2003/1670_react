@@ -1,5 +1,3 @@
-import Footer from "../../Components/Footer";
-import NavigationBar from "../../Components/NavigationBar";
 import CategoryManagement from "./CategoryManagement";
 import OrderManagement from "./OrderManagement";
 import ProductManagement from "./ProductManagement";
@@ -8,7 +6,6 @@ import StoreManagement from "./StoreManagement";
 export default function Console() {
   return (
     <>
-      <NavigationBar />
       <div className="container-fluid">
         <h5 className="section-title position-relative text-uppercase mb-3">
           <span className="bg-secondary pr-3">Management Console</span>
@@ -39,7 +36,6 @@ export default function Console() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

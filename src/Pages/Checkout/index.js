@@ -1,10 +1,6 @@
-import Footer from "../../Components/Footer";
-import NavigationBar from "../../Components/NavigationBar";
-
 export default function Checkout() {
   return (
     <>
-      <NavigationBar />
       <div className="container-fluid">
         <div className="row px-xl-5">
           <div className="col-lg-8">
@@ -103,8 +99,6 @@ export default function Checkout() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </>
   );
 }

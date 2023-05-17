@@ -1,35 +1,42 @@
+import "./Assets/CSS/style.css";
+import "./Assets/CSS/animate.min.css";
+
 import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+
 import Home from "./Pages/Home";
 import Cart from "./Pages/Cart";
 import Checkout from "./Pages/Checkout";
 import Signin from "./Pages/Signin";
 import Signup from "./Pages/Signup";
 import OrderDetail from "./Pages/OrderDetail";
-import Products from "./Pages/Products";
+import Product from "./Pages/Product";
 import Stores from "./Pages/Stores";
 import Console from "./Pages/Console";
 import Profile from "./Pages/Profile";
 import ProductDetail from "./Pages/ProductDetail";
+
+import StandardLayout from "./Components/Layout/StandardLayout";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route index element={<Home />} />
-        <Route path="1" element={<ProductDetail />} />
-        <Route path="2" element={<Cart />} />
-        <Route path="3" element={<Checkout />} />
-        <Route path="4" element={<Signin />} />
-        <Route path="5" element={<Signup />} />
-        <Route path="6" element={<Profile />} />
-        <Route path="7" element={<OrderDetail />} />
-        <Route path="8" element={<Products />} />
-        <Route path="9" element={<Stores />} />
-        <Route path="10" element={<Console />} />
+        <Route path="signin" element={<Signin />} />
+        <Route path="singup" element={<Signup />} />
+        <Route element={<StandardLayout />}>
+          <Route index element={<Home />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="checkout" element={<Checkout />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="product" element={<Product />} />
+          <Route path="product/:id" element={<ProductDetail />} />
+          <Route path="stores" element={<Stores />} />
+          <Route path="console" element={<Console />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

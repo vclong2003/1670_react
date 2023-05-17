@@ -1,57 +1,13 @@
-import Footer from "../../Components/Footer";
-import NavigationBar from "../../Components/NavigationBar";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
     <>
-      <NavigationBar />
       <Carousel />
       <Featured />
       <Categories />
       <NewProducts />
-      <Footer />
     </>
-  );
-}
-
-function Featured() {
-  return (
-    <div className="container-fluid pt-1">
-      <div className="row px-xl-5">
-        <div className="col-lg-3 col-md-6 col-sm-12 pb-1">
-          <div
-            className="d-flex align-items-center bg-light mb-4"
-            style={{ padding: "30px" }}>
-            <h1 className="fa fa-check text-primary m-0 mr-3" />
-            <h5 className="font-weight-semi-bold m-0">Quality Product</h5>
-          </div>
-        </div>
-        <div className="col-lg-3 col-md-6 col-sm-12 pb-1">
-          <div
-            className="d-flex align-items-center bg-light mb-4"
-            style={{ padding: "30px" }}>
-            <h1 className="fa fa-shipping-fast text-primary m-0 mr-2" />
-            <h5 className="font-weight-semi-bold m-0">Free Shipping</h5>
-          </div>
-        </div>
-        <div className="col-lg-3 col-md-6 col-sm-12 pb-1">
-          <div
-            className="d-flex align-items-center bg-light mb-4"
-            style={{ padding: "30px" }}>
-            <h1 className="fas fa-exchange-alt text-primary m-0 mr-3" />
-            <h5 className="font-weight-semi-bold m-0">14-Day Return</h5>
-          </div>
-        </div>
-        <div className="col-lg-3 col-md-6 col-sm-12 pb-1">
-          <div
-            className="d-flex align-items-center bg-light mb-4"
-            style={{ padding: "30px" }}>
-            <h1 className="fa fa-phone-volume text-primary m-0 mr-3" />
-            <h5 className="font-weight-semi-bold m-0">24/7 Support</h5>
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }
 
@@ -159,22 +115,70 @@ function Carousel() {
           <div className="product-offer mb-30" style={{ height: "200px" }}>
             <img className="img-fluid" src="https://picsum.photos/500" alt="" />
             <div className="offer-text">
-              <h6 className="text-white text-uppercase">Save 20%</h6>
-              <h3 className="text-white mb-3">Special Offer</h3>
-              <a href className="btn btn-primary">
-                Shop Now
-              </a>
+              <h3 className="text-white mb-3">Explore our stores</h3>
+              <Link to="/stores" className="btn btn-primary">
+                Stores
+              </Link>
             </div>
           </div>
           <div className="product-offer mb-30" style={{ height: "200px" }}>
             <img className="img-fluid" src="https://picsum.photos/500" alt="" />
             <div className="offer-text">
-              <h6 className="text-white text-uppercase">Save 20%</h6>
-              <h3 className="text-white mb-3">Special Offer</h3>
-              <a href className="btn btn-primary">
-                Shop Now
-              </a>
+              <h6 className="text-white text-uppercase">We have many books</h6>
+              <h3 className="text-white mb-3">Explore our books library</h3>
+              <Link to="/product" className="btn btn-primary">
+                Explore
+              </Link>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Featured() {
+  return (
+    <div className="container-fluid pt-1">
+      <div className="row px-xl-5">
+        <div className="col-lg-3 col-md-6 col-sm-12 pb-1">
+          <div
+            className="d-flex align-items-center bg-light mb-4"
+            style={{ padding: "30px" }}>
+            <h1 className="  m-0 mr-3">
+              <i className="fa fa-check text-primary" />
+            </h1>
+            <h5 className="font-weight-semi-bold m-0">Quality Product</h5>
+          </div>
+        </div>
+        <div className="col-lg-3 col-md-6 col-sm-12 pb-1">
+          <div
+            className="d-flex align-items-center bg-light mb-4"
+            style={{ padding: "30px" }}>
+            <h1 className="  m-0 mr-3">
+              <i className="fa fa-shipping-fast text-primary" />
+            </h1>
+            <h5 className="font-weight-semi-bold m-0">Free Shipping</h5>
+          </div>
+        </div>
+        <div className="col-lg-3 col-md-6 col-sm-12 pb-1">
+          <div
+            className="d-flex align-items-center bg-light mb-4"
+            style={{ padding: "30px" }}>
+            <h1 className="  m-0 mr-3">
+              <i className="fa fa-exchange-alt text-primary" />
+            </h1>
+            <h5 className="font-weight-semi-bold m-0">14-Day Return</h5>
+          </div>
+        </div>
+        <div className="col-lg-3 col-md-6 col-sm-12 pb-1">
+          <div
+            className="d-flex align-items-center bg-light mb-4"
+            style={{ padding: "30px" }}>
+            <h1 className="  m-0 mr-3">
+              <i className="fa fa-phone-volume text-primary" />
+            </h1>
+            <h5 className="font-weight-semi-bold m-0">24/7 Support</h5>
           </div>
         </div>
       </div>
@@ -189,32 +193,33 @@ function Categories() {
         <span className="bg-secondary pr-3">Categories</span>
       </h2>
       <div className="row px-xl-5 pb-3">
-        <CategoryItem />
-        <CategoryItem />
-        <CategoryItem />
-        <CategoryItem />
-        <CategoryItem />
+        <CategoryItem name="Novel" id="1" />
+        <CategoryItem name="Biography" id="2" />
+        <CategoryItem name="Adult" id="3" />
+        <CategoryItem name="Advanture" id="4" />
+        <CategoryItem name="Sci-fi" id="5" />
       </div>
     </div>
   );
 }
 
-function CategoryItem() {
+function CategoryItem({ name, img, id }) {
   return (
     <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
-      <a className="text-decoration-none" href>
-        <div className="cat-item d-flex align-items-center mb-4">
+      <Link
+        className="text-decoration-none"
+        to={{ pathname: "/product", search: `category=${id}` }}>
+        <div className="cat-item d-flex align-items-center  mb-4">
           <div
             className="overflow-hidden"
             style={{ width: "100px", height: "100px" }}>
             <img className="img-fluid" src="https://picsum.photos/200" alt="" />
           </div>
           <div className="flex-fill pl-3">
-            <h6>Category Name</h6>
-            <small className="text-body">100 Products</small>
+            <h6 className="m-0">{name}</h6>
           </div>
         </div>
-      </a>
+      </Link>
     </div>
   );
 }
@@ -245,20 +250,25 @@ function ProductItem() {
         <div className="product-img position-relative overflow-hidden">
           <img className="img-fluid w-100" src={require("./ok.png")} alt="" />
           <div className="product-action">
-            <a className="btn btn-outline-dark btn-square" href>
+            <Link className="btn btn-outline-dark btn-square">
               <i className="fa fa-shopping-cart" />
-            </a>
-            <a className="btn btn-outline-dark btn-square" href>
+            </Link>
+            <Link className="btn btn-outline-dark btn-square" to="product/1">
               <i className="fa fa-search" />
-            </a>
+            </Link>
           </div>
         </div>
         <div className="text-center py-4">
-          <a className="h6 text-decoration-none text-truncate" href>
+          <Link
+            className="h6 text-decoration-none text-truncate"
+            to="product/1">
             Product Name Goes Here
-          </a>
+          </Link>
           <div className="d-flex align-items-center justify-content-center mt-2">
-            <h5>$123.00</h5>
+            <p>Conan Doyle</p>
+          </div>
+          <div className="d-flex align-items-center justify-content-center mt-2">
+            <small>$99.99</small>
           </div>
         </div>
       </div>

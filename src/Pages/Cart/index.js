@@ -1,10 +1,6 @@
-import Footer from "../../Components/Footer";
-import NavigationBar from "../../Components/NavigationBar";
-
 export default function Cart() {
   return (
     <>
-      <NavigationBar />
       <div className="container-fluid">
         <div className="row px-xl-5">
           <div className="col-lg-8 table-responsive mb-5">
@@ -55,7 +51,6 @@ export default function Cart() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

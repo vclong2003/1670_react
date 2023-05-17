@@ -1,10 +1,6 @@
-import Footer from "../../Components/Footer";
-import NavigationBar from "../../Components/NavigationBar";
-
 export default function Stores() {
   return (
     <>
-      <NavigationBar />
       <div className="container min-vh-100">
         <h2 className="section-title position-relative text-uppercase mx-xl-5 mb-4">
           <span className="bg-secondary pr-3">Stores location</span>
@@ -17,7 +13,6 @@ export default function Stores() {
           <StoreItem />
         </div>
       </div>
-      <Footer />
     </>
   );
 }

@@ -1,17 +1,12 @@
-import Footer from "../../Components/Footer";
-import NavigationBar from "../../Components/NavigationBar";
-
 export default function MyOrders() {
   return (
     <>
-      <NavigationBar />
       <div className="container">
         <h5 className="section-title position-relative text-uppercase mb-3">
           <span className="bg-secondary pr-3">All orders</span>
         </h5>
         <AllOrders />
       </div>
-      <Footer />
     </>
   );
 }
