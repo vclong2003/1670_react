@@ -13,50 +13,12 @@ export default function Product() {
             <h5 className="section-title position-relative text-uppercase mb-3">
               <span className="bg-secondary pr-3">Category</span>
             </h5>
-            <div className="bg-light p-4 mb-30">
-              <form>
-                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                  <input
-                    type="checkbox"
-                    className="custom-control-input"
-                    defaultChecked
-                    id="price-all"
-                  />
-                  <label className="custom-control-label" htmlFor="price-all">
-                    All
-                  </label>
-                </div>
-                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                  <input
-                    type="checkbox"
-                    className="custom-control-input"
-                    id="price-1"
-                  />
-                  <label className="custom-control-label" htmlFor="price-1">
-                    Novel
-                  </label>
-                </div>
-                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                  <input
-                    type="checkbox"
-                    className="custom-control-input"
-                    id="price-2"
-                  />
-                  <label className="custom-control-label" htmlFor="price-2">
-                    Biography
-                  </label>
-                </div>
-                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                  <input
-                    type="checkbox"
-                    className="custom-control-input"
-                    id="price-2"
-                  />
-                  <label className="custom-control-label" htmlFor="price-2">
-                    Adult
-                  </label>
-                </div>
-              </form>
+            <div className="bg-light p-4 mb-30 d-flex flex-column">
+              <Link className=" text-decoration-none text-dark mb-2 p-1" to="">
+                All
+              </Link>
+              <CategoryItem name="Novel" id="1" />
+              <CategoryItem name="Sci-fi" id="2" />
             </div>
             {/* Category End */}
           </div>
@@ -73,15 +35,9 @@ export default function Product() {
                     Sorting
                   </button>
                   <div className="dropdown-menu dropdown-menu-right">
-                    <a className="dropdown-item" href="#">
-                      Latest
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      Popularity
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      Best Rating
-                    </a>
+                    <Link className="dropdown-item">Latest</Link>
+                    <Link className="dropdown-item">Name A-Z</Link>
+                    <Link className="dropdown-item">Price: Low to High</Link>
                   </div>
                 </div>
               </div>
@@ -103,6 +59,16 @@ export default function Product() {
       </div>
       {/* Shop End */}
     </>
+  );
+}
+
+function CategoryItem({ name, id }) {
+  return (
+    <Link
+      className=" text-decoration-none text-dark mb-2 p-1"
+      to={{ search: `category=${id}` }}>
+      {name}
+    </Link>
   );
 }
 
