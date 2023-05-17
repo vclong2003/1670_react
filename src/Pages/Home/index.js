@@ -113,7 +113,7 @@ function Carousel() {
         </div>
         <div className="col-lg-4">
           <div className="product-offer mb-30" style={{ height: "200px" }}>
-            <img className="img-fluid" src="https://picsum.photos/500" alt="" />
+            <img className="img-fluid" src={require("./stores.avif")} alt="" />
             <div className="offer-text">
               <h3 className="text-white mb-3">Explore our stores</h3>
               <Link to="/stores" className="btn btn-primary">
@@ -122,9 +122,11 @@ function Carousel() {
             </div>
           </div>
           <div className="product-offer mb-30" style={{ height: "200px" }}>
-            <img className="img-fluid" src="https://picsum.photos/500" alt="" />
+            <img className="img-fluid" src={require("./books.png")} alt="" />
             <div className="offer-text">
-              <h6 className="text-white text-uppercase">We have many books</h6>
+              <h6 className="text-secondary">
+                1000+ books in different language
+              </h6>
               <h3 className="text-white mb-3">Explore our books library</h3>
               <Link to="/product" className="btn btn-primary">
                 Explore
@@ -254,7 +256,7 @@ function ProductItem() {
               <i className="fa fa-shopping-cart" />
             </Link>
             <Link className="btn btn-outline-dark btn-square" to="product/1">
-              <i className="fa fa-search" />
+              <i className="fa fa-info" />
             </Link>
           </div>
         </div>

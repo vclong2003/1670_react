@@ -121,7 +121,7 @@ function ProductItem() {
               <i className="fa fa-shopping-cart" />
             </Link>
             <Link to="2" className="btn btn-outline-dark btn-square">
-              <i className="fa fa-search" />
+              <i className="fa fa-info" />
             </Link>
           </div>
         </div>

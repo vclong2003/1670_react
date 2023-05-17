@@ -28,10 +28,6 @@ export default function Console() {
               />
               <Route path="manage_stores" element={<StoreManagement />} />
             </Routes>
-            {/* <OrderManagement /> */}
-            {/* <ProductManagement /> */}
-            {/* <StoreManagement /> */}
-            {/* <CategoryManagement /> */}
           </div>
         </div>
       </div>

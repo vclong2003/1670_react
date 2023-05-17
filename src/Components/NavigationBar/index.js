@@ -98,6 +98,11 @@ export default function NavigationBar() {
                     <i className="fas fa-user text-primary" />
                   </Link>
                   <Link
+                    to="/signin"
+                    className="btn px-0 ml-3 text-secondary border border-primary pl-2 pr-2 bg-primary">
+                    <span className="badge text-dark">Sign In</span>
+                  </Link>
+                  <Link
                     to="/console"
                     className="btn px-0 ml-3 text-secondary border border-primary pl-2 pr-2 bg-primary">
                     <i className="fa fa-cogs text-dark" />
