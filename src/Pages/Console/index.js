@@ -1,3 +1,4 @@
+import { NavLink, Route, Routes } from "react-router-dom";
 import CategoryManagement from "./CategoryManagement";
 import OrderManagement from "./OrderManagement";
 import ProductManagement from "./ProductManagement";
@@ -12,24 +13,22 @@ export default function Console() {
         </h5>
         <div className="row px-xl-4">
           <div className="col-lg-2">
-            <div className="bg-primary text-secondary p-3">
-              <h6 className="text-dark m-0">Orders</h6>
-            </div>
-            <div className="bg-light text-secondary p-3">
-              <h6 className="text-dark m-0">Products</h6>
-            </div>
-            <div className="bg-light text-secondary p-3">
-              <h6 className="text-dark m-0">Users</h6>
-            </div>
-            <div className="bg-light text-secondary p-3">
-              <h6 className="text-dark m-0">Stores</h6>
-            </div>
-            <div className="bg-light text-secondary p-3">
-              <h6 className="text-dark m-0">Categories</h6>
-            </div>
+            <TabItem name="Orders" target="manage_orders" />
+            <TabItem name="Products" target="manage_products" />
+            <TabItem name="Categories" target="manage_categories" />
+            <TabItem name="Stores" target="manage_stores" />
           </div>
           <div className="col-lg-10 p-0">
-            <OrderManagement />
+            <Routes>
+              <Route path="manage_orders" element={<OrderManagement />} />
+              <Route path="manage_products" element={<ProductManagement />} />
+              <Route
+                path="manage_categories"
+                element={<CategoryManagement />}
+              />
+              <Route path="manage_stores" element={<StoreManagement />} />
+            </Routes>
+            {/* <OrderManagement /> */}
             {/* <ProductManagement /> */}
             {/* <StoreManagement /> */}
             {/* <CategoryManagement /> */}
@@ -37,5 +36,19 @@ export default function Console() {
         </div>
       </div>
     </>
+  );
+}
+
+function TabItem({ name, target }) {
+  return (
+    <NavLink
+      to={target}
+      className={({ isActive }) =>
+        isActive
+          ? "bg-primary nav-item nav-link p-3"
+          : "bg-white nav-item nav-link p-3"
+      }>
+      <h6 className="text-dark m-0">{name}</h6>
+    </NavLink>
   );
 }

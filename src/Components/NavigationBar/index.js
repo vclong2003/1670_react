@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export default function NavigationBar() {
   return (
@@ -94,7 +94,7 @@ export default function NavigationBar() {
                       0
                     </span>
                   </Link>
-                  <Link className="btn px-0 ml-3">
+                  <Link to="/profile" className="btn px-0 ml-3">
                     <i className="fas fa-user text-primary" />
                   </Link>
                   <Link
@@ -115,9 +115,13 @@ export default function NavigationBar() {
 
 function PageItem({ title, target }) {
   return (
-    <Link to={target} className="nav-item nav-link active">
+    <NavLink
+      to={target}
+      className={({ isActive }) =>
+        isActive ? "nav-item nav-link active" : "nav-item nav-link"
+      }>
       {title}
-    </Link>
+    </NavLink>
   );
 }
 
