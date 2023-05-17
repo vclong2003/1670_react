@@ -240,14 +240,10 @@ function NewProducts() {
 
 function ProductItem() {
   return (
-    <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
+    <div className="col-lg-2 col-md-4 col-sm-6 pb-1">
       <div className="product-item bg-light mb-4">
         <div className="product-img position-relative overflow-hidden">
-          <img
-            className="img-fluid w-100"
-            src="https://picsum.photos/200"
-            alt=""
-          />
+          <img className="img-fluid w-100" src={require("./ok.png")} alt="" />
           <div className="product-action">
             <a className="btn btn-outline-dark btn-square" href>
               <i className="fa fa-shopping-cart" />

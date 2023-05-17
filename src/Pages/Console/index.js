@@ -32,10 +32,10 @@ export default function Console() {
             </div>
           </div>
           <div className="col-lg-10 p-0">
-            {/* <OrderManagement /> */}
+            <OrderManagement />
             {/* <ProductManagement /> */}
             {/* <StoreManagement /> */}
-            <CategoryManagement />
+            {/* <CategoryManagement /> */}
           </div>
         </div>
       </div>

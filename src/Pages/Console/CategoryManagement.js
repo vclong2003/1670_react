@@ -1,7 +1,6 @@
 export default function CategoryManagement() {
   return (
     <>
-      <Popup />
       <div className="col-12 p-0 mb-3">
         <button className="btn btn-primary pl-4 pr-4">Add</button>
       </div>
@@ -56,22 +55,13 @@ function Popup() {
             "rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px",
           backgroundColor: "#FFFFFF",
         }}>
-        <div className="p-30 mb-4">
+        <div className="p-30">
           <div className="row">
             <div className="col-md-12 form-group">
-              <label>Name</label>
               <input
                 className="form-control"
                 type="text"
-                placeholder="Example@mail.com"
-              />
-            </div>
-            <div className="col-md-12 form-group">
-              <label>Password</label>
-              <input
-                className="form-control"
-                type="text"
-                placeholder="Your password"
+                placeholder="Enter name"
               />
             </div>
           </div>
