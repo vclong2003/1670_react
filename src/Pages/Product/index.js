@@ -1,7 +1,15 @@
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { fetchProducts } from "../../Redux/productSlice";
 
 export default function Product() {
+  const products = useSelector((state) => state.products.items);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, []);
+
   return (
     <>
       {/* Shop Start */}
@@ -42,12 +50,18 @@ export default function Product() {
                 </div>
               </div>
 
-              <ProductItem />
-              <ProductItem />
-              <ProductItem />
-              <ProductItem />
-              <ProductItem />
-              <ProductItem />
+              {products.map((item, index) => {
+                return (
+                  <ProductItem
+                    key={index}
+                    id={item.id}
+                    thumbnailUrl={item.thumbnailUrl}
+                    name={item.name}
+                    author={item.author}
+                    price={item.author}
+                  />
+                );
+              })}
             </div>
           </div>
           {/* Shop Product End */}
@@ -68,34 +82,30 @@ function CategoryItem({ name, id }) {
   );
 }
 
-function ProductItem() {
+function ProductItem({ id, thumbnailUrl, name, author, price }) {
   return (
     <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
       <div className="product-item bg-light mb-4">
         <div className="product-img position-relative overflow-hidden">
-          <img
-            className="img-fluid w-100"
-            src="https://picsum.photos/200"
-            alt=""
-          />
+          <img className="img-fluid w-100" src={thumbnailUrl} alt="" />
           <div className="product-action">
             <Link className="btn btn-outline-dark btn-square">
               <i className="fa fa-shopping-cart" />
             </Link>
-            <Link to="2" className="btn btn-outline-dark btn-square">
+            <Link to={id} className="btn btn-outline-dark btn-square">
               <i className="fa fa-info" />
             </Link>
           </div>
         </div>
         <div className="text-center py-4">
-          <Link className="h6 text-decoration-none text-truncate" to="1">
-            Product Name Goes Here
+          <Link className="h6 text-decoration-none text-truncate" to={id}>
+            {name}
           </Link>
           <div className="d-flex align-items-center justify-content-center mt-2">
-            <p>Conan Doyle</p>
+            <p>{author}</p>
           </div>
           <div className="d-flex align-items-center justify-content-center mt-2">
-            <small>$99.99</small>
+            <small>${price}</small>
           </div>
         </div>
       </div>
