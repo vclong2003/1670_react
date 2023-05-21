@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const fetchProducts = createAsyncThunk(
-  "products/fetchProducts",
+  "product/fetchProducts",
   async () => {
     const response = await axios.get(
       "https://6465a7439c09d77a62f094da.mockapi.io/book?skip=30"
@@ -11,10 +11,16 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 
+export const fetchProductById = createAsyncThunk(
+  "product/fetchProductById",
+  async () => {}
+);
+
 export const productsSlice = createSlice({
-  name: "products",
+  name: "product",
   initialState: {
     items: [],
+    selectedItem: null,
   },
   reducers: {},
   extraReducers: (builder) => {
