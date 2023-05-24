@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { fetchProducts } from "../../Redux/productSlice";
 
 export default function Product() {
-  const products = useSelector((state) => state.products.items);
+  const products = useSelector((state) => state.product.items);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchProducts());
