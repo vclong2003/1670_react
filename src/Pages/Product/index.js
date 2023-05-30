@@ -1,14 +1,19 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { fetchProducts } from "../../Redux/productSlice";
 
 export default function Product() {
-  const { items } = useSelector((state) => state.product);
+  const url = useLocation();
+  const category = new URLSearchParams(url.search).get("category");
+  const { items, loading } = useSelector((state) => state.product);
+  const categories = useSelector((state) => state.category.items);
+
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, []);
+    dispatch(fetchProducts(category));
+  }, [category]);
 
   return (
     <>
@@ -25,8 +30,16 @@ export default function Product() {
               <Link className=" text-decoration-none text-dark mb-2 p-1" to="">
                 All
               </Link>
-              <CategoryItem name="Novel" id="1" />
-              <CategoryItem name="Sci-fi" id="2" />
+
+              {categories.map((category, index) => {
+                return (
+                  <CategoryItem
+                    key={index}
+                    name={category.name}
+                    id={category.id}
+                  />
+                );
+              })}
             </div>
             {/* Category End */}
           </div>
@@ -62,6 +75,8 @@ export default function Product() {
                   />
                 );
               })}
+              {items.length === 0 && !loading ? "No products found" : ""}
+              {loading ? "Loding..." : ""}
             </div>
           </div>
           {/* Shop Product End */}

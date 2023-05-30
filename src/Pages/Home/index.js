@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function Home() {
@@ -189,17 +190,18 @@ function Featured() {
 }
 
 function Categories() {
+  const items = useSelector((state) => state.category.items);
   return (
     <div className="container-fluid pt-5">
       <h2 className="section-title position-relative text-uppercase mx-xl-5 mb-4">
         <span className="bg-secondary pr-3">Categories</span>
       </h2>
       <div className="row px-xl-5 pb-3">
-        <CategoryItem name="Novel" id="1" />
-        <CategoryItem name="Biography" id="2" />
-        <CategoryItem name="Adult" id="3" />
-        <CategoryItem name="Advanture" id="4" />
-        <CategoryItem name="Sci-fi" id="5" />
+        {items.map((category, index) => {
+          return (
+            <CategoryItem key={index} name={category.name} id={category.id} />
+          );
+        })}
       </div>
     </div>
   );
@@ -211,12 +213,7 @@ function CategoryItem({ name, img, id }) {
       <Link
         className="text-decoration-none"
         to={{ pathname: "/product", search: `category=${id}` }}>
-        <div className="cat-item d-flex align-items-center  mb-4">
-          <div
-            className="overflow-hidden"
-            style={{ width: "100px", height: "100px" }}>
-            <img className="img-fluid" src="https://picsum.photos/200" alt="" />
-          </div>
+        <div className="cat-item d-flex align-items-center  mb-4 pt-4 pb-4">
           <div className="flex-fill pl-3">
             <h6 className="m-0">{name}</h6>
           </div>

@@ -1,6 +1,8 @@
+import { useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 
 export default function NavigationBar() {
+  const categories = useSelector((state) => state.category.items);
   return (
     <>
       <div className="container-fluid">
@@ -56,9 +58,11 @@ export default function NavigationBar() {
               id="navbar-vertical"
               style={{ width: "calc(100% - 30px)", zIndex: 999 }}>
               <div className="navbar-nav w-100">
-                <CategoryItem name="Novel" id="1" />
-                <CategoryItem name="Biography" id="2" />
-                <CategoryItem name="Adult" id="3" />
+                {categories.map((item, index) => {
+                  return (
+                    <CategoryItem key={index} name={item.name} id={item.id} />
+                  );
+                })}
               </div>
             </nav>
           </div>

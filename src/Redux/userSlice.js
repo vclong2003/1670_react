@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { api_endpoint } from "../Services/1670_API/config";
+import { api_endpoint } from "../Services/config";
 
 export const signin = createAsyncThunk(
   "user/signin",
@@ -46,6 +46,7 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     //Fetch current user
+
     builder.addCase(fetchCurrentUser.pending, (state) => {
       state.loading = true;
     });

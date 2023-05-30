@@ -13,43 +13,43 @@ import Signin from "./Pages/Signin";
 import Signup from "./Pages/Signup";
 import OrderDetail from "./Pages/OrderDetail";
 import Product from "./Pages/Product";
-import Stores from "./Pages/Stores";
 import Console from "./Pages/Console";
 import Profile from "./Pages/Profile";
 import ProductDetail from "./Pages/ProductDetail";
 
 import StandardLayout from "./Components/Layout/StandardLayout";
-import { Provider, useDispatch } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "./Redux/store";
 import { fetchCurrentUser } from "./Redux/userSlice";
-import LoadingLayer from "./Components/LoadingLayer";
+import { fetchCategories } from "./Redux/categorySlice";
 
 function App() {
+  const loadingUser = useSelector((state) => state.user.loading);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchCurrentUser());
+    dispatch(fetchCategories());
   }, []);
 
-  return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="signin" element={<Signin />} />
-          <Route path="singup" element={<Signup />} />
-          <Route element={<StandardLayout />}>
-            <Route index element={<Home />} />
-            <Route path="cart" element={<Cart />} />
-            <Route path="checkout" element={<Checkout />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="product" element={<Product />} />
-            <Route path="product/:id" element={<ProductDetail />} />
-            <Route path="stores" element={<Stores />} />
-            <Route path="console/*" element={<Console />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </>
+  return loadingUser ? (
+    ""
+  ) : (
+    <BrowserRouter>
+      <Routes>
+        <Route path="signin" element={<Signin />} />
+        <Route path="singup" element={<Signup />} />
+        <Route element={<StandardLayout />}>
+          <Route index element={<Home />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="checkout" element={<Checkout />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="product" element={<Product />} />
+          <Route path="product/:id" element={<ProductDetail />} />
+          <Route path="console/*" element={<Console />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

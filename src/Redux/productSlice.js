@@ -1,11 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { api_endpoint } from "../Services/1670_API/config";
+import { api_endpoint } from "../Services/config";
 
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
-  async () => {
-    const response = await axios.get(`${api_endpoint}/product`);
+  async (category) => {
+    console.log(category);
+    const response = await axios.get(
+      `${api_endpoint}/product/?category=${category}`
+    );
     return response.data;
   }
 );
