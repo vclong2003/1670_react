@@ -1,5 +1,5 @@
-export default function LoadingLayer() {
-  return (
+export default function LoadingLayer({ loading = false }) {
+  return loading ? (
     <div
       style={{
         width: "100vw",
@@ -10,12 +10,13 @@ export default function LoadingLayer() {
         backgroundColor: "#0000008C",
         position: "fixed",
         zIndex: "200",
-        visibility: "hidden",
       }}>
       <div
         className="spinner-border text-primary"
         style={{ width: "3rem", height: "3rem", fontSize: "25px" }}
       />
     </div>
+  ) : (
+    ""
   );
 }

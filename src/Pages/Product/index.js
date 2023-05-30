@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { fetchProducts } from "../../Redux/productSlice";
 
 export default function Product() {
-  const products = useSelector((state) => state.product.items);
+  const { items } = useSelector((state) => state.product);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchProducts());
@@ -50,7 +50,7 @@ export default function Product() {
                 </div>
               </div>
 
-              {products.map((item, index) => {
+              {items.map((item, index) => {
                 return (
                   <ProductItem
                     key={index}
@@ -58,7 +58,7 @@ export default function Product() {
                     thumbnailUrl={item.thumbnailUrl}
                     name={item.name}
                     author={item.author}
-                    price={item.author}
+                    price={item.price}
                   />
                 );
               })}
