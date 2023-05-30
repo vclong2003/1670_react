@@ -1,8 +1,12 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 
 export default function NavigationBar() {
   const categories = useSelector((state) => state.category.items);
+
+  const [searchValue, setSearchValue] = useState("");
+
   return (
     <>
       <div className="container-fluid">
@@ -24,12 +28,28 @@ export default function NavigationBar() {
                   type="text"
                   className="form-control"
                   placeholder="Search for products"
+                  value={searchValue}
+                  onChange={(evt) => {
+                    setSearchValue(evt.target.value);
+                  }}
                 />
-                <div className="input-group-append">
+                <Link
+                  className="input-group-append"
+                  to={{ pathname: "product", search: `search=${searchValue}` }}>
                   <span className="input-group-text bg-transparent text-primary">
                     <i className="fa fa-search" />
                   </span>
-                </div>
+                </Link>
+                <Link
+                  className="input-group-append"
+                  to={{ pathname: "product" }}
+                  onClick={() => {
+                    setSearchValue("");
+                  }}>
+                  <span className="input-group-text bg-transparent text-primary">
+                    <i className="fas fa-window-close" />
+                  </span>
+                </Link>
               </div>
             </form>
           </div>
@@ -89,7 +109,6 @@ export default function NavigationBar() {
                 <div className="navbar-nav mr-auto py-0">
                   <PageItem title="Home" target="/" />
                   <PageItem title="Product" target="/product" />
-                  <PageItem title="Our Stores" target="/stores" />
                 </div>
                 <div className="navbar-nav ml-auto py-0 d-none d-lg-block">
                   <Link to="/cart" className="btn px-0 ml-3">
