@@ -4,10 +4,12 @@ import { api_endpoint } from "../Services/config";
 
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
-  async (category) => {
+  async ({ category, search }) => {
     console.log(category);
     const response = await axios.get(
-      `${api_endpoint}/product/?category=${category}`
+      `${api_endpoint}/product/?category=${category || ""}&search=${
+        search || ""
+      }`
     );
     return response.data;
   }

@@ -6,14 +6,16 @@ import { fetchProducts } from "../../Redux/productSlice";
 export default function Product() {
   const url = useLocation();
   const category = new URLSearchParams(url.search).get("category");
+  const search = new URLSearchParams(url.search).get("search");
+
   const { items, loading } = useSelector((state) => state.product);
   const categories = useSelector((state) => state.category.items);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchProducts(category));
-  }, [category]);
+    dispatch(fetchProducts({ category, search }));
+  }, [category, search]);
 
   return (
     <>
