@@ -24,7 +24,9 @@ import { fetchCurrentUser } from "./Redux/userSlice";
 import { fetchCategories } from "./Redux/categorySlice";
 
 function App() {
-  const loadingUser = useSelector((state) => state.user.loading);
+  const fetchCurrentUserLoading = useSelector(
+    (state) => state.user.fetchCurrentUserLoading
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -32,7 +34,7 @@ function App() {
     dispatch(fetchCategories());
   }, []);
 
-  return loadingUser ? (
+  return fetchCurrentUserLoading ? (
     ""
   ) : (
     <BrowserRouter>

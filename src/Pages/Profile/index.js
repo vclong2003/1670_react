@@ -1,6 +1,13 @@
+import { useDispatch, useSelector } from "react-redux";
+import LoadingLayer from "../../Components/LoadingLayer";
+import { signout } from "../../Redux/userSlice";
+
 export default function Profile() {
+  const { loading } = useSelector((state) => state.user);
+
   return (
     <>
+      {loading ? <LoadingLayer /> : ""}
       <div className="container-fluid">
         <h4 className="section-title position-relative text-uppercase mb-3">
           <span className="bg-secondary pr-3">Personal Information</span>
@@ -16,19 +23,24 @@ export default function Profile() {
 }
 
 function PersonalInformation() {
+  const { email } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
   return (
     <div className="col-lg-12 bg-light mb-5 p-4">
       <h5 className="mb-3">
-        Email: <span className="small">vclong2003@gmail.com</span>
-      </h5>
-      <h5 className="mb-3">
-        Name: <span className="small">Tony Stark</span>
-        <button className="btn btn-sm btn-primary ml-2">
-          <i className="far fa-edit" />
-        </button>
+        Email: <span className="small">{email}</span>
       </h5>
       <div className="col-lg-12 p-0 d-flex justify-content-end">
         <button className="btn btn-primary pl-3 pr-3">Change password</button>
+        <button
+          className="btn btn-secondary pl-3 pr-3 ml-3"
+          onClick={() => {
+            dispatch(signout());
+          }}>
+          Sign out
+        </button>
       </div>
     </div>
   );

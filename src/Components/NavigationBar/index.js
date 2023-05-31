@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+import AuthorizedComponent from "../Authorization/authorizedComponent";
 
 export default function NavigationBar() {
   const categories = useSelector((state) => state.category.items);
+  const { loggedIn } = useSelector((state) => state.user);
 
   const [searchValue, setSearchValue] = useState("");
 
@@ -109,26 +111,44 @@ export default function NavigationBar() {
                   <PageItem title="Product" target="/product" />
                 </div>
                 <div className="navbar-nav ml-auto py-0 d-none d-lg-block">
-                  <Link to="/cart" className="btn px-0 ml-3">
-                    <i className="fas fa-shopping-cart text-primary" />
-                    <span className="badge text-secondary border border-secondary rounded-circle ml-1">
-                      0
-                    </span>
-                  </Link>
-                  <Link to="/profile" className="btn px-0 ml-3">
-                    <i className="fas fa-user text-primary" />
-                  </Link>
-                  <Link
-                    to="/signin"
-                    className="btn px-0 ml-3 text-secondary border border-primary pl-2 pr-2 bg-primary">
-                    <span className="badge text-dark">Sign In</span>
-                  </Link>
-                  <Link
-                    to="/console"
-                    className="btn px-0 ml-3 text-secondary border border-primary pl-2 pr-2 bg-primary">
-                    <i className="fa fa-cogs text-dark" />
-                    <span className="badge text-dark  ml-1">Manage</span>
-                  </Link>
+                  {/* Buttons */}
+
+                  <AuthorizedComponent requiredRoles={["CUSTOMER"]}>
+                    {/* Cart button */}
+                    <Link to="/cart" className="btn px-0 ml-3">
+                      <i className="fas fa-shopping-cart text-primary" />
+                      <span className="badge text-secondary border border-secondary rounded-circle ml-1">
+                        0
+                      </span>
+                    </Link>
+                  </AuthorizedComponent>
+
+                  <AuthorizedComponent>
+                    {/* Profile button */}
+                    <Link to="/profile" className="btn px-0 ml-3">
+                      <i className="fas fa-user text-primary" />
+                    </Link>
+                  </AuthorizedComponent>
+
+                  {/* Sign in button */}
+                  {loggedIn ? (
+                    ""
+                  ) : (
+                    <Link
+                      to="/signin"
+                      className="btn px-0 ml-3 text-secondary border border-primary pl-2 pr-2 bg-primary">
+                      <span className="badge text-dark">Sign In</span>
+                    </Link>
+                  )}
+
+                  <AuthorizedComponent requiredRoles={["MANAGER", "STAFF"]}>
+                    <Link
+                      to="/console"
+                      className="btn px-0 ml-3 text-secondary border border-primary pl-2 pr-2 bg-primary">
+                      <i className="fa fa-cogs text-dark" />
+                      <span className="badge text-dark  ml-1">Manage</span>
+                    </Link>
+                  </AuthorizedComponent>
                 </div>
               </div>
             </nav>

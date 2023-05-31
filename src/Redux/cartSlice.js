@@ -11,6 +11,7 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: {
     items: [],
+    count: 0,
   },
   reducers: {},
   extraReducers: (builder) => {
