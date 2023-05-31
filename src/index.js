@@ -22,17 +22,26 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "./Redux/store";
 import { fetchCurrentUser } from "./Redux/userSlice";
 import { fetchCategories } from "./Redux/categorySlice";
+import { fetchCartItems } from "./Redux/cartSlice";
 
 function App() {
-  const fetchCurrentUserLoading = useSelector(
-    (state) => state.user.fetchCurrentUserLoading
+  const { fetchCurrentUserLoading, loggedIn } = useSelector(
+    (state) => state.user
   );
   const dispatch = useDispatch();
 
+  // Fetch current user and categories
   useEffect(() => {
     dispatch(fetchCurrentUser());
     dispatch(fetchCategories());
   }, []);
+
+  // Fetch cart items if user logged in
+  useEffect(() => {
+    if (loggedIn) {
+      dispatch(fetchCartItems());
+    }
+  }, [loggedIn]);
 
   return fetchCurrentUserLoading ? (
     ""

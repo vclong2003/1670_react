@@ -2,16 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { api_endpoint } from "../Services/config";
 
-const fetchCartItems = createAsyncThunk("cart/fetchCartItems", async () => {
-  const response = await axios.get(`${api_endpoint}/cart`);
-  return response.data;
-});
-
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
     items: [],
-    count: 0,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -20,4 +14,61 @@ const cartSlice = createSlice({
     });
   },
 });
+
+export const fetchCartItems = createAsyncThunk(
+  "cart/fetchCartItems",
+  async () => {
+    const response = await axios.get(`${api_endpoint}/cart`, {
+      withCredentials: true,
+    });
+
+    return response.data;
+  }
+);
+
+export const addItemToCart = createAsyncThunk(
+  "cart/addItemToCart",
+  async ({ id, quantity = 1 }, { dispatch }) => {
+    const response = await axios.post(
+      `${api_endpoint}/cart`,
+      { productId: id, quantity: quantity },
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 200) {
+      dispatch(fetchCartItems());
+    }
+  }
+);
+
+export const updateItemInCart = createAsyncThunk(
+  "cart/updateItemInCart",
+  async ({ id, quantity }, { dispatch }) => {
+    const response = await axios.put(
+      `${api_endpoint}/cart/${id}`,
+      { quantity: quantity },
+      { withCredentials: true }
+    );
+
+    if (response.status === 200) {
+      dispatch(fetchCartItems());
+    }
+  }
+);
+
+export const removeItemFromCart = createAsyncThunk(
+  "cart/removeItemFromCart",
+  async (id, { dispatch }) => {
+    const response = await axios.delete(`${api_endpoint}/cart/${id}`, {
+      withCredentials: true,
+    });
+
+    if (response.status === 200) {
+      dispatch(fetchCartItems());
+    }
+  }
+);
+
 export default cartSlice.reducer;

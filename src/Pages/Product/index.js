@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { fetchProducts } from "../../Redux/productSlice";
 import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
+import { addItemToCart } from "../../Redux/cartSlice";
 
 export default function Product() {
   const url = useLocation();
@@ -34,15 +35,13 @@ export default function Product() {
                 All
               </Link>
 
-              {categories.map((category, index) => {
-                return (
-                  <CategoryItem
-                    key={index}
-                    name={category.name}
-                    id={category.id}
-                  />
-                );
-              })}
+              {categories.map((category, index) => (
+                <CategoryItem
+                  key={index}
+                  name={category.name}
+                  id={category.id}
+                />
+              ))}
             </div>
             {/* Category End */}
           </div>
@@ -66,18 +65,16 @@ export default function Product() {
                 </div>
               </div>
 
-              {items.map((item, index) => {
-                return (
-                  <ProductItem
-                    key={index}
-                    id={item.id}
-                    thumbnailUrl={item.thumbnailUrl}
-                    name={item.name}
-                    author={item.author}
-                    price={item.price}
-                  />
-                );
-              })}
+              {items.map((item, index) => (
+                <ProductItem
+                  key={index}
+                  id={item.id}
+                  thumbnailUrl={item.thumbnailUrl}
+                  name={item.name}
+                  author={item.author}
+                  price={item.price}
+                />
+              ))}
               {items.length === 0 && !loading ? "No products found" : ""}
               {loading ? "Loding..." : ""}
             </div>
@@ -101,6 +98,14 @@ function CategoryItem({ name, id }) {
 }
 
 function ProductItem({ id, thumbnailUrl, name, author, price }) {
+  const dispatch = useDispatch();
+
+  const defaultQuantity = 1;
+
+  const handleAddToCart = () => {
+    dispatch(addItemToCart({ id }));
+  };
+
   return (
     <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
       <div className="product-item bg-light mb-4">
@@ -109,7 +114,9 @@ function ProductItem({ id, thumbnailUrl, name, author, price }) {
           <div className="product-action">
             {/* Cart button */}
             <AuthorizedComponent requiredRoles={["CUSTOMER"]}>
-              <Link className="btn btn-outline-dark btn-square">
+              <Link
+                className="btn btn-outline-dark btn-square"
+                onClick={handleAddToCart}>
                 <i className="fa fa-shopping-cart" />
               </Link>
             </AuthorizedComponent>

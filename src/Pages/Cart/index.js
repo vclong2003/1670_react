@@ -1,4 +1,9 @@
+import { useDispatch, useSelector } from "react-redux";
+import store from "../../Redux/store";
+import { removeItemFromCart } from "../../Redux/cartSlice";
+
 export default function Cart() {
+  const { items } = useSelector((state) => state.cart);
   return (
     <>
       <div className="container-fluid">
@@ -15,11 +20,15 @@ export default function Cart() {
                 </tr>
               </thead>
               <tbody className="align-middle">
-                <CartItem />
-                <CartItem />
-                <CartItem />
-                <CartItem />
-                <CartItem />
+                {items.map((item, index) => (
+                  <CartItem
+                    key={index}
+                    id={item.id}
+                    name={item.name}
+                    price={item.price}
+                    quantity={item.quantity}
+                  />
+                ))}
               </tbody>
             </table>
           </div>
@@ -43,7 +52,9 @@ export default function Cart() {
                   <h5>Total</h5>
                   <h5>$160</h5>
                 </div>
-                <button className="btn btn-block btn-primary font-weight-bold my-3 py-3">
+                <button
+                  className="btn btn-block btn-primary font-weight-bold my-3 py-3"
+                  disabled={items.length === 0}>
                   Proceed To Checkout
                 </button>
               </div>
@@ -55,14 +66,11 @@ export default function Cart() {
   );
 }
 
-function CartItem() {
+function CartItem({ id, name, price, quantity }) {
   return (
     <tr>
-      <td className="align-middle">
-        <img src="https://picsum.photos/200" alt="" style={{ width: "50px" }} />{" "}
-        Product Name
-      </td>
-      <td className="align-middle">$150</td>
+      <td className="align-middle ">{name}</td>
+      <td className="align-middle">${price}</td>
       <td className="align-middle">
         <div
           className="input-group quantity mx-auto"
@@ -75,7 +83,7 @@ function CartItem() {
           <input
             type="text"
             className="form-control form-control-sm bg-secondary border-0 text-center"
-            defaultValue={1}
+            defaultValue={quantity}
           />
           <div className="input-group-btn">
             <button className="btn btn-sm btn-primary btn-plus">
@@ -84,9 +92,13 @@ function CartItem() {
           </div>
         </div>
       </td>
-      <td className="align-middle">$150</td>
+      <td className="align-middle">${quantity * price}</td>
       <td className="align-middle">
-        <button className="btn btn-sm btn-danger">
+        <button
+          className="btn btn-sm btn-danger"
+          onClick={() => {
+            store.dispatch(removeItemFromCart(id));
+          }}>
           <i className="fa fa-times" />
         </button>
       </td>

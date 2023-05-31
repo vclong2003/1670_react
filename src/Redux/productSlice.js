@@ -2,26 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { api_endpoint } from "../Services/config";
 
-export const fetchProducts = createAsyncThunk(
-  "product/fetchProducts",
-  async ({ category, search }) => {
-    const response = await axios.get(
-      `${api_endpoint}/product/?category=${category || ""}&search=${
-        search || ""
-      }`
-    );
-    return response.data;
-  }
-);
-
-export const fetchProductById = createAsyncThunk(
-  "product/fetchProductById",
-  async (id) => {
-    const response = await axios.get(`${api_endpoint}/product/${id}`);
-    return response.data;
-  }
-);
-
 const productsSlice = createSlice({
   name: "product",
   initialState: {
@@ -56,5 +36,25 @@ const productsSlice = createSlice({
     });
   },
 });
+
+export const fetchProducts = createAsyncThunk(
+  "product/fetchProducts",
+  async ({ category, search }) => {
+    const response = await axios.get(
+      `${api_endpoint}/product/?category=${category || ""}&search=${
+        search || ""
+      }`
+    );
+    return response.data;
+  }
+);
+
+export const fetchProductById = createAsyncThunk(
+  "product/fetchProductById",
+  async (id) => {
+    const response = await axios.get(`${api_endpoint}/product/${id}`);
+    return response.data;
+  }
+);
 
 export default productsSlice.reducer;

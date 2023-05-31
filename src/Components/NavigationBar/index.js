@@ -6,6 +6,7 @@ import AuthorizedComponent from "../Authorization/authorizedComponent";
 export default function NavigationBar() {
   const categories = useSelector((state) => state.category.items);
   const { loggedIn } = useSelector((state) => state.user);
+  const cartItems = useSelector((state) => state.cart.items);
 
   const [searchValue, setSearchValue] = useState("");
 
@@ -78,11 +79,9 @@ export default function NavigationBar() {
               id="navbar-vertical"
               style={{ width: "calc(100% - 30px)", zIndex: 999 }}>
               <div className="navbar-nav w-100">
-                {categories.map((item, index) => {
-                  return (
-                    <CategoryItem key={index} name={item.name} id={item.id} />
-                  );
-                })}
+                {categories.map((item, index) => (
+                  <CategoryItem key={index} name={item.name} id={item.id} />
+                ))}
               </div>
             </nav>
           </div>
@@ -118,7 +117,7 @@ export default function NavigationBar() {
                     <Link to="/cart" className="btn px-0 ml-3">
                       <i className="fas fa-shopping-cart text-primary" />
                       <span className="badge text-secondary border border-secondary rounded-circle ml-1">
-                        0
+                        {cartItems.length}
                       </span>
                     </Link>
                   </AuthorizedComponent>
