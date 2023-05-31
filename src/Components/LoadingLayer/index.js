@@ -1,5 +1,5 @@
-export default function LoadingLayer({ loading = false }) {
-  return loading ? (
+export default function LoadingLayer() {
+  return (
     <div
       style={{
         width: "100vw",
@@ -16,7 +16,5 @@ export default function LoadingLayer({ loading = false }) {
         style={{ width: "3rem", height: "3rem", fontSize: "25px" }}
       />
     </div>
-  ) : (
-    ""
   );
 }

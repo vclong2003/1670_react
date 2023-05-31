@@ -22,36 +22,34 @@ export default function NavigationBar() {
             </Link>
           </div>
           <div className="col-lg-4 col-6 text-left">
-            <form>
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search for products"
-                  value={searchValue}
-                  onChange={(evt) => {
-                    setSearchValue(evt.target.value);
-                  }}
-                />
-                <Link
-                  className="input-group-append"
-                  to={{ pathname: "product", search: `search=${searchValue}` }}>
-                  <span className="input-group-text bg-transparent text-primary">
-                    <i className="fa fa-search" />
-                  </span>
-                </Link>
-                <Link
-                  className="input-group-append"
-                  to={{ pathname: "product" }}
-                  onClick={() => {
-                    setSearchValue("");
-                  }}>
-                  <span className="input-group-text bg-transparent text-primary">
-                    <i className="fas fa-window-close" />
-                  </span>
-                </Link>
-              </div>
-            </form>
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search for products"
+                value={searchValue}
+                onChange={(evt) => {
+                  setSearchValue(evt.target.value);
+                }}
+              />
+              <Link
+                className="input-group-append"
+                to={{ pathname: "product", search: `search=${searchValue}` }}>
+                <span className="input-group-text bg-transparent text-primary">
+                  <i className="fa fa-search" />
+                </span>
+              </Link>
+              <Link
+                className="input-group-append"
+                to={{ pathname: "product" }}
+                onClick={() => {
+                  setSearchValue("");
+                }}>
+                <span className="input-group-text bg-transparent text-primary">
+                  <i className="fas fa-window-close" />
+                </span>
+              </Link>
+            </div>
           </div>
           <div className="col-lg-4 col-6 text-right">
             <p className="m-0">Customer Service</p>

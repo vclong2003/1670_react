@@ -109,13 +109,13 @@ function ProductItem({ id, thumbnailUrl, name, author, price }) {
             <Link className="btn btn-outline-dark btn-square">
               <i className="fa fa-shopping-cart" />
             </Link>
-            <Link to={id} className="btn btn-outline-dark btn-square">
+            <Link to={`${id}`} className="btn btn-outline-dark btn-square">
               <i className="fa fa-info" />
             </Link>
           </div>
         </div>
         <div className="text-center py-4">
-          <Link className="h6 text-decoration-none text-truncate" to={id}>
+          <Link className="h6 text-decoration-none text-truncate" to={`${id}`}>
             {name}
           </Link>
           <div className="d-flex align-items-center justify-content-center mt-2">

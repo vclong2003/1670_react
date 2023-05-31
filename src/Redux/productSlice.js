@@ -5,7 +5,6 @@ import { api_endpoint } from "../Services/config";
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
   async ({ category, search }) => {
-    console.log(category);
     const response = await axios.get(
       `${api_endpoint}/product/?category=${category || ""}&search=${
         search || ""
@@ -39,7 +38,6 @@ const productsSlice = createSlice({
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
       state.items = action.payload;
       state.loading = false;
-      console.log(state.items);
     });
     builder.addCase(fetchProducts.rejected, (state) => {
       state.loading = false;
