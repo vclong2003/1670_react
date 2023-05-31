@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { fetchProducts } from "../../Redux/productSlice";
+import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
 
 export default function Product() {
   const url = useLocation();
@@ -106,9 +107,12 @@ function ProductItem({ id, thumbnailUrl, name, author, price }) {
         <div className="product-img position-relative overflow-hidden">
           <img className="img-fluid w-100" src={thumbnailUrl} alt="" />
           <div className="product-action">
-            <Link className="btn btn-outline-dark btn-square">
-              <i className="fa fa-shopping-cart" />
-            </Link>
+            {/* Cart button */}
+            <AuthorizedComponent requiredRoles={["CUSTOMER"]}>
+              <Link className="btn btn-outline-dark btn-square">
+                <i className="fa fa-shopping-cart" />
+              </Link>
+            </AuthorizedComponent>
             <Link to={`${id}`} className="btn btn-outline-dark btn-square">
               <i className="fa fa-info" />
             </Link>

@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
 
 export default function Home() {
   return (
@@ -249,9 +250,12 @@ function ProductItem() {
         <div className="product-img position-relative overflow-hidden">
           <img className="img-fluid w-100" src={require("./ok.png")} alt="" />
           <div className="product-action">
-            <Link className="btn btn-outline-dark btn-square">
-              <i className="fa fa-shopping-cart" />
-            </Link>
+            {/* Cart button */}
+            <AuthorizedComponent requiredRoles={["CUSTOMER"]}>
+              <Link className="btn btn-outline-dark btn-square">
+                <i className="fa fa-shopping-cart" />
+              </Link>
+            </AuthorizedComponent>
             <Link className="btn btn-outline-dark btn-square" to="product/1">
               <i className="fa fa-info" />
             </Link>

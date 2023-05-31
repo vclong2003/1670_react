@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchProductById } from "../../Redux/productSlice";
 import { useEffect } from "react";
+import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -40,30 +41,33 @@ export default function ProductDetail() {
               {new Date(selectedItem.publishcationDate).toDateString()}
             </p>
 
-            <div className="d-flex align-items-center mb-4 pt-2">
-              <div
-                className="input-group quantity mr-3"
-                style={{ width: "130px" }}>
-                <div className="input-group-btn">
-                  <button className="btn btn-primary btn-minus">
-                    <i className="fa fa-minus" />
-                  </button>
+            {/* Add to cart buttons */}
+            <AuthorizedComponent requiredRoles={["CUSTOMER"]}>
+              <div className="d-flex align-items-center mb-4 pt-2">
+                <div
+                  className="input-group quantity mr-3"
+                  style={{ width: "130px" }}>
+                  <div className="input-group-btn">
+                    <button className="btn btn-primary btn-minus">
+                      <i className="fa fa-minus" />
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    className="form-control bg-secondary border-0 text-center"
+                    defaultValue={1}
+                  />
+                  <div className="input-group-btn">
+                    <button className="btn btn-primary btn-plus">
+                      <i className="fa fa-plus" />
+                    </button>
+                  </div>
                 </div>
-                <input
-                  type="text"
-                  className="form-control bg-secondary border-0 text-center"
-                  defaultValue={1}
-                />
-                <div className="input-group-btn">
-                  <button className="btn btn-primary btn-plus">
-                    <i className="fa fa-plus" />
-                  </button>
-                </div>
+                <button className="btn btn-primary px-3">
+                  <i className="fa fa-shopping-cart mr-1" /> Add To Cart
+                </button>
               </div>
-              <button className="btn btn-primary px-3">
-                <i className="fa fa-shopping-cart mr-1" /> Add To Cart
-              </button>
-            </div>
+            </AuthorizedComponent>
           </div>
         </div>
       </div>
