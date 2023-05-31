@@ -29,8 +29,8 @@ export default function Product() {
             <h5 className="section-title position-relative text-uppercase mb-3">
               <span className="bg-secondary pr-3">Category</span>
             </h5>
-            <div className="bg-light p-4 mb-30 d-flex flex-column">
-              <Link className=" text-decoration-none text-dark mb-2 p-1" to="">
+            <div className="bg-light mb-30 d-flex flex-column">
+              <Link className="text-dark nav-item nav-link bg-light p-3" to="">
                 All
               </Link>
 
@@ -74,8 +74,20 @@ export default function Product() {
                   price={item.price}
                 />
               ))}
-              {items.length === 0 && !loading ? "No products found" : ""}
-              {loading ? "Loding..." : ""}
+              {items.length === 0 && !loading ? (
+                <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
+                  No product found!
+                </div>
+              ) : (
+                ""
+              )}
+              {loading ? (
+                <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
+                  Loading...
+                </div>
+              ) : (
+                ""
+              )}
             </div>
           </div>
           {/* Shop Product End */}
@@ -86,10 +98,10 @@ export default function Product() {
   );
 }
 
-function CategoryItem({ name, id }) {
+function CategoryItem({ id, name }) {
   return (
     <Link
-      className=" text-decoration-none text-dark mb-2 p-1"
+      className="text-dark nav-item nav-link bg-light p-3"
       to={{ search: `category=${id}` }}>
       {name}
     </Link>

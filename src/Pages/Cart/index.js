@@ -74,7 +74,6 @@ function CartItem({ id, name, price, quantity }) {
   const handleRemoveItem = () => {
     store.dispatch(removeItemFromCart(id));
   };
-
   const handleIncreaseQuantity = () => {
     store.dispatch(updateItemInCart({ id: id, quantity: quantity + 1 }));
   };
