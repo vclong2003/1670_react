@@ -38,7 +38,7 @@ export default function Signin() {
                     <label>Email</label>
                     <input
                       className="form-control"
-                      type="text"
+                      type="email"
                       placeholder="Example@mail.com"
                       value={data.email}
                       onChange={(evt) => {
@@ -50,7 +50,7 @@ export default function Signin() {
                     <label>Password</label>
                     <input
                       className="form-control"
-                      type="text"
+                      type="password"
                       placeholder="Your password"
                       value={data.password}
                       onChange={(evt) => {
