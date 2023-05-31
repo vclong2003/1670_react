@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import LoadingLayer from "../../Components/LoadingLayer";
 import { signin } from "../../Redux/userSlice";
+import store from "../../Redux/store";
 
 export default function Signin() {
   const { loading } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
 
+  // Signin form data
   const [data, setData] = useState({ email: "", password: "" });
 
   const handleSigninForm = async (evt) => {
     evt.preventDefault();
-    dispatch(signin(data));
+    store.dispatch(signin(data));
   };
   return (
     <>

@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { fetchProducts } from "../../Redux/productSlice";
 import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
 import { addItemToCart } from "../../Redux/cartSlice";
+import store from "../../Redux/store";
 
 export default function Product() {
   const url = useLocation();
@@ -13,10 +14,8 @@ export default function Product() {
   const { items, loading } = useSelector((state) => state.product);
   const categories = useSelector((state) => state.category.items);
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    dispatch(fetchProducts({ category, search }));
+    store.dispatch(fetchProducts({ category, search }));
   }, [category, search]);
 
   return (
@@ -98,14 +97,6 @@ function CategoryItem({ name, id }) {
 }
 
 function ProductItem({ id, thumbnailUrl, name, author, price }) {
-  const dispatch = useDispatch();
-
-  const defaultQuantity = 1;
-
-  const handleAddToCart = () => {
-    dispatch(addItemToCart({ id }));
-  };
-
   return (
     <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
       <div className="product-item bg-light mb-4">
@@ -116,7 +107,9 @@ function ProductItem({ id, thumbnailUrl, name, author, price }) {
             <AuthorizedComponent requiredRoles={["CUSTOMER"]}>
               <Link
                 className="btn btn-outline-dark btn-square"
-                onClick={handleAddToCart}>
+                onClick={() => {
+                  store.dispatch(addItemToCart({ id }));
+                }}>
                 <i className="fa fa-shopping-cart" />
               </Link>
             </AuthorizedComponent>

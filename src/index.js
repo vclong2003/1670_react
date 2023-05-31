@@ -28,18 +28,17 @@ function App() {
   const { fetchCurrentUserLoading, loggedIn } = useSelector(
     (state) => state.user
   );
-  const dispatch = useDispatch();
 
   // Fetch current user and categories
   useEffect(() => {
-    dispatch(fetchCurrentUser());
-    dispatch(fetchCategories());
+    store.dispatch(fetchCurrentUser());
+    store.dispatch(fetchCategories());
   }, []);
 
   // Fetch cart items if user logged in
   useEffect(() => {
     if (loggedIn) {
-      dispatch(fetchCartItems());
+      store.dispatch(fetchCartItems());
     }
   }, [loggedIn]);
 

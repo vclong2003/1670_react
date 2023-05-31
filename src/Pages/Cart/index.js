@@ -1,9 +1,23 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import store from "../../Redux/store";
-import { removeItemFromCart } from "../../Redux/cartSlice";
+import { removeItemFromCart, updateItemInCart } from "../../Redux/cartSlice";
+import { useEffect } from "react";
+import { useState } from "react";
 
 export default function Cart() {
   const { items } = useSelector((state) => state.cart);
+
+  const [total, setTotal] = useState(0);
+
+  // Calculate total price
+  useEffect(() => {
+    let tempTotal = 0;
+    items.forEach((item) => {
+      tempTotal += item.price * item.quantity;
+    });
+    setTotal(tempTotal);
+  }, [items]);
+
   return (
     <>
       <div className="container-fluid">
@@ -37,20 +51,10 @@ export default function Cart() {
               <span className="bg-secondary pr-3">Cart Summary</span>
             </h5>
             <div className="bg-light p-30 mb-5">
-              <div className="border-bottom pb-2">
-                <div className="d-flex justify-content-between mb-3">
-                  <h6>Subtotal</h6>
-                  <h6>$150</h6>
-                </div>
-                <div className="d-flex justify-content-between">
-                  <h6 className="font-weight-medium">Shipping</h6>
-                  <h6 className="font-weight-medium">$10</h6>
-                </div>
-              </div>
               <div className="pt-2">
                 <div className="d-flex justify-content-between mt-2">
                   <h5>Total</h5>
-                  <h5>$160</h5>
+                  <h5>${total}</h5>
                 </div>
                 <button
                   className="btn btn-block btn-primary font-weight-bold my-3 py-3"
@@ -67,6 +71,18 @@ export default function Cart() {
 }
 
 function CartItem({ id, name, price, quantity }) {
+  const handleRemoveItem = () => {
+    store.dispatch(removeItemFromCart(id));
+  };
+
+  const handleIncreaseQuantity = () => {
+    store.dispatch(updateItemInCart({ id: id, quantity: quantity + 1 }));
+  };
+  const handleDecreaseQuantity = () => {
+    if (quantity === 1) return handleRemoveItem(); // Remove item if quantity is 1
+    store.dispatch(updateItemInCart({ id: id, quantity: quantity - 1 }));
+  };
+
   return (
     <tr>
       <td className="align-middle ">{name}</td>
@@ -76,17 +92,22 @@ function CartItem({ id, name, price, quantity }) {
           className="input-group quantity mx-auto"
           style={{ width: "100px" }}>
           <div className="input-group-btn">
-            <button className="btn btn-sm btn-primary btn-minus">
+            <button
+              className="btn btn-sm btn-primary btn-minus"
+              onClick={handleDecreaseQuantity}>
               <i className="fa fa-minus" />
             </button>
           </div>
           <input
             type="text"
             className="form-control form-control-sm bg-secondary border-0 text-center"
-            defaultValue={quantity}
+            value={quantity}
+            readOnly
           />
           <div className="input-group-btn">
-            <button className="btn btn-sm btn-primary btn-plus">
+            <button
+              className="btn btn-sm btn-primary btn-plus"
+              onClick={handleIncreaseQuantity}>
               <i className="fa fa-plus" />
             </button>
           </div>
@@ -94,11 +115,7 @@ function CartItem({ id, name, price, quantity }) {
       </td>
       <td className="align-middle">${quantity * price}</td>
       <td className="align-middle">
-        <button
-          className="btn btn-sm btn-danger"
-          onClick={() => {
-            store.dispatch(removeItemFromCart(id));
-          }}>
+        <button className="btn btn-sm btn-danger" onClick={handleRemoveItem}>
           <i className="fa fa-times" />
         </button>
       </td>

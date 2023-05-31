@@ -208,7 +208,7 @@ function Categories() {
   );
 }
 
-function CategoryItem({ name, img, id }) {
+function CategoryItem({ name, id }) {
   return (
     <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
       <Link
