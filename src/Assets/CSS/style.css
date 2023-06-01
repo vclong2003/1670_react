@@ -10122,3 +10122,10 @@ h6 {
     transform: translateY(-15px);
   }
 }
+.p-30{
+  width: 800px;
+}
+.add-product{
+  margin: auto 0;
+  text-align: center;
+}
