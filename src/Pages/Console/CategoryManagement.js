@@ -34,12 +34,18 @@ export default function CategoryManagement() {
           <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Description</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody className="align-middle">
           {items.map((item, index) => (
-            <CategoryItem key={index} name={item.name} id={item.id} />
+            <CategoryItem
+              key={index}
+              name={item.name}
+              id={item.id}
+              description={item.description}
+            />
           ))}
         </tbody>
       </table>
@@ -47,14 +53,14 @@ export default function CategoryManagement() {
   );
 }
 
-function CategoryItem({ id, name }) {
+function CategoryItem({ id, name, description }) {
   return (
     <tr>
       <td className="align-middle">{id}</td>
       <td className="align-middle">{name}</td>
+      <td className="align-middle">{description}</td>
       <td className="align-middle">
         <button className="btn btn-sm btn-primary mr-2">Edit</button>
-        <button className="btn btn-sm btn-danger">Delete</button>
       </td>
     </tr>
   );
@@ -62,6 +68,7 @@ function CategoryItem({ id, name }) {
 
 function Popup({ closeCallback }) {
   const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
   return (
     <div
@@ -94,12 +101,23 @@ function Popup({ closeCallback }) {
                   setName(evt.target.value);
                 }}
               />
+              <input
+                className="form-control mt-3"
+                type="text"
+                placeholder="Enter name"
+                value={description}
+                onChange={(evt) => {
+                  setDescription(evt.target.value);
+                }}
+              />
             </div>
           </div>
           <button
             className="btn btn-block btn-primary font-weight-bold py-2"
             onClick={() => {
-              store.dispatch(addCategory(name));
+              store.dispatch(
+                addCategory({ name: name, description: description })
+              );
             }}
           >
             Save
