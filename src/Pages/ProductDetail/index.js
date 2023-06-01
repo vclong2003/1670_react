@@ -1,18 +1,32 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchProductById } from "../../Redux/productSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
-
+import store from "../../Redux/store";
+import { addItemToCart } from "../../Redux/cartSlice";
 export default function ProductDetail() {
   const { id } = useParams();
-
+  const [quantity, setQuantity] = useState(1);
   const { selectedItem } = useSelector((state) => state.product);
-  const dispatch = useDispatch();
+
 
   useEffect(() => {
-    dispatch(fetchProductById(id));
+    store.dispatch(fetchProductById(id));
   }, [id]);
+
+  const minus = () =>{
+    if(quantity>1){
+      setQuantity(quantity-1);
+    }
+  }
+
+  const plus = () =>{
+    if(quantity<selectedItem.quantity){
+      setQuantity(quantity+1);
+    }
+    
+  }
 
   return selectedItem ? (
     <div className="container-fluid pb-5">
@@ -39,6 +53,8 @@ export default function ProductDetail() {
               <br />
               Published:{" "}
               {new Date(selectedItem.publishcationDate).toDateString()}
+              <br/>
+              Quantity: {selectedItem.quantity}
             </p>
 
             {/* Add to cart buttons */}
@@ -48,22 +64,26 @@ export default function ProductDetail() {
                   className="input-group quantity mr-3"
                   style={{ width: "130px" }}>
                   <div className="input-group-btn">
-                    <button className="btn btn-primary btn-minus">
+                    <button className="btn btn-primary btn-minus"
+                    onClick={minus}>
                       <i className="fa fa-minus" />
                     </button>
                   </div>
                   <input
                     type="text"
                     className="form-control bg-secondary border-0 text-center"
-                    defaultValue={1}
+                    value = {quantity}
                   />
                   <div className="input-group-btn">
-                    <button className="btn btn-primary btn-plus">
+                    <button className="btn btn-primary btn-plus"
+                    onClick={plus}>
                       <i className="fa fa-plus" />
                     </button>
                   </div>
                 </div>
-                <button className="btn btn-primary px-3">
+                <button className="btn btn-primary px-3"                onClick={() => {
+                  store.dispatch(addItemToCart({ id, quantity }));
+                }}>
                   <i className="fa fa-shopping-cart mr-1" /> Add To Cart
                 </button>
               </div>
