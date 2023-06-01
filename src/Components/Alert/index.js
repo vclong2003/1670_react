@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 
+// type: success, danger, warning, info
 export default function CustomAlert({ message, type, closeCallback }) {
   const [show, setShow] = useState(true);
 
