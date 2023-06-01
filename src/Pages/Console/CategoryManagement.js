@@ -1,6 +1,11 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import store from "../../Redux/store";
+import { addCategory } from "../../Redux/categorySlice";
 
 export default function CategoryManagement() {
+  const { items } = useSelector((state) => state.category);
+
   const [showAddPopUp, setShowAddPopUp] = useState(false);
 
   return (
@@ -33,21 +38,20 @@ export default function CategoryManagement() {
           </tr>
         </thead>
         <tbody className="align-middle">
-          <CategoryItem />
-          <CategoryItem />
-          <CategoryItem />
-          <CategoryItem />
+          {items.map((item, index) => (
+            <CategoryItem key={index} name={item.name} id={item.id} />
+          ))}
         </tbody>
       </table>
     </>
   );
 }
 
-function CategoryItem() {
+function CategoryItem({ id, name }) {
   return (
     <tr>
-      <td className="align-middle">1</td>
-      <td className="align-middle">Novel</td>
+      <td className="align-middle">{id}</td>
+      <td className="align-middle">{name}</td>
       <td className="align-middle">
         <button className="btn btn-sm btn-primary mr-2">Edit</button>
         <button className="btn btn-sm btn-danger">Delete</button>
@@ -56,19 +60,18 @@ function CategoryItem() {
   );
 }
 
-// function
-
 function Popup({ closeCallback }) {
+  const [name, setName] = useState("");
+
   return (
     <div
+      className="fixed-top"
       style={{
         width: "100%",
         height: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        position: "absolute",
-        zIndex: "10",
       }}
     >
       <div
@@ -86,11 +89,20 @@ function Popup({ closeCallback }) {
                 className="form-control"
                 type="text"
                 placeholder="Enter name"
+                value={name}
+                onChange={(evt) => {
+                  setName(evt.target.value);
+                }}
               />
             </div>
           </div>
-          <button className="btn btn-block btn-primary font-weight-bold py-2">
-            OK
+          <button
+            className="btn btn-block btn-primary font-weight-bold py-2"
+            onClick={() => {
+              store.dispatch(addCategory(name));
+            }}
+          >
+            Save
           </button>
           <button
             className="btn btn-block btn-secondary font-weight-bold py-2"
