@@ -3,15 +3,15 @@ import { useParams } from "react-router-dom";
 import { fetchProductById } from "../../Redux/productSlice";
 import { useEffect } from "react";
 import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
+import store from "../../Redux/store";
 
 export default function ProductDetail() {
   const { id } = useParams();
 
   const { selectedItem } = useSelector((state) => state.product);
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchProductById(id));
+    store.dispatch(fetchProductById(id));
   }, [id]);
 
   return selectedItem ? (

@@ -29,7 +29,7 @@ export default function NavigationBar() {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Search for products"
+                placeholder="Search by name or author"
                 value={searchValue}
                 onChange={(evt) => {
                   setSearchValue(evt.target.value);

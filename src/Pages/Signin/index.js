@@ -2,11 +2,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LoadingLayer from "../../Components/LoadingLayer";
-import { signin } from "../../Redux/userSlice";
+import { clearError, signin } from "../../Redux/userSlice";
 import store from "../../Redux/store";
+import CustomAlert from "../../Components/Alert";
 
 export default function Signin() {
-  const { loading } = useSelector((state) => state.user);
+  const { loading, error } = useSelector((state) => state.user);
 
   // Signin form data
   const [data, setData] = useState({ email: "", password: "" });
@@ -17,6 +18,17 @@ export default function Signin() {
   };
   return (
     <>
+      {error ? (
+        <CustomAlert
+          message={error}
+          type="danger"
+          closeCallback={() => {
+            store.dispatch(clearError());
+          }}
+        />
+      ) : (
+        ""
+      )}
       {loading ? <LoadingLayer /> : ""}
       <div className="container-fluid ">
         <div className="row">
