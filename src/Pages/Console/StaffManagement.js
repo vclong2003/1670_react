@@ -1,4 +1,4 @@
-export default function StoreManagement() {
+export default function StaffManagement() {
   return (
     <>
       <div className="col-12 p-0 mb-3">

@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import LoadingLayer from "../../Components/LoadingLayer";
 import { signout } from "../../Redux/userSlice";
+import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
 
 export default function Profile() {
   const { loading } = useSelector((state) => state.user);
@@ -13,10 +14,12 @@ export default function Profile() {
           <span className="bg-secondary pr-3">Personal Information</span>
         </h4>
         <PersonalInformation />
-        <h4 className="section-title position-relative text-uppercase mb-3">
-          <span className="bg-secondary pr-3">Your orders</span>
-        </h4>
-        <AllOrders />
+        <AuthorizedComponent requiredRoles={["CUSTOMER"]}>
+          <h4 className="section-title position-relative text-uppercase mb-3">
+            <span className="bg-secondary pr-3">Your orders</span>
+          </h4>
+          <AllOrders />
+        </AuthorizedComponent>
       </div>
     </>
   );

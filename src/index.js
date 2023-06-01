@@ -18,7 +18,7 @@ import Profile from "./Pages/Profile";
 import ProductDetail from "./Pages/ProductDetail";
 
 import StandardLayout from "./Components/Layout/StandardLayout";
-import { Provider, useDispatch, useSelector } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import store from "./Redux/store";
 import { fetchCurrentUser } from "./Redux/userSlice";
 import { fetchCategories } from "./Redux/categorySlice";

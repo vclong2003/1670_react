@@ -7,12 +7,17 @@ const userSlice = createSlice({
   initialState: {
     fetchCurrentUserLoading: false,
     loading: false,
+    error: null,
     loggedIn: false,
     id: null,
     email: null,
     role: null,
   },
-  reducers: {},
+  reducers: {
+    clearError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     //Fetch current user
     builder.addCase(fetchCurrentUser.pending, (state) => {
@@ -40,7 +45,8 @@ const userSlice = createSlice({
       state.loading = false;
       window.location.href = "/";
     });
-    builder.addCase(signin.rejected, (state) => {
+    builder.addCase(signin.rejected, (state, action) => {
+      state.error = action.payload; // Error message
       state.loading = false;
     });
 
@@ -64,7 +70,7 @@ const userSlice = createSlice({
       state.loading = false;
       window.location.href = "/";
     });
-    builder.addCase(signout.rejected, (state) => {
+    builder.addCase(signout.rejected, (state, action) => {
       state.loading = false;
     });
   },
@@ -72,16 +78,20 @@ const userSlice = createSlice({
 
 export const signin = createAsyncThunk(
   "user/signin",
-  async ({ email, password }) => {
-    const response = await axios.post(
-      `${api_endpoint}/auth/login`,
-      {
-        email: email,
-        password: password,
-      },
-      { withCredentials: true }
-    );
-    return response.data;
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${api_endpoint}/auth/login`,
+        {
+          email: email,
+          password: password,
+        },
+        { withCredentials: true }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -114,5 +124,7 @@ export const fetchCurrentUser = createAsyncThunk(
     return response.data;
   }
 );
+
+export const { clearError } = userSlice.actions;
 
 export default userSlice.reducer;

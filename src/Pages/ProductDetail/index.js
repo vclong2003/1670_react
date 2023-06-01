@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
 import store from "../../Redux/store";
 import { addItemToCart } from "../../Redux/cartSlice";
+
 export default function ProductDetail() {
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
