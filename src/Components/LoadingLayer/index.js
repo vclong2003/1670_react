@@ -1,3 +1,4 @@
+// This component is used to show a loading layer when the app is loading data from the server
 export default function LoadingLayer() {
   return (
     <div

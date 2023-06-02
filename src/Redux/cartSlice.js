@@ -5,6 +5,7 @@ import { api_endpoint } from "../Services/config";
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
+    error: null,
     items: [],
   },
   reducers: {},
@@ -28,17 +29,19 @@ export const fetchCartItems = createAsyncThunk(
 
 export const addItemToCart = createAsyncThunk(
   "cart/addItemToCart",
-  async ({ id, quantity = 1 }, { dispatch }) => {
-    const response = await axios.post(
-      `${api_endpoint}/cart`,
-      { productId: id, quantity: quantity },
-      {
-        withCredentials: true,
-      }
-    );
+  async ({ id, quantity = 1 }, { dispatch, rejectWithValue }) => {
+    try {
+      await axios.post(
+        `${api_endpoint}/cart`,
+        { productId: id, quantity: quantity },
+        {
+          withCredentials: true,
+        }
+      );
 
-    if (response.status === 200) {
-      dispatch(fetchCartItems());
+      return dispatch(fetchCartItems());
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -46,27 +49,31 @@ export const addItemToCart = createAsyncThunk(
 export const updateItemInCart = createAsyncThunk(
   "cart/updateItemInCart",
   async ({ id, quantity }, { dispatch, rejectWithValue }) => {
-    const response = await axios.put(
-      `${api_endpoint}/cart/${id}`,
-      { quantity: quantity },
-      { withCredentials: true }
-    );
+    try {
+      await axios.put(
+        `${api_endpoint}/cart/${id}`,
+        { quantity: quantity },
+        { withCredentials: true }
+      );
 
-    if (response.status === 200) {
-      dispatch(fetchCartItems());
+      return dispatch(fetchCartItems());
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
   }
 );
 
 export const removeItemFromCart = createAsyncThunk(
   "cart/removeItemFromCart",
-  async (id, { dispatch }) => {
-    const response = await axios.delete(`${api_endpoint}/cart/${id}`, {
-      withCredentials: true,
-    });
+  async (id, { dispatch, rejectWithValue }) => {
+    try {
+      await axios.delete(`${api_endpoint}/cart/${id}`, {
+        withCredentials: true,
+      });
 
-    if (response.status === 200) {
-      dispatch(fetchCartItems());
+      return dispatch(fetchCartItems());
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
   }
 );

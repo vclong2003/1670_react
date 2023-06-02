@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { fetchProducts } from "../../Redux/productSlice";
 import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
@@ -11,89 +11,44 @@ export default function Product() {
   const category = new URLSearchParams(url.search).get("category");
   const search = new URLSearchParams(url.search).get("search");
 
-  const { items, loading } = useSelector((state) => state.product);
-  const categories = useSelector((state) => state.category.items);
-
   useEffect(() => {
     store.dispatch(fetchProducts({ category, search }));
   }, [category, search]);
 
   return (
     <>
-      {/* Shop Start */}
       <div className="container-fluid">
         <div className="row px-xl-5">
-          {/* Shop Sidebar Start */}
           <div className="col-lg-3 col-md-4">
-            {/* Category Start */}
-            <h5 className="section-title position-relative text-uppercase mb-3">
-              <span className="bg-secondary pr-3">Category</span>
-            </h5>
-            <div className="bg-light mb-30 d-flex flex-column">
-              <Link className="text-dark nav-item nav-link bg-light p-3" to="">
-                All
-              </Link>
-
-              {categories.map((category, index) => (
-                <CategoryItem
-                  key={index}
-                  name={category.name}
-                  id={category.id}
-                />
-              ))}
-            </div>
-            {/* Category End */}
+            <CategoryFilter />
           </div>
-          {/* Shop Sidebar End */}
-          {/* Shop Product Start */}
           <div className="col-lg-9 col-md-8">
             <div className="row pb-3">
-              <div className="col-12 pb-1">
-                <div className="d-flex align-items-center justify-content-between mb-4">
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-light dropdown-toggle pl-3 pr-3 p-2"
-                    data-toggle="dropdown">
-                    Sorting
-                  </button>
-                  <div className="dropdown-menu dropdown-menu-right">
-                    <Link className="dropdown-item">Latest</Link>
-                    <Link className="dropdown-item">Name A-Z</Link>
-                    <Link className="dropdown-item">Price: Low to High</Link>
-                  </div>
-                </div>
-              </div>
-
-              {items.map((item, index) => (
-                <ProductItem
-                  key={index}
-                  id={item.id}
-                  thumbnailUrl={item.thumbnailUrl}
-                  name={item.name}
-                  author={item.author}
-                  price={item.price}
-                />
-              ))}
-              {items.length === 0 && !loading ? (
-                <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
-                  No product found!
-                </div>
-              ) : (
-                ""
-              )}
-              {loading ? (
-                <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
-                  Loading...
-                </div>
-              ) : (
-                ""
-              )}
+              <ProductList />
             </div>
           </div>
-          {/* Shop Product End */}
         </div>
       </div>
-      {/* Shop End */}
+    </>
+  );
+}
+
+function CategoryFilter() {
+  const categories = useSelector((state) => state.category.items);
+  return (
+    <>
+      <h5 className="section-title position-relative text-uppercase mb-3">
+        <span className="bg-secondary pr-3">Category</span>
+      </h5>
+      <div className="bg-light mb-30 d-flex flex-column">
+        <Link className="text-dark nav-item nav-link bg-light p-3" to="">
+          All
+        </Link>
+
+        {categories.map((category, index) => (
+          <CategoryItem key={index} name={category.name} id={category.id} />
+        ))}
+      </div>
     </>
   );
 }
@@ -105,6 +60,52 @@ function CategoryItem({ id, name }) {
       to={{ search: `category=${id}` }}>
       {name}
     </Link>
+  );
+}
+
+function ProductList() {
+  const { items, loading } = useSelector((state) => state.product);
+  return (
+    <>
+      <div className="col-12 pb-1">
+        <div className="d-flex align-items-center justify-content-between mb-4">
+          <button
+            type="button"
+            className="btn btn-sm btn-light dropdown-toggle pl-3 pr-3 p-2"
+            data-toggle="dropdown">
+            Sorting
+          </button>
+          <div className="dropdown-menu dropdown-menu-right">
+            <Link className="dropdown-item">Latest</Link>
+            <Link className="dropdown-item">Name A-Z</Link>
+            <Link className="dropdown-item">Price: Low to High</Link>
+          </div>
+        </div>
+      </div>
+
+      {items.map((item, index) => (
+        <ProductItem
+          key={index}
+          id={item.id}
+          thumbnailUrl={item.thumbnailUrl}
+          name={item.name}
+          author={item.author}
+          price={item.price}
+        />
+      ))}
+
+      {items.length === 0 && !loading ? (
+        <div className="col-lg-3 col-md-4 col-sm-6 pb-1">No product found!</div>
+      ) : (
+        ""
+      )}
+
+      {loading ? (
+        <div className="col-lg-3 col-md-4 col-sm-6 pb-1">Loading...</div>
+      ) : (
+        ""
+      )}
+    </>
   );
 }
 
