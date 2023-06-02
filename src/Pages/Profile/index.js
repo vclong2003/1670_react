@@ -20,8 +20,12 @@ export default function Profile() {
       {loading ? <LoadingLayer /> : ""}
       <div className="container-fluid">
         <PersonalInformation />
-        <Addresses />
-        <AllOrders />
+        <AuthorizedComponent requiredRoles={["CUSTOMER"]}>
+          <Addresses />
+        </AuthorizedComponent>
+        <AuthorizedComponent requiredRoles={["CUSTOMER"]}>
+          <AllOrders />
+        </AuthorizedComponent>
       </div>
     </>
   );
@@ -64,6 +68,11 @@ function Addresses() {
     store.dispatch(fetchAddresses());
   }, []);
 
+  const handleClosePopup = () => {
+    setEditItem(null);
+    setShowPopup(false);
+  };
+
   const handleAddItem = () => {
     setEditItem(null);
     setShowPopup(true);
@@ -75,13 +84,10 @@ function Addresses() {
   };
 
   return (
-    <AuthorizedComponent requiredRoles={["CUSTOMER"]}>
+    <>
       {loading ? <LoadingLayer /> : ""}
       {showPopup ? (
-        <AddressPopup
-          editItem={editItem}
-          closeCallback={() => setShowPopup(false)}
-        />
+        <AddressPopup editItem={editItem} closeCallback={handleClosePopup} />
       ) : (
         ""
       )}
@@ -117,7 +123,7 @@ function Addresses() {
           ))}
         </tbody>
       </table>
-    </AuthorizedComponent>
+    </>
   );
 }
 
@@ -256,7 +262,7 @@ function AddressPopup({ editItem, closeCallback }) {
 
 function AllOrders() {
   return (
-    <AuthorizedComponent requiredRoles={["CUSTOMER"]}>
+    <>
       <h4 className="section-title position-relative text-uppercase mb-3">
         <span className="bg-secondary pr-3">Your orders</span>
       </h4>
@@ -276,7 +282,7 @@ function AllOrders() {
           <OrderItems />
         </tbody>
       </table>
-    </AuthorizedComponent>
+    </>
   );
 }
 

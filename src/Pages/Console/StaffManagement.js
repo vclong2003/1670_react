@@ -1,173 +1,58 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import store from "../../Redux/store";
-import { addStaff, fetchStaffs, updateStaff } from "../../Redux/staffSlice";
-import Modal from 'react-modal';
+import { addStaff, fetchStaff, updateStaff } from "../../Redux/staffSlice";
+import Popup from "../../Components/Popup";
+import LoadingLayer from "../../Components/LoadingLayer";
+
 export default function StaffManagement() {
+  const { loading, members } = useSelector((state) => state.staff);
 
-  const { items } = useSelector((state) => state.staff);
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
 
-  const [staff, setStaff] = useState({
-    name: "",
-    phonenumber: "",
-    email: "",
-    password: "",
-    address: ""
-});
-  const [showModal, setShowModal] = useState(false);
-  const handleSubmitForm = () =>{
-    setStaff({
-       name: "",
-       phonenumber: "",
-       email: "",
-       password: "",
-       address: ""
-  })
-  }
-  useEffect(()=>{
-    store.dispatch(fetchStaffs())
-  }, [])
+  useEffect(() => {
+    store.dispatch(fetchStaff());
+  }, []);
 
-  const handleOpenModal = () => {
-    setShowModal(true);
+  const handleOpenPopup = () => {
+    setShowPopup(true);
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-  const customStyles = {
-    content: {
-      top: '12%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      width: '50%',
-      transform: 'translate(-40%, -10%)',
-    },
+  const handleClosePopup = () => {
+    setSelectedMember(null);
+    setShowPopup(false);
   };
 
+  const handleEdit = (member) => {
+    setSelectedMember(member);
+    setShowPopup(true);
+  };
 
   return (
     <>
+      {loading ? <LoadingLayer /> : ""}
+      {showPopup ? (
+        <StaffManagementPopup
+          member={selectedMember}
+          closeCallback={handleClosePopup}
+        />
+      ) : (
+        ""
+      )}
       <div>
-      <div className="col-12 p-0 mb-3">
-        <button
-          className="btn btn-primary pl-4 pr-4" onClick={handleOpenModal}
-        >
-          Add
-        </button>
-      </div>
-        <Modal isOpen={showModal} onRequestClose={handleCloseModal} style={customStyles}>
-          <div className="header-modal">
-            <div className="header-title"><h2 class="">Add Staff Information</h2></div>
-            <div className="header-close" onClick={handleCloseModal}>X</div>
-          </div>
-          <div className="wrap-form-add-staff">
-                <div class="formbold-form-title">
-                </div>
-
-                <div class="formbold-input-flex">
-                  <div>
-                    <label for="Name" class="formbold-form-label">Name</label>
-                    <input
-                      type="text"
-                      name="name"
-                      id="name"
-                      class="formbold-form-input"
-                      value={staff.name}
-                      onChange={(evt) => {
-                        setStaff({ ...staff, name: evt.target.value});
-                        console.log(staff);
-                      }}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label for="phone" class="formbold-form-label"> Phone number </label>
-                    <input
-                      type="text"
-                      name="phonenumber"
-                      id="phone"
-                      class="formbold-form-input"
-                      value={staff.phonenumber}
-                      onChange={(evt) => {
-                        setStaff({ ...staff, phonenumber: evt.target.value});
-                        console.log(staff);
-                      }}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div class="formbold-input-flex">
-                  <div>
-                    <label for="email" class="formbold-form-label"> Email </label>
-                    <input
-                      type="text"
-                      name="email"
-                      id="email"
-                      class="formbold-form-input"
-                      onChange={(evt) => {
-                        setStaff({ ...staff, email: evt.target.value});
-                        console.log(staff);
-                      }}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label for="email" class="formbold-form-label"> Password </label>
-                    <input
-                      type="password"
-                      name="password"
-                      id="password"
-                      class="formbold-form-input"
-                      onChange={(evt) => {
-                        setStaff({ ...staff, password: evt.target.value});
-                        console.log(staff);
-                      }}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div class="formbold-mb-3">
-                  <label for="address" class="formbold-form-label">
-                    Street Address
-                  </label>
-                  <textarea
-                    type="text"
-                    name="address"
-                    id="address"
-                    class="formbold-form-input"
-                    onChange={(evt) => {
-                      setStaff({ ...staff, address: evt.target.value});
-                      console.log(staff);
-                    }}
-                    required
-                  />  
-                </div>
-                <div class="formbold-mb-3">
-                  <button class="formbold-btn"
-                    onClick={()=>{store.dispatch(addStaff({
-                      name: staff.name,
-                      phone: staff.phonenumber,
-                      address: staff.address,
-                      email: staff.email,
-                      password: staff.password
-                    }))
-                    handleCloseModal();
-                    handleSubmitForm();
-                  }}
-                  >Submit</button>
-                </div>        
-          </div>
-        </Modal>
+        <div className="col-12 p-0 mb-3">
+          <button
+            className="btn btn-primary pl-4 pr-4"
+            onClick={handleOpenPopup}>
+            Add
+          </button>
+        </div>
       </div>
       <table className="table table-light table-borderless table-hover text-center mb-0">
         <thead className="thead-dark">
           <tr>
-            <th>ID</th>
+            <th>Email</th>
             <th>Name</th>
             <th>Phone</th>
             <th>Address</th>
@@ -175,125 +60,143 @@ export default function StaffManagement() {
           </tr>
         </thead>
         <tbody className="align-middle">
-          {items.map((item) => (
-            <StaffItem
-            id = {item.id} 
-            name={item.name}
-            phone = {item.phone}
-            address = {item.address}
-            accountId = {item.accountId}/>
+          {members.map((member, index) => (
+            <StaffItem key={index} member={member} editCallback={handleEdit} />
           ))}
-          {console.log(items)}
         </tbody>
       </table>
     </>
   );
 }
 
-function StaffItem({id,name, phone, address, accountId}) {
-  const [staffDetail, setStaffDetail] = useState({
-    name: name,
-    phone: phone,
-    address: address,
-    accountId: accountId,
-  })
-  const [showModal, setShowModal] = useState(false);
-  const customStyles = {
-    content: {
-      top: '12%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      width: '50%',
-      transform: 'translate(-40%, -10%)',
-    },
-  };
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
+function StaffItem({ member, editCallback }) {
+  const { account, name, phone, address } = member;
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
   return (
     <tr>
-      <td className="align-middle">{staffDetail.accountId}</td>
-      <td className="align-middle">{staffDetail.name}</td>
-      <td className="align-middle">{staffDetail.phone}</td>
+      <td className="align-middle">{account.email}</td>
+      <td className="align-middle">{name}</td>
+      <td className="align-middle">{phone}</td>
+      <td className="align-middle">{address}</td>
       <td className="align-middle">
-        {address}
-      </td>
-      <td className="align-middle">
-        <button className="btn btn-sm btn-primary mr-2" onClick={handleOpenModal}
-        >Edit</button>
-          <Modal isOpen={showModal} onRequestClose={handleCloseModal} style={customStyles}>
-          <div className="header-modal">
-            <div className="header-title"><h2 class="">Edit Staff #{staffDetail.accountId}</h2></div>
-            <div className="header-close" onClick={handleCloseModal}>X</div>
-          </div>
-          <div className="wrap-form-add-staff">
-                <div class="formbold-form-title">
-                </div>
-
-                <div class="formbold-input-flex">
-                  <div>
-                    <label for="Name" class="formbold-form-label">Name</label>
-                    <input
-                      type="text"
-                      name="name"
-                      id="name"
-                      class="formbold-form-input"
-                      value={staffDetail.name}
-                      onChange={(evt) => {
-                        setStaffDetail({ ...staffDetail, name: evt.target.value});
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label for="phone" class="formbold-form-label"> Phone number </label>
-                    <input
-                      type="text"
-                      name="phonenumber"
-                      id="phone"
-                      class="formbold-form-input"
-                      value={staffDetail.phone}
-                      onChange={(evt) => {
-                        setStaffDetail({ ...staffDetail, phone: evt.target.value});
-                      }}
-                    />
-                  </div>
-                </div>
-                <div class="formbold-mb-3">
-                  <label for="address" class="formbold-form-label">
-                    Street Address
-                  </label>
-                  <textarea
-                    type="text"
-                    name="address"
-                    id="address"
-                    class="formbold-form-input"
-                    value={staffDetail.address}
-                    onChange={(evt) => {
-                      setStaffDetail({ ...staffDetail, address: evt.target.value});
-                    }}
-                  />  
-                </div>
-                <div class="formbold-mb-3">
-                  <button class="formbold-btn"
-                    onClick={()=>{store.dispatch(updateStaff({
-                      accountId: staffDetail.accountId,
-                      name: staffDetail.name,
-                      phone: staffDetail.phone,
-                      address: staffDetail.address
-                    }))
-                    handleCloseModal();
-                  }}
-                  >Submit</button>
-                </div>        
-          </div>
-        </Modal>
+        <button
+          className="btn btn-sm btn-primary mr-2"
+          onClick={() => {
+            editCallback(member);
+          }}>
+          Edit
+        </button>
       </td>
     </tr>
+  );
+}
+
+function StaffManagementPopup({ member, closeCallback }) {
+  const [memberData, setMemberData] = useState({
+    email: "",
+    password: "",
+    name: "",
+    phone: "",
+    address: "",
+  });
+
+  useEffect(() => {
+    if (member) {
+      setMemberData({ ...member });
+    }
+  }, [member]);
+
+  const handleSave = () => {
+    if (member) {
+      store.dispatch(updateStaff(memberData));
+      return closeCallback();
+    }
+
+    store.dispatch(addStaff(memberData));
+    return closeCallback();
+  };
+
+  return (
+    <Popup>
+      <div className="row">
+        {member ? (
+          ""
+        ) : (
+          <>
+            <div className="col-md-12 form-group">
+              <h5>Account</h5>
+            </div>
+            <div className="col-md-6 form-group">
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Email"
+                value={memberData.email}
+                onChange={(evt) => {
+                  setMemberData({ ...memberData, email: evt.target.value });
+                }}
+              />
+            </div>
+            <div className="col-md-6 form-group">
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Password"
+                value={memberData.password}
+                onChange={(evt) => {
+                  setMemberData({ ...memberData, password: evt.target.value });
+                }}
+              />
+            </div>
+          </>
+        )}
+        <div className="col-md-12 form-group mt-1">
+          <h5>Information</h5>
+        </div>
+        <div className="col-md-12 form-group">
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Name"
+            value={memberData.name}
+            onChange={(evt) => {
+              setMemberData({ ...memberData, name: evt.target.value });
+            }}
+          />
+        </div>
+        <div className="col-md-12 form-group">
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Phone"
+            value={memberData.phone}
+            onChange={(evt) => {
+              setMemberData({ ...memberData, phone: evt.target.value });
+            }}
+          />
+        </div>
+        <div className="col-md-12 form-group">
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Address"
+            value={memberData.address}
+            onChange={(evt) => {
+              setMemberData({ ...memberData, address: evt.target.value });
+            }}
+          />
+        </div>
+      </div>
+      <button
+        className="btn btn-block btn-primary font-weight-bold py-2"
+        onClick={handleSave}>
+        Save
+      </button>
+      <button
+        className="btn btn-block btn-secondary font-weight-bold py-2"
+        onClick={closeCallback}>
+        Cancel
+      </button>
+    </Popup>
   );
 }
