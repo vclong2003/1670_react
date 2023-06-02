@@ -2,6 +2,55 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { api_endpoint } from "../Services/config";
 
+export const signin = createAsyncThunk(
+  "user/signin",
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${api_endpoint}/auth/login`,
+        {
+          email: email,
+          password: password,
+        },
+        { withCredentials: true }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const signup = createAsyncThunk(
+  "user/signup",
+  async ({ email, password }) => {
+    const response = await axios.post(
+      `${api_endpoint}/auth/register`,
+      {
+        email: email,
+        password: password,
+      },
+      { withCredentials: true }
+    );
+    return response.data;
+  }
+);
+
+export const signout = createAsyncThunk("user/signout", async () => {
+  await axios.delete(`${api_endpoint}/auth/logout`, { withCredentials: true });
+  return;
+});
+
+export const fetchCurrentUser = createAsyncThunk(
+  "user/fetchCurrentUser",
+  async () => {
+    const response = await axios.get(`${api_endpoint}/auth`, {
+      withCredentials: true,
+    });
+    return response.data;
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -75,55 +124,6 @@ const userSlice = createSlice({
     });
   },
 });
-
-export const signin = createAsyncThunk(
-  "user/signin",
-  async ({ email, password }, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(
-        `${api_endpoint}/auth/login`,
-        {
-          email: email,
-          password: password,
-        },
-        { withCredentials: true }
-      );
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-export const signup = createAsyncThunk(
-  "user/signup",
-  async ({ email, password }) => {
-    const response = await axios.post(
-      `${api_endpoint}/auth/register`,
-      {
-        email: email,
-        password: password,
-      },
-      { withCredentials: true }
-    );
-    return response.data;
-  }
-);
-
-export const signout = createAsyncThunk("user/signout", async () => {
-  await axios.delete(`${api_endpoint}/auth/logout`, { withCredentials: true });
-  return;
-});
-
-export const fetchCurrentUser = createAsyncThunk(
-  "user/fetchCurrentUser",
-  async () => {
-    const response = await axios.get(`${api_endpoint}/auth`, {
-      withCredentials: true,
-    });
-    return response.data;
-  }
-);
 
 export const { clearError } = userSlice.actions;
 

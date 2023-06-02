@@ -3,6 +3,7 @@ import productReducer from "./productSlice";
 import userReducer from "./userSlice";
 import categoryReducer from "./categorySlice";
 import cartReducer from "./cartSlice";
+import addressReducer from "./addressSlice";
 
 export default configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export default configureStore({
     user: userReducer,
     category: categoryReducer,
     cart: cartReducer,
+    address: addressReducer,
   },
 });

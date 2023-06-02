@@ -2,20 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { api_endpoint } from "../Services/config";
 
-const cartSlice = createSlice({
-  name: "cart",
-  initialState: {
-    error: null,
-    items: [],
-  },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(fetchCartItems.fulfilled, (state, action) => {
-      state.items = action.payload;
-    });
-  },
-});
-
 export const fetchCartItems = createAsyncThunk(
   "cart/fetchCartItems",
   async () => {
@@ -77,5 +63,19 @@ export const removeItemFromCart = createAsyncThunk(
     }
   }
 );
+
+const cartSlice = createSlice({
+  name: "cart",
+  initialState: {
+    error: null,
+    items: [],
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fetchCartItems.fulfilled, (state, action) => {
+      state.items = action.payload;
+    });
+  },
+});
 
 export default cartSlice.reducer;

@@ -1,5 +1,4 @@
-// This component is used to show a loading layer when the app is loading data from the server
-export default function LoadingLayer() {
+export default function Popup({ children }) {
   return (
     <div
       className="fixed-top"
@@ -12,9 +11,12 @@ export default function LoadingLayer() {
         backgroundColor: "rgba(0, 0, 0, 0.5)",
       }}>
       <div
-        className="spinner-border text-primary"
-        style={{ width: "3rem", height: "3rem", fontSize: "25px" }}
-      />
+        className="row"
+        style={{
+          backgroundColor: "#FFFFFF",
+        }}>
+        <div className="p-30">{children}</div>
+      </div>
     </div>
   );
 }
