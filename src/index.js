@@ -23,6 +23,7 @@ import store from "./Redux/store";
 import { fetchCurrentUser } from "./Redux/userSlice";
 import { fetchCategories } from "./Redux/categorySlice";
 import { fetchCartItems } from "./Redux/cartSlice";
+import { fetchStaffs } from "./Redux/staffSlice";
 
 function App() {
   const { fetchCurrentUserLoading, loggedIn } = useSelector(
