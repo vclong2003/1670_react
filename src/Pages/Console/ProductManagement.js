@@ -10,6 +10,7 @@ import LoadingLayer from "../../Components/LoadingLayer";
 
 export default function ProductManagement() {
   const [showPopup, setShowpopup] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const { items, loading } = useSelector((state) => state.product);
 
@@ -20,16 +21,23 @@ export default function ProductManagement() {
   const handleOpenPopup = () => {
     setShowpopup(true);
   };
-
   const handleClosePopup = () => {
+    setSelectedItem(null);
     setShowpopup(false);
+  };
+  const handleEdit = (item) => {
+    setSelectedItem(item);
+    setShowpopup(true);
   };
 
   return (
     <>
       {loading ? <LoadingLayer /> : ""}
       {showPopup ? (
-        <ProductManagementPopup closeCallback={handleClosePopup} />
+        <ProductManagementPopup
+          item={selectedItem}
+          closeCallback={handleClosePopup}
+        />
       ) : (
         ""
       )}
@@ -46,12 +54,13 @@ export default function ProductManagement() {
             <th>Publisher</th>
             <th>Publishcation Date</th>
             <th>Price</th>
+            <th>Quantity</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody className="align-middle">
           {items.map((item, index) => (
-            <ProductItem key={index} item={item} />
+            <ProductItem key={index} item={item} editCallback={handleEdit} />
           ))}
         </tbody>
       </table>
@@ -59,8 +68,8 @@ export default function ProductManagement() {
   );
 }
 
-function ProductItem({ item }) {
-  const { name, author, publisher, publishcationDate, price } = item;
+function ProductItem({ item, editCallback }) {
+  const { name, author, publisher, publishcationDate, price, quantity } = item;
   return (
     <tr>
       <td className="align-middle">{name}</td>
@@ -68,19 +77,27 @@ function ProductItem({ item }) {
       <td className="align-middle">{publisher}</td>
       <td className="align-middle">{DateTimeConverter(publishcationDate)}</td>
       <td className="align-middle">${price}</td>
+      <td className="align-middle">{quantity}</td>
       <td className="align-middle">
-        <button className="btn btn-sm btn-primary mr-2">Edit</button>
+        <button
+          className="btn btn-sm btn-primary mr-2"
+          onClick={() => {
+            editCallback(item);
+          }}>
+          Edit
+        </button>
       </td>
     </tr>
   );
 }
 
-function ProductManagementPopup({ closeCallback }) {
+function ProductManagementPopup({ item, closeCallback }) {
   const categories = useSelector((state) => state.category.items);
+
+  const [thumbnailFile, setThumbnailFile] = useState(null); //thumbnail file to be uploaded to Firebase, process locally
   const [productData, setProductData] = useState({
-    categoryId: "",
+    categoryId: categories[0].id, //default category will be the first category in the list
     thumbnailUrl: "",
-    thumbnailFile: null, //to process locally
     name: "",
     author: "",
     publisher: "",
@@ -90,8 +107,19 @@ function ProductManagementPopup({ closeCallback }) {
     quantity: "",
   });
 
+  useEffect(() => {
+    if (item) {
+      setProductData({
+        ...item,
+        publishcationDate: new Date(item.publishcationDate) //convert date
+          .toISOString()
+          .split("T")[0],
+      });
+    }
+  }, [item]);
+
   const handleSave = () => {
-    store.dispatch(addProduct(productData));
+    store.dispatch(addProduct({ productData, thumbnailFile }));
     return closeCallback();
   };
 
@@ -141,7 +169,6 @@ function ProductManagementPopup({ closeCallback }) {
             placeholder="Publishcation date"
             value={productData.publishcationDate}
             onChange={(evt) => {
-              console.log(evt.target.value);
               setProductData({
                 ...productData,
                 publishcationDate: evt.target.value,
@@ -153,7 +180,7 @@ function ProductManagementPopup({ closeCallback }) {
           <select
             className="form-control"
             placeholder="Category"
-            defaultValue={categories[0].id}
+            value={productData.categoryId}
             onChange={(evt) => {
               setProductData({ ...productData, categoryId: evt.target.value });
             }}>
@@ -192,15 +219,16 @@ function ProductManagementPopup({ closeCallback }) {
             accept="image/*"
             title="Thumbnail"
             onChange={(evt) => {
-              setProductData({
-                ...productData,
-                thumbnailFile: evt.target.files[0],
-              });
+              setThumbnailFile(evt.target.files[0]);
             }}
           />
         </div>
         <div className="col-md-6 form-group">
-          <img src={productData.thumbnailUrl} alt="Thumbnail" />
+          <img
+            src={productData.thumbnailUrl}
+            alt="Thumbnail"
+            className="mw-100"
+          />
         </div>
         <div className="col-md-12 p-0">
           <RichTextEditor

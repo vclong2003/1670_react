@@ -27,27 +27,14 @@ export const fetchProductById = createAsyncThunk(
 
 export const addProduct = createAsyncThunk(
   "product/addProduct",
-  async (productData, { dispatch, rejectWithValue }) => {
-    const {
-      name,
-      description,
-      price,
-      categoryId,
-      thumbnailFile,
-      author,
-      publisher,
-      publishcationDate,
-      quantity,
-    } = productData;
-
-    let thumbnailUrl = "https://placehold.co/200x250"; // Default thumbnail url will be a placeholder image
+  async ({ productData, thumbnailFile }, { dispatch, rejectWithValue }) => {
     try {
       const storageRef = ref(
         storage,
         `thumbnails/${uuidv4()}/${thumbnailFile.name}`
       );
       const uploadSnapshot = await uploadBytes(storageRef, thumbnailFile); // Upload file to storage
-      thumbnailUrl = await getDownloadURL(uploadSnapshot.ref); // Get download url of the file
+      productData.thumbnailUrl = await getDownloadURL(uploadSnapshot.ref); // Get download url of the file
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -55,17 +42,7 @@ export const addProduct = createAsyncThunk(
     try {
       const response = await axios.post(
         `${api_endpoint}/product`,
-        {
-          name,
-          description,
-          price,
-          categoryId,
-          thumbnailUrl,
-          author,
-          publisher,
-          publishcationDate,
-          quantity,
-        },
+        { ...productData },
         { withCredentials: true }
       );
 
