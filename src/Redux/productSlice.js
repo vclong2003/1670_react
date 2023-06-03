@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { api_endpoint } from "../Services/config";
+import { api_endpoint, storage } from "../Services/config";
+import { v4 as uuidv4 } from "uuid"; // For unique thumbnail file name
+import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
@@ -20,6 +22,57 @@ export const fetchProductById = createAsyncThunk(
   async (id) => {
     const response = await axios.get(`${api_endpoint}/product/${id}`);
     return response.data;
+  }
+);
+
+export const addProduct = createAsyncThunk(
+  "product/addProduct",
+  async (productData, { dispatch, rejectWithValue }) => {
+    const {
+      name,
+      description,
+      price,
+      categoryId,
+      thumbnailFile,
+      author,
+      publisher,
+      publishcationDate,
+      quantity,
+    } = productData;
+
+    let thumbnailUrl = "https://placehold.co/200x250"; // Default thumbnail url will be a placeholder image
+    try {
+      const storageRef = ref(
+        storage,
+        `thumbnails/${uuidv4()}/${thumbnailFile.name}`
+      );
+      const uploadSnapshot = await uploadBytes(storageRef, thumbnailFile); // Upload file to storage
+      thumbnailUrl = await getDownloadURL(uploadSnapshot.ref); // Get download url of the file
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+
+    try {
+      const response = await axios.post(
+        `${api_endpoint}/product`,
+        {
+          name,
+          description,
+          price,
+          categoryId,
+          thumbnailUrl,
+          author,
+          publisher,
+          publishcationDate,
+          quantity,
+        },
+        { withCredentials: true }
+      );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -53,6 +106,19 @@ const productsSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(fetchProductById.rejected, (state) => {
+      state.loading = false;
+    });
+
+    // Add product
+    builder.addCase(addProduct.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(addProduct.fulfilled, (state, action) => {
+      state.items.push(action.payload);
+      state.loading = false;
+    });
+    builder.addCase(addProduct.rejected, (state, action) => {
+      state.error = action.payload;
       state.loading = false;
     });
   },
