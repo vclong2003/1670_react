@@ -67,11 +67,13 @@ function CartItem({ id, name, price, quantity }) {
       <td className="align-middle">
         <div
           className="input-group quantity mx-auto"
-          style={{ width: "100px" }}>
+          style={{ width: "100px" }}
+        >
           <div className="input-group-btn">
             <button
               className="btn btn-sm btn-primary btn-minus"
-              onClick={handleDecreaseQuantity}>
+              onClick={handleDecreaseQuantity}
+            >
               <i className="fa fa-minus" />
             </button>
           </div>
@@ -84,7 +86,8 @@ function CartItem({ id, name, price, quantity }) {
           <div className="input-group-btn">
             <button
               className="btn btn-sm btn-primary btn-plus"
-              onClick={handleIncreaseQuantity}>
+              onClick={handleIncreaseQuantity}
+            >
               <i className="fa fa-plus" />
             </button>
           </div>
@@ -125,7 +128,8 @@ function CartSummary({ items }) {
           </div>
           <button
             className="btn btn-block btn-primary font-weight-bold my-3 py-3"
-            disabled={items.length === 0}>
+            disabled={items.length === 0}
+          >
             Proceed To Checkout
           </button>
         </div>
