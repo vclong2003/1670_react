@@ -23,6 +23,19 @@ export const addCategory = createAsyncThunk(
   }
 );
 
+export const updateCategory = createAsyncThunk(
+  "category/updateCategory",
+  async ({ name, description }, { dispatch }) => {
+    const response = await axios.put(
+      `${api_endpoint}/category`,
+
+      { name: name, description: description }
+    );
+
+    dispatch(fetchCategories());
+  }
+);
+
 const categorySlice = createSlice({
   name: "category",
   initialState: { items: [] },
