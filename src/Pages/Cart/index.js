@@ -3,7 +3,7 @@ import store from "../../Redux/store";
 import { removeItemFromCart, updateItemInCart } from "../../Redux/cartSlice";
 import { useEffect } from "react";
 import { useState } from "react";
-
+import { Link } from "react-router-dom";
 export default function Cart() {
   const { items } = useSelector((state) => state.cart);
 
@@ -123,11 +123,14 @@ function CartSummary({ items }) {
             <h5>Total</h5>
             <h5>${total}</h5>
           </div>
+          <Link to="/checkout">
           <button
             className="btn btn-block btn-primary font-weight-bold my-3 py-3"
             disabled={items.length === 0}>
             Proceed To Checkout
           </button>
+          </Link>
+
         </div>
       </div>
     </>
