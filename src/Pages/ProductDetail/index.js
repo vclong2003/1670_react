@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
 import store from "../../Redux/store";
 import { addItemToCart } from "../../Redux/cartSlice";
+import DateTimeConverter from "../../Components/Converter/dateTimeConverter";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -37,8 +38,7 @@ export default function ProductDetail() {
               <br />
               Publisher: {selectedItem.publisher}
               <br />
-              Published:{" "}
-              {new Date(selectedItem.publishcationDate).toDateString()}
+              Published: {DateTimeConverter(selectedItem.publishedDate)}
               <br />
               Quantity: {selectedItem.quantity}
             </p>

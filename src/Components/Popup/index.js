@@ -14,6 +14,8 @@ export default function Popup({ children }) {
         className="row"
         style={{
           backgroundColor: "#FFFFFF",
+          maxHeight: "90vh",
+          overflowY: "auto",
         }}>
         <div className="p-30">{children}</div>
       </div>
