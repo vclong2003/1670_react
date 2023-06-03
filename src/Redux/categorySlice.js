@@ -13,7 +13,7 @@ export const fetchCategories = createAsyncThunk(
 export const addCategory = createAsyncThunk(
   "category/addCategory",
   async ({ name, description }, { dispatch }) => {
-    const response = await axios.post(
+    await axios.post(
       `${api_endpoint}/category`,
       { name: name, description: description },
       { withCredentials: true }

@@ -38,7 +38,7 @@ export default function ProductDetail() {
               <br />
               Publisher: {selectedItem.publisher}
               <br />
-              Published: {DateTimeConverter(selectedItem.publishedDate)}
+              Published: {DateTimeConverter(selectedItem.publishcationDate)}
               <br />
               Quantity: {selectedItem.quantity}
             </p>
@@ -117,7 +117,11 @@ function Description({ selectedItem }) {
         <div className="tab-content">
           <div className="tab-pane fade show active" id="tab-pane-1">
             <h4 className="mb-3">Product Description</h4>
-            <p>{selectedItem.description}</p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: selectedItem.description,
+              }}
+            />
           </div>
         </div>
       </div>
