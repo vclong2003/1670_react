@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
 import { useEffect, useState } from "react";
 import store from "../../Redux/store";
-import { fetchConsoleOrders, fetchOrderItems, fetchOrders } from "../../Redux/orderSlice";
+import { fetchConsoleOrders, fetchOrderItems, fetchOrders, updateOrderStatus } from "../../Redux/orderSlice";
 import Modal from 'react-modal';
 import LoadingLayer from "../../Components/LoadingLayer";
 export default function OrderManagement() {
@@ -11,7 +11,7 @@ export default function OrderManagement() {
   useEffect(() => {
     store.dispatch(fetchConsoleOrders());
   }, []);
-
+  console.log(orders)
   return (
     <>
       <table className="table table-light table-borderless table-hover text-center mb-0">
@@ -21,6 +21,7 @@ export default function OrderManagement() {
             <th>Date</th>
             <th>Address</th>
             <th>Phone</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -36,6 +37,7 @@ export default function OrderManagement() {
               country = {order.country}
               date = {order.date}
               fee = {order.shippingFee}
+              status = {order.status}
             />
         ))}
         </tbody>
@@ -53,6 +55,7 @@ function OrderItem(props) {
       <td className="align-middle">{props.date}</td>
       <td className="align-middle">{props.address}</td>
       <td className="align-middle">{props.phone}</td>
+      <td className="align-middle">{props.status}</td>
       <td className="align-middle">
       <AuthorizedComponent requiredRoles={["MANAGER"]}>
       <OrderDetail order = {props} content = {view}></OrderDetail>
@@ -69,6 +72,7 @@ function OrderDetail(props){
   const {orderItems, loading} = useSelector((state) => state.order);
   const [showPopup, setShowPopup] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [status, setStatus] = useState("Pending");
   useEffect(()=>{
     store.dispatch(fetchOrderItems(props.order.id))
   }, [])
@@ -80,7 +84,13 @@ function OrderDetail(props){
     setModalIsOpen(false)
     setShowPopup(false);
   };
-  
+  const handleStatusChange = (event) => {
+      setStatus(event.target.value);
+  }
+  const handleUpdateStatus = () =>{
+    store.dispatch(updateOrderStatus({ id: props.order.id, status: status}))
+  }
+  console.log(status)
   const customStyles = {
     content: {
       top: '30%',
@@ -154,6 +164,33 @@ function OrderDetail(props){
               disabled
             />
           </div>
+          <div className="col-md-12 form-group">
+            <input
+              className="form-control"
+              type="text"
+              value={props.order.status}
+              disabled
+            />
+          </div>
+          <AuthorizedComponent requiredRoles={["STAFF"]}>
+            <div className="col-md-12 form-group">
+              <select defaultValue={status}
+                  onChange={(e) => handleStatusChange(e)} className="form-control">
+                  <option key={1} value={"Pending"} >
+                    Pending
+                  </option>
+                  <option key={2} value={"Completed"} >
+                  Completed
+                  </option>
+                  <option key={3} value={"Delivery"} >
+                  Delivery
+                  </option>
+                  <option key={4} value={"Canceled"} >
+                  Canceled
+                  </option>
+              </select>
+            </div>
+          </AuthorizedComponent>
         </div>
         <div className="wrap-order-items">
         <div className="bg-light mb-5">
@@ -190,8 +227,8 @@ function OrderDetail(props){
     <div className="wrap-button-order">
       <AuthorizedComponent requiredRoles={["STAFF"]}>
       <button
-        className="btn btn-block btn-primary font-weight-bold py-2">
-        Confirm to complete
+        className="btn btn-block btn-primary font-weight-bold py-2" onClick={handleUpdateStatus}>
+        Update Status
       </button>
       </AuthorizedComponent>
       <button onClick={() => setModalIsOpen(false)}

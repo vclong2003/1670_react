@@ -22,6 +22,19 @@ export const fetchOrderItems = createAsyncThunk(
   }
 );
 
+export const updateOrderStatus = createAsyncThunk(
+  "order/updateOrderStatus",
+  async ({ id, status}, { dispatch }) => {
+    await axios.put(
+      `${api_endpoint}/order/${id}`,
+      { status: status },
+      { withCredentials: true }
+    );
+
+    dispatch(fetchConsoleOrders());
+  }
+)
+
 const orderSlice = createSlice({
   name: "order",
   initialState: {
