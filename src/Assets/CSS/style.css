@@ -10122,19 +10122,3 @@ h6 {
     transform: translateY(-15px);
   }
 }
-
-.wrap-order-form{
-  width: 100%;
-  display: flex;
-  padding-right: 20px;
-}
-.wrap-button-order{
-
-}
-.wrap-input-order{
-  width: 60%;
-  display: block;
-}
-.wrap-order-items{
-  width: 40%;
-}

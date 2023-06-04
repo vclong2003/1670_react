@@ -7,7 +7,6 @@ import DateTimeConverter from "../../Components/Converter/dateTimeConverter";
 import store from "../../Redux/store";
 import {
   addProduct,
-  clearSelectedItem,
   fetchProductById,
   fetchProducts,
   updateProduct,
