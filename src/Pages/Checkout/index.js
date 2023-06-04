@@ -1,4 +1,8 @@
+import { useSelector } from "react-redux";
+
 export default function Checkout() {
+  const items = useSelector((state) => state.cart.items);
+
   return (
     <>
       <div className="container-fluid">

@@ -90,13 +90,8 @@ const productsSlice = createSlice({
   initialState: {
     loading: false,
     items: [],
-    selectedItem: null,
   },
-  reducers: {
-    clearSelectedItem: (state) => {
-      state.selectedItem = null;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     // Fetch products
     builder.addCase(fetchProducts.pending, (state) => {
@@ -114,8 +109,7 @@ const productsSlice = createSlice({
     builder.addCase(fetchProductById.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(fetchProductById.fulfilled, (state, action) => {
-      state.selectedItem = action.payload;
+    builder.addCase(fetchProductById.fulfilled, (state) => {
       state.loading = false;
     });
     builder.addCase(fetchProductById.rejected, (state) => {
@@ -148,7 +142,5 @@ const productsSlice = createSlice({
     });
   },
 });
-
-export const { clearSelectedItem } = productsSlice.actions;
 
 export default productsSlice.reducer;

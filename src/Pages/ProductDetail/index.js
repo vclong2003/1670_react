@@ -10,10 +10,15 @@ import DateTimeConverter from "../../Components/Converter/dateTimeConverter";
 export default function ProductDetail() {
   const { id } = useParams();
 
-  const { selectedItem } = useSelector((state) => state.product);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
-    store.dispatch(fetchProductById(id));
+    store
+      .dispatch(fetchProductById(id))
+      .unwrap()
+      .then((productData) => {
+        setSelectedItem(productData);
+      });
   }, [id]);
 
   return selectedItem ? (
