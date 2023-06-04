@@ -2,9 +2,10 @@ import { useSelector } from "react-redux";
 import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
 import { useEffect, useState } from "react";
 import store from "../../Redux/store";
-import { fetchConsoleOrders, fetchOrderItems, fetchOrders, updateOrderStatus } from "../../Redux/orderSlice";
+import { fetchConsoleOrders, fetchOrderItems, updateOrderStatus } from "../../Redux/orderSlice";
 import Modal from 'react-modal';
 import LoadingLayer from "../../Components/LoadingLayer";
+import '../../Assets/CSS/orderFormModal.css';
 export default function OrderManagement() {
   const {orders} = useSelector((state) => state.order);
   
@@ -36,7 +37,7 @@ export default function OrderManagement() {
               city = {order.city}
               country = {order.country}
               date = {order.date}
-              fee = {order.shippingFee}
+              method = {order.paymentMethod}
               status = {order.status}
             />
         ))}
@@ -73,9 +74,8 @@ function OrderDetail(props){
   const [showPopup, setShowPopup] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [status, setStatus] = useState("Pending");
-  useEffect(()=>{
-    store.dispatch(fetchOrderItems(props.order.id))
-  }, [])
+
+  console.log(orderItems)
   const handleOpenPopup = () => {
     setModalIsOpen(true)
     setShowPopup(true);
@@ -98,13 +98,13 @@ function OrderDetail(props){
       right: 'auto',
       bottom: 'auto',
       marginRight: '-50%',
-      width: '60%',
+      width: '50%',
       transform: 'translate(-40%, -10%)',
     },
   };
   return (
     <div>
-    <button className="btn btn-sm btn-primary mr-2" onClick={handleOpenPopup}>{props.content}</button>
+    <button className="btn btn-sm btn-primary mr-2" onClick={()=>{handleOpenPopup(); store.dispatch(fetchOrderItems(props.order.id))}}>{props.content}</button>
     {loading ? <LoadingLayer/> : ""}
     {showPopup ? (
     <Modal ariaHideApp={false} style={customStyles} isOpen={modalIsOpen} onRequestClose={handleClosePopup}>
@@ -172,6 +172,14 @@ function OrderDetail(props){
               disabled
             />
           </div>
+          <div className="col-md-12 form-group">
+            <input
+              className="form-control"
+              type="text"
+              value={props.order.method}
+              disabled
+            />
+          </div>
           <AuthorizedComponent requiredRoles={["STAFF"]}>
             <div className="col-md-12 form-group">
               <select defaultValue={status}
@@ -196,7 +204,7 @@ function OrderDetail(props){
         <div className="bg-light mb-5">
             <div className="border-bottom">
               <h6 className="mb-3">Products</h6>
-              {orderItems.map((item) => (
+              {orderItems === undefined ? <LoadingLayer/> : orderItems.map((item) => (
                 <div key={item.productName} className="d-flex justify-content-between">
                     <p>{item.productName} x {item.quantity}</p>
                     <p>${item.price * item.quantity}</p>
@@ -204,20 +212,10 @@ function OrderDetail(props){
               ))}
 
             </div>
-            <div className="border-bottom pt-3 pb-2">
-              <div className="d-flex justify-content-between mb-3">
-                <h6>Subtotal</h6>
-                <h6>${orderItems.reduce((sum, item) => sum + item.price*item.quantity, 0)}</h6>
-              </div>
-              <div className="d-flex justify-content-between">
-                <h6 className="font-weight-medium">Shipping Fee</h6>
-                <h6 className="font-weight-medium">${props.order.fee}</h6>
-              </div>
-            </div>
             <div className="pt-2">
               <div className="d-flex justify-content-between mt-2">
                 <h5>Total</h5>
-                <h5>${orderItems.reduce((sum, item) => sum + item.price*item.quantity, 0) + props.order.fee}</h5>
+                {loading ? <LoadingLayer/> : <h5>${orderItems.reduce((sum, item) => sum + item.price*item.quantity, 0)}</h5>}
               </div>
             </div>
           </div>
@@ -226,10 +224,11 @@ function OrderDetail(props){
     </div>
     <div className="wrap-button-order">
       <AuthorizedComponent requiredRoles={["STAFF"]}>
-      <button
+      {props.order.status == "Completed" || props.order.status == "Canceled" ? "" :      <button
         className="btn btn-block btn-primary font-weight-bold py-2" onClick={handleUpdateStatus}>
         Update Status
-      </button>
+      </button>}
+
       </AuthorizedComponent>
       <button onClick={() => setModalIsOpen(false)}
         className="btn btn-block btn-secondary font-weight-bold py-2">

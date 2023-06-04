@@ -1,0 +1,10 @@
+.wrap-order-form{
+    display: flex;
+    width: 100%;
+}
+.wrap-input-order{
+    width: 60%;
+}
+.wrap-order-items{
+    width: 40%;
+}
