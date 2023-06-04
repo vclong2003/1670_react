@@ -14,6 +14,6 @@ export default configureStore({
     cart: cartReducer,
     address: addressReducer,
     staff: staffReducer,
-    order: orderReducer
+    order: orderReducer,
   },
 });
