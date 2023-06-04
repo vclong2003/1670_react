@@ -5,14 +5,20 @@ import ReactQuill from "react-quill";
 import { useSelector } from "react-redux";
 import DateTimeConverter from "../../Components/Converter/dateTimeConverter";
 import store from "../../Redux/store";
-import { addProduct, fetchProducts } from "../../Redux/productSlice";
+import {
+  addProduct,
+  clearSelectedItem,
+  fetchProductById,
+  fetchProducts,
+  updateProduct,
+} from "../../Redux/productSlice";
 import LoadingLayer from "../../Components/LoadingLayer";
 
 export default function ProductManagement() {
   const [showPopup, setShowpopup] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
 
   const { items, loading } = useSelector((state) => state.product);
+  const [editItem, setEditItem] = useState(null); //item to be edited, null if adding new item
 
   useEffect(() => {
     store.dispatch(fetchProducts({ category: null, search: null }));
@@ -22,12 +28,19 @@ export default function ProductManagement() {
     setShowpopup(true);
   };
   const handleClosePopup = () => {
-    setSelectedItem(null);
+    setEditItem(null);
     setShowpopup(false);
   };
-  const handleEdit = (item) => {
-    setSelectedItem(item);
-    setShowpopup(true);
+  const handleEdit = (id) => {
+    store
+      .dispatch(fetchProductById(id))
+      .unwrap()
+      .then((productData) => {
+        setEditItem(productData);
+      })
+      .then(() => {
+        setShowpopup(true);
+      });
   };
 
   return (
@@ -35,7 +48,7 @@ export default function ProductManagement() {
       {loading ? <LoadingLayer /> : ""}
       {showPopup ? (
         <ProductManagementPopup
-          item={selectedItem}
+          editItem={editItem}
           closeCallback={handleClosePopup}
         />
       ) : (
@@ -82,7 +95,7 @@ function ProductItem({ item, editCallback }) {
         <button
           className="btn btn-sm btn-primary mr-2"
           onClick={() => {
-            editCallback(item);
+            editCallback(item.id);
           }}>
           Edit
         </button>
@@ -91,10 +104,11 @@ function ProductItem({ item, editCallback }) {
   );
 }
 
-function ProductManagementPopup({ item, closeCallback }) {
+function ProductManagementPopup({ editItem, closeCallback }) {
   const categories = useSelector((state) => state.category.items);
 
   const [thumbnailFile, setThumbnailFile] = useState(null); //thumbnail file to be uploaded to Firebase, process locally
+  const [description, setDescription] = useState("");
   const [productData, setProductData] = useState({
     categoryId: categories[0].id, //default category will be the first category in the list
     thumbnailUrl: "",
@@ -102,24 +116,42 @@ function ProductManagementPopup({ item, closeCallback }) {
     author: "",
     publisher: "",
     publishcationDate: "",
-    description: "",
     price: "",
     quantity: "",
   });
 
   useEffect(() => {
-    if (item) {
+    if (editItem) {
       setProductData({
-        ...item,
-        publishcationDate: new Date(item.publishcationDate) //convert date
+        ...editItem,
+        description: null, //description is not stored in productData, it is stored in productDescription (react-quill cause component to re-render)
+        publishcationDate: new Date(editItem.publishcationDate)
           .toISOString()
           .split("T")[0],
       });
+
+      setDescription(editItem.description);
     }
-  }, [item]);
+  }, [editItem]);
 
   const handleSave = () => {
-    store.dispatch(addProduct({ productData, thumbnailFile }));
+    if (editItem) {
+      store.dispatch(
+        updateProduct({
+          productData: { ...productData, description: description },
+          thumbnailFile,
+        })
+      );
+
+      return closeCallback();
+    }
+
+    store.dispatch(
+      addProduct({
+        productData: { ...productData, description: description },
+        thumbnailFile,
+      })
+    );
     return closeCallback();
   };
 
@@ -127,7 +159,7 @@ function ProductManagementPopup({ item, closeCallback }) {
     <Popup>
       <div className="row">
         <div className="col-md-12 form-group">
-          <h4>Add product</h4>
+          <h4>{editItem ? "Edit" : "Add"} product</h4>
         </div>
         <div className="col-md-6 form-group">
           <input
@@ -230,11 +262,19 @@ function ProductManagementPopup({ item, closeCallback }) {
             className="mw-100"
           />
         </div>
-        <div className="col-md-12 p-0">
-          <RichTextEditor
-            value={productData.description}
-            setValueCallback={(value) => {
-              setProductData({ ...productData, description: value });
+        <div className="col-md-12 form-group">
+          <ReactQuill
+            value={description}
+            onChange={setDescription}
+            placeholder="Description"
+            modules={{
+              toolbar: [
+                [{ header: [1, 2, 3, false] }],
+                ["bold", "italic"],
+                [{ list: "ordered" }, { list: "bullet" }],
+                ["link", "image"],
+                ["clean"],
+              ],
             }}
           />
         </div>
@@ -250,29 +290,5 @@ function ProductManagementPopup({ item, closeCallback }) {
         Cancel
       </button>
     </Popup>
-  );
-}
-
-function RichTextEditor({ value, setValueCallback }) {
-  const toolbarComponents = [
-    [{ header: [1, 2, 3, false] }],
-    ["bold", "italic"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["link", "image"],
-    ["clean"],
-  ];
-
-  return (
-    <div className="col-md-12 form-group">
-      <ReactQuill
-        theme="snow"
-        value={value}
-        onChange={setValueCallback}
-        placeholder="Description"
-        modules={{
-          toolbar: toolbarComponents,
-        }}
-      />
-    </div>
   );
 }

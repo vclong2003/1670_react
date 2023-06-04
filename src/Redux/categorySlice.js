@@ -25,12 +25,12 @@ export const addCategory = createAsyncThunk(
 
 export const updateCategory = createAsyncThunk(
   "category/updateCategory",
-  async ({ name, description }, { dispatch }) => {
-    const response = await axios.put(
-      `${api_endpoint}/category`,
-
-      { name: name, description: description }
-    );
+  async ({ id, name, description }, { dispatch }) => {
+    await axios.put(`${api_endpoint}/category/${id}`, {
+      id: id,
+      name: name,
+      description: description,
+    });
 
     dispatch(fetchCategories());
   }
@@ -38,11 +38,30 @@ export const updateCategory = createAsyncThunk(
 
 const categorySlice = createSlice({
   name: "category",
-  initialState: { items: [] },
+  initialState: { loading: false, items: [] },
   reducers: {},
   extraReducers: (builder) => {
+    // Fetch category
+    builder.addCase(fetchCategories.pending, (state, action) => {
+      state.loading = true;
+    });
     builder.addCase(fetchCategories.fulfilled, (state, action) => {
       state.items = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(fetchCategories.rejected, (state, action) => {
+      state.loading = false;
+    });
+
+    // Add staff
+    builder.addCase(addCategory.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(addCategory.fulfilled, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(addCategory.rejected, (state, action) => {
+      state.loading = false;
     });
   },
 });
