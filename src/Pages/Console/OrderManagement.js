@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import store from "../../Redux/store";
 import { fetchConsoleOrders, fetchOrderItems, fetchOrders } from "../../Redux/orderSlice";
 import Modal from 'react-modal';
+import LoadingLayer from "../../Components/LoadingLayer";
 export default function OrderManagement() {
   const {orders} = useSelector((state) => state.order);
   
@@ -34,6 +35,7 @@ export default function OrderManagement() {
               city = {order.city}
               country = {order.country}
               date = {order.date}
+              fee = {order.shippingFee}
             />
         ))}
         </tbody>
@@ -43,6 +45,8 @@ export default function OrderManagement() {
 }
 
 function OrderItem(props) {
+  const view = "VIEW"
+  const setStatus = "SET STATUS"
   return (
     <tr>
       <td className="align-middle">{props.id}</td>
@@ -51,10 +55,10 @@ function OrderItem(props) {
       <td className="align-middle">{props.phone}</td>
       <td className="align-middle">
       <AuthorizedComponent requiredRoles={["MANAGER"]}>
-        <button className="btn btn-sm btn-secondary mr-2">View</button>
+      <OrderDetail order = {props} content = {view}></OrderDetail>
       </ AuthorizedComponent>  
         <AuthorizedComponent requiredRoles={["STAFF"]}>
-          <OrderDetail order = {props}></OrderDetail>
+          <OrderDetail order = {props} content = {setStatus}></OrderDetail>
         </AuthorizedComponent>
       </td>
     </tr>
@@ -62,12 +66,21 @@ function OrderItem(props) {
 }
 
 function OrderDetail(props){
-  const {orderItems} = useSelector((state) => state.order);
-  useEffect(() => {
-    store.dispatch(fetchOrderItems(props.order.id));
-  }, []);
-  console.log(orderItems)
+  const {orderItems, loading} = useSelector((state) => state.order);
+  const [showPopup, setShowPopup] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  useEffect(()=>{
+    store.dispatch(fetchOrderItems(props.order.id))
+  }, [])
+  const handleOpenPopup = () => {
+    setModalIsOpen(true)
+    setShowPopup(true);
+  };
+  const handleClosePopup = () => {
+    setModalIsOpen(false)
+    setShowPopup(false);
+  };
+  
   const customStyles = {
     content: {
       top: '30%',
@@ -81,8 +94,10 @@ function OrderDetail(props){
   };
   return (
     <div>
-    <button className="btn btn-sm btn-primary mr-2" onClick={() => setModalIsOpen(true)}>Set Status</button>
-    <Modal ariaHideApp={false} style={customStyles} isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
+    <button className="btn btn-sm btn-primary mr-2" onClick={handleOpenPopup}>{props.content}</button>
+    {loading ? <LoadingLayer/> : ""}
+    {showPopup ? (
+    <Modal ariaHideApp={false} style={customStyles} isOpen={modalIsOpen} onRequestClose={handleClosePopup}>
     <div className="row">
         <>
           <div className="col-md-12 form-group order-form-header">
@@ -144,22 +159,28 @@ function OrderDetail(props){
         <div className="bg-light mb-5">
             <div className="border-bottom">
               <h6 className="mb-3">Products</h6>
+              {orderItems.map((item) => (
+                <div key={item.productName} className="d-flex justify-content-between">
+                    <p>{item.productName} x {item.quantity}</p>
+                    <p>${item.price * item.quantity}</p>
+                </div>
+              ))}
 
             </div>
             <div className="border-bottom pt-3 pb-2">
               <div className="d-flex justify-content-between mb-3">
                 <h6>Subtotal</h6>
-                <h6>$150</h6>
+                <h6>${orderItems.reduce((sum, item) => sum + item.price*item.quantity, 0)}</h6>
               </div>
               <div className="d-flex justify-content-between">
-                <h6 className="font-weight-medium">Shipping</h6>
-                <h6 className="font-weight-medium">$10</h6>
+                <h6 className="font-weight-medium">Shipping Fee</h6>
+                <h6 className="font-weight-medium">${props.order.fee}</h6>
               </div>
             </div>
             <div className="pt-2">
               <div className="d-flex justify-content-between mt-2">
                 <h5>Total</h5>
-                <h5>$160</h5>
+                <h5>${orderItems.reduce((sum, item) => sum + item.price*item.quantity, 0) + props.order.fee}</h5>
               </div>
             </div>
           </div>
@@ -170,7 +191,7 @@ function OrderDetail(props){
       <AuthorizedComponent requiredRoles={["STAFF"]}>
       <button
         className="btn btn-block btn-primary font-weight-bold py-2">
-        Save
+        Confirm to complete
       </button>
       </AuthorizedComponent>
       <button onClick={() => setModalIsOpen(false)}
@@ -180,6 +201,10 @@ function OrderDetail(props){
     </div>
 
     </Modal>
+      ) : (
+        ""
+      )}
+
   </div>
   )
 }
