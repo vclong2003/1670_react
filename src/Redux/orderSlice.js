@@ -3,12 +3,13 @@ import axios from "axios";
 import { api_endpoint } from "../Services/config";
 import { fetchCartItems } from "./cartSlice";
 
-export const fetchConsoleOrders = createAsyncThunk(
-  "order/fetchConsoleOrders",
+export const fetchAllOrders = createAsyncThunk(
+  "order/fetchAllOrders",
   async () => {
     const response = await axios.get(`${api_endpoint}/order/all`, {
       withCredentials: true,
     });
+
     return response.data;
   }
 );
@@ -61,11 +62,15 @@ const orderSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchConsoleOrders.pending, (state, action) => {
+    // Fetch all orders
+    builder.addCase(fetchAllOrders.pending, (state, action) => {
       state.loading = true;
     });
-    builder.addCase(fetchConsoleOrders.fulfilled, (state, action) => {
+    builder.addCase(fetchAllOrders.fulfilled, (state, action) => {
       state.orders = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(fetchAllOrders.rejected, (state, action) => {
       state.loading = false;
     });
 
