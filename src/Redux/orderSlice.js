@@ -26,6 +26,7 @@ const orderSlice = createSlice({
   name: "order",
   initialState: {
     orders: [],
+    loading: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -34,6 +35,7 @@ const orderSlice = createSlice({
     });
     builder.addCase(fetchConsoleOrders.fulfilled, (state, action) => {
       state.orders = action.payload;
+      state.loading = false;
     });
 
     builder.addCase(fetchOrderItems.pending, (state, action) => {
@@ -41,6 +43,7 @@ const orderSlice = createSlice({
     });
     builder.addCase(fetchOrderItems.fulfilled, (state, action) => {
       state.orderItems = action.payload;
+      state.loading = false;
     });
   },
 });
