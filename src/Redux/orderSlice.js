@@ -54,11 +54,30 @@ export const addOrder = createAsyncThunk(
   }
 );
 
+export const updateOrderStatus = createAsyncThunk(
+  "order/updateOrderStatus",
+  async (orderData, { dispatch, rejectWithValue }) => {
+    const { id, status } = orderData;
+    try {
+      await axios.put(
+        `${api_endpoint}/order/${id}`,
+        { status: status },
+        { withCredentials: true }
+      );
+
+      return dispatch(fetchAllOrders());
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: "order",
   initialState: {
     orders: [],
     loading: false,
+    updating: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -106,6 +125,17 @@ const orderSlice = createSlice({
     });
     builder.addCase(addOrder.rejected, (state, action) => {
       state.loading = false;
+    });
+
+    // Update order status
+    builder.addCase(updateOrderStatus.pending, (state, action) => {
+      state.updating = true;
+    });
+    builder.addCase(updateOrderStatus.fulfilled, (state, action) => {
+      state.updating = false;
+    });
+    builder.addCase(updateOrderStatus.rejected, (state, action) => {
+      state.updating = false;
     });
   },
 });

@@ -4,9 +4,10 @@ import store from "../../Redux/store";
 import { fetchAddresses } from "../../Redux/addressSlice";
 import { addOrder } from "../../Redux/orderSlice";
 import LoadingLayer from "../../Components/LoadingLayer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Checkout() {
+  const navigate = useNavigate();
   const [addresses, setAddresses] = useState();
   const [payment, setPayment] = useState();
   const { loading } = useSelector((state) => state.order);
@@ -26,8 +27,8 @@ export default function Checkout() {
         addOrder({ shippingAddressId: addresses, paymentMethod: payment })
       )
       .unwrap()
-      .then((newOrderId) => {
-        console.log(newOrderId);
+      .then(() => {
+        navigate("/profile");
       });
   };
 
@@ -70,13 +71,13 @@ export default function Checkout() {
                       className="custom-control-input"
                       name="payment"
                       id="banktransfer"
-                      value="Bank Transfer"
+                      value="Bank transfer"
                       onChange={handleSelectPayment}
                     />
                     <label
                       className="custom-control-label"
                       htmlFor="banktransfer">
-                      Bank Transfer
+                      Bank transfer
                     </label>
                   </div>
                 </div>

@@ -3,7 +3,11 @@ import AuthorizedComponent from "../../Components/Authorization/authorizedCompon
 import { useEffect, useState } from "react";
 import store from "../../Redux/store";
 import LoadingLayer from "../../Components/LoadingLayer";
-import { fetchAllOrders, fetchOrderById } from "../../Redux/orderSlice";
+import {
+  fetchAllOrders,
+  fetchOrderById,
+  updateOrderStatus,
+} from "../../Redux/orderSlice";
 import Popup from "../../Components/Popup";
 import DateTimeConverter from "../../Components/Converter/dateTimeConverter";
 
@@ -48,7 +52,7 @@ export default function OrderManagement() {
           <tr>
             <th>ID</th>
             <th>Date</th>
-            <th>Address</th>
+            <th>Contact</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -72,7 +76,7 @@ function Order({ order, openDetailCallback }) {
     <tr>
       <td className="align-middle">{order.id}</td>
       <td className="align-middle">{DateTimeConverter(order.date)}</td>
-      <td className="align-middle">{order.name + " " + order.phone}</td>
+      <td className="align-middle">{order.name + ", " + order.phone}</td>
       <td className="align-middle">{order.status}</td>
       <td className="align-middle">
         <button
@@ -88,7 +92,9 @@ function Order({ order, openDetailCallback }) {
 }
 
 function OrderDetailPopup({ order, closeCallback }) {
+  const updating = useSelector((state) => state.order.updating);
   const [total, setTotal] = useState(0);
+  const [status, setStatus] = useState(order.status);
 
   // Calculate total price
   useEffect(() => {
@@ -101,8 +107,14 @@ function OrderDetailPopup({ order, closeCallback }) {
     setTotal(tempTotal);
   }, [order]);
 
+  const handleSaveStatus = () => {
+    store.dispatch(updateOrderStatus({ id: order.id, status: status }));
+  };
+
   return (
     <Popup>
+      {console.log(order)}
+      {updating ? <LoadingLayer /> : ""}
       <div className="row">
         <div className="col-md-12 d-flex justify-content-between">
           <h4 className="section-title position-relative text-uppercase mb-3">
@@ -141,7 +153,22 @@ function OrderDetailPopup({ order, closeCallback }) {
           </div>
           <div className="d-flex justify-content-between mt-3">
             <h5>Status</h5>
-            <h6>{order.status}</h6>
+            <AuthorizedComponent roles={["MANAGER"]}>
+              <h6>{order.status}</h6>
+            </AuthorizedComponent>
+            <AuthorizedComponent roles={["STAFF"]}>
+              <div className="d-flex">
+                <OrderStatusButton
+                  status={status}
+                  statusChangeCallback={setStatus}
+                />
+                <button
+                  className="btn btn-primary ml-3 pl-4 pr-4"
+                  onClick={handleSaveStatus}>
+                  Save
+                </button>
+              </div>
+            </AuthorizedComponent>
           </div>
         </div>
       </div>
@@ -159,3 +186,18 @@ function OrderItem({ item }) {
     </div>
   );
 }
+
+const OrderStatusButton = ({ status, statusChangeCallback }) => {
+  return (
+    <select
+      className="form-control"
+      onChange={(e) => statusChangeCallback(e.target.value)}
+      value={status}>
+      <option value="Pending">Pending</option>
+      <option value="Processing">Processing</option>
+      <option value="Delivering">Delivering</option>
+      <option value="Delivered">Delivered</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+  );
+};

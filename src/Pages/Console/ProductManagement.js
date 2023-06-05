@@ -210,7 +210,6 @@ function ProductManagementPopup({ editItem, closeCallback }) {
         <div className="col-md-6 form-group">
           <select
             className="form-control"
-            placeholder="Category"
             value={productData.categoryId}
             onChange={(evt) => {
               setProductData({ ...productData, categoryId: evt.target.value });
