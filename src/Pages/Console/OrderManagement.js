@@ -112,7 +112,7 @@ function OrderDetailPopup({ order, closeCallback }) {
   };
 
   return (
-    <Popup></Popup>
+    <Popup>
       {updating ? <LoadingLayer /> : ""}
       <div className="row">
         <div className="col-md-12 d-flex justify-content-between">
