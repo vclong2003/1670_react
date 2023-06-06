@@ -10,16 +10,21 @@ import DateTimeConverter from "../../Components/Converter/dateTimeConverter";
 export default function ProductDetail() {
   const { id } = useParams();
 
-  const { selectedItem } = useSelector((state) => state.product);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
-    store.dispatch(fetchProductById(id));
+    store
+      .dispatch(fetchProductById(id))
+      .unwrap()
+      .then((productData) => {
+        setSelectedItem(productData);
+      });
   }, [id]);
 
   return selectedItem ? (
     <div className="container-fluid pb-5">
       <div className="row px-xl-5">
-        <div className="col-lg-4 mb-30">
+        <div className="col-lg-3 mb-30">
           <img
             alt=""
             src={selectedItem.thumbnailUrl}
@@ -27,7 +32,7 @@ export default function ProductDetail() {
             style={{ objectFit: "cover" }}
           />
         </div>
-        <div className="col-lg-8 h-auto mb-30">
+        <div className="col-lg-9 h-auto mb-30">
           <div className="h-100 bg-light p-30">
             <h3>{selectedItem.name}</h3>
             <h4 className="font-weight-semi-bold mb-4">

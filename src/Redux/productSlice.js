@@ -21,6 +21,7 @@ export const fetchProductById = createAsyncThunk(
   "product/fetchProductById",
   async (id) => {
     const response = await axios.get(`${api_endpoint}/product/${id}`);
+
     return response.data;
   }
 );
@@ -28,6 +29,7 @@ export const fetchProductById = createAsyncThunk(
 export const addProduct = createAsyncThunk(
   "product/addProduct",
   async ({ productData, thumbnailFile }, { dispatch, rejectWithValue }) => {
+    console.log(productData);
     try {
       const storageRef = ref(
         storage,
@@ -53,12 +55,41 @@ export const addProduct = createAsyncThunk(
   }
 );
 
+export const updateProduct = createAsyncThunk(
+  "product/updateProduct",
+  async ({ productData, thumbnailFile }, { dispatch, rejectWithValue }) => {
+    try {
+      if (thumbnailFile) {
+        const storageRef = ref(
+          storage,
+          `thumbnails/${uuidv4()}/${thumbnailFile.name}`
+        );
+        const uploadSnapshot = await uploadBytes(storageRef, thumbnailFile); // Upload file to storage
+        productData.thumbnailUrl = await getDownloadURL(uploadSnapshot.ref); // Get download url of the file
+      }
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+
+    try {
+      await axios.put(
+        `${api_endpoint}/product/${productData.id}`,
+        { ...productData },
+        { withCredentials: true }
+      );
+
+      return dispatch(fetchProducts());
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const productsSlice = createSlice({
   name: "product",
   initialState: {
     loading: false,
     items: [],
-    selectedItem: null,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -78,8 +109,7 @@ const productsSlice = createSlice({
     builder.addCase(fetchProductById.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(fetchProductById.fulfilled, (state, action) => {
-      state.selectedItem = action.payload;
+    builder.addCase(fetchProductById.fulfilled, (state) => {
       state.loading = false;
     });
     builder.addCase(fetchProductById.rejected, (state) => {
@@ -95,6 +125,18 @@ const productsSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(addProduct.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    // Update product
+    builder.addCase(updateProduct.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateProduct.fulfilled, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(updateProduct.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
     });

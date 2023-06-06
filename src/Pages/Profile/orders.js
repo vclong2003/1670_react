@@ -1,27 +1,22 @@
-import { useSelector } from "react-redux";
-import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import store from "../../Redux/store";
-import LoadingLayer from "../../Components/LoadingLayer";
-import {
-  fetchAllOrders,
-  fetchOrderById,
-  updateOrderStatus,
-} from "../../Redux/orderSlice";
-import Popup from "../../Components/Popup";
+import { fetchCustomerOrders, fetchOrderById } from "../../Redux/orderSlice";
 import DateTimeConverter from "../../Components/Converter/dateTimeConverter";
+import Popup from "../../Components/Popup";
+import LoadingLayer from "../../Components/LoadingLayer";
 
-export default function OrderManagement() {
+export default function Orders() {
   const { orders, loading } = useSelector((state) => state.order);
 
+  const [seletedOrder, setSelectedOrder] = useState(null);
   const [showOrderDetail, setShowOrderDetail] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
-    store.dispatch(fetchAllOrders());
+    store.dispatch(fetchCustomerOrders());
   }, []);
 
-  const handleOpenOrderDetail = (id) => {
+  const handleViewOrder = (id) => {
     store
       .dispatch(fetchOrderById(id))
       .unwrap()
@@ -31,7 +26,7 @@ export default function OrderManagement() {
       });
   };
 
-  const handleCloseOrderDetail = () => {
+  const handleCloseViewOrder = () => {
     setSelectedOrder(null);
     setShowOrderDetail(false);
   };
@@ -41,29 +36,27 @@ export default function OrderManagement() {
       {loading ? <LoadingLayer /> : ""}
       {showOrderDetail ? (
         <OrderDetailPopup
-          order={selectedOrder}
-          closeCallback={handleCloseOrderDetail}
+          order={seletedOrder}
+          closeCallback={handleCloseViewOrder}
         />
       ) : (
         ""
       )}
+      <h4 className="section-title position-relative text-uppercase mb-3">
+        <span className="bg-secondary pr-3">Your orders</span>
+      </h4>
       <table className="table table-light table-borderless table-hover text-center mb-0">
         <thead className="thead-dark">
           <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Contact</th>
+            <th>Date placed</th>
             <th>Status</th>
+            <th>Address</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody className="align-middle">
-          {orders.map((order, index) => (
-            <Order
-              key={index}
-              order={order}
-              openDetailCallback={handleOpenOrderDetail}
-            />
+          {orders.map((item, index) => (
+            <Order key={index} item={item} viewCallback={handleViewOrder} />
           ))}
         </tbody>
       </table>
@@ -71,20 +64,22 @@ export default function OrderManagement() {
   );
 }
 
-function Order({ order, openDetailCallback }) {
+function Order({ item, viewCallback }) {
   return (
     <tr>
-      <td className="align-middle">{order.id}</td>
-      <td className="align-middle">{DateTimeConverter(order.date)}</td>
-      <td className="align-middle">{order.name + ", " + order.phone}</td>
-      <td className="align-middle">{order.status}</td>
+      <td className="align-middle">{DateTimeConverter(item.date)}</td>
+      <td className="align-middle">{item.status}</td>
+      <td className="align-middle">
+        {item.name}, {item.phone} -{" "}
+        {item.address + ", " + item.city + ", " + item.country}
+      </td>
       <td className="align-middle">
         <button
-          className="btn btn-primary"
+          className="btn btn-sm btn-primary font-weight-bold"
           onClick={() => {
-            openDetailCallback(order.id);
+            viewCallback(item.id);
           }}>
-          Detail
+          View
         </button>
       </td>
     </tr>
@@ -92,9 +87,7 @@ function Order({ order, openDetailCallback }) {
 }
 
 function OrderDetailPopup({ order, closeCallback }) {
-  const updating = useSelector((state) => state.order.updating);
   const [total, setTotal] = useState(0);
-  const [status, setStatus] = useState(order.status);
 
   // Calculate total price
   useEffect(() => {
@@ -107,13 +100,8 @@ function OrderDetailPopup({ order, closeCallback }) {
     setTotal(tempTotal);
   }, [order]);
 
-  const handleSaveStatus = () => {
-    store.dispatch(updateOrderStatus({ id: order.id, status: status }));
-  };
-
   return (
     <Popup>
-      {updating ? <LoadingLayer /> : ""}
       <div className="row">
         <div className="col-md-12 d-flex justify-content-between">
           <h4 className="section-title position-relative text-uppercase mb-3">
@@ -152,33 +140,8 @@ function OrderDetailPopup({ order, closeCallback }) {
           </div>
           <div className="d-flex justify-content-between mt-3">
             <h5>Status</h5>
-            <AuthorizedComponent requiredRoles={["MANAGER"]}>
-              <h6>{order.status}</h6>
-            </AuthorizedComponent>
-            <AuthorizedComponent requiredRoles={["STAFF"]}>
-              <div className="d-flex">
-                <OrderStatusButton
-                  status={status}
-                  statusChangeCallback={setStatus}
-                />
-                <button
-                  className="btn btn-primary ml-3 pl-4 pr-4"
-                  onClick={handleSaveStatus}>
-                  Save
-                </button>
-              </div>
-            </AuthorizedComponent>
+            <h6>{order.status}</h6>
           </div>
-          <AuthorizedComponent requiredRoles={["MANAGER"]}>
-            <div className="d-flex justify-content-between mt-3">
-              <h5>Processed by</h5>
-              {order.staff ? (
-                <h6>{order.staff.name + ", " + order.staff.phone}</h6>
-              ) : (
-                <h6>Not processed</h6>
-              )}
-            </div>
-          </AuthorizedComponent>
         </div>
       </div>
     </Popup>
@@ -195,18 +158,3 @@ function OrderItem({ item }) {
     </div>
   );
 }
-
-const OrderStatusButton = ({ status, statusChangeCallback }) => {
-  return (
-    <select
-      className="form-control"
-      onChange={(e) => statusChangeCallback(e.target.value)}
-      value={status}>
-      <option value="Pending">Pending</option>
-      <option value="Processing">Processing</option>
-      <option value="Delivering">Delivering</option>
-      <option value="Delivered">Delivered</option>
-      <option value="Cancelled">Cancelled</option>
-    </select>
-  );
-};
