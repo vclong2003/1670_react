@@ -112,8 +112,7 @@ function OrderDetailPopup({ order, closeCallback }) {
   };
 
   return (
-    <Popup>
-      {console.log(order)}
+    <Popup></Popup>
       {updating ? <LoadingLayer /> : ""}
       <div className="row">
         <div className="col-md-12 d-flex justify-content-between">
@@ -153,10 +152,10 @@ function OrderDetailPopup({ order, closeCallback }) {
           </div>
           <div className="d-flex justify-content-between mt-3">
             <h5>Status</h5>
-            <AuthorizedComponent roles={["MANAGER"]}>
+            <AuthorizedComponent requiredRoles={["MANAGER"]}>
               <h6>{order.status}</h6>
             </AuthorizedComponent>
-            <AuthorizedComponent roles={["STAFF"]}>
+            <AuthorizedComponent requiredRoles={["STAFF"]}>
               <div className="d-flex">
                 <OrderStatusButton
                   status={status}
@@ -170,6 +169,16 @@ function OrderDetailPopup({ order, closeCallback }) {
               </div>
             </AuthorizedComponent>
           </div>
+          <AuthorizedComponent requiredRoles={["MANAGER"]}>
+            <div className="d-flex justify-content-between mt-3">
+              <h5>Processed by</h5>
+              {order.staff ? (
+                <h6>{order.staff.name + ", " + order.staff.phone}</h6>
+              ) : (
+                <h6>Not processed</h6>
+              )}
+            </div>
+          </AuthorizedComponent>
         </div>
       </div>
     </Popup>
