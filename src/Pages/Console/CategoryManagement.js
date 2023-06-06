@@ -118,7 +118,7 @@ function CategoryPopup({ item, closeCallback }) {
 
   const handleSave = () => {
     if (item) {
-      store.dispatch(updateCategory(categoryData));
+      store.dispatch(updateCategory({ id: item.id, ...categoryData }));
       return closeCallback();
     }
 

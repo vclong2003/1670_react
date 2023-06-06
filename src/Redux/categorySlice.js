@@ -27,7 +27,6 @@ export const updateCategory = createAsyncThunk(
   "category/updateCategory",
   async ({ id, name, description }, { dispatch }) => {
     await axios.put(`${api_endpoint}/category/${id}`, {
-      id: id,
       name: name,
       description: description,
     });
@@ -53,7 +52,7 @@ const categorySlice = createSlice({
       state.loading = false;
     });
 
-    // Add staff
+    // Add category
     builder.addCase(addCategory.pending, (state, action) => {
       state.loading = true;
     });
