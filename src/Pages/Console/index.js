@@ -4,6 +4,7 @@ import OrderManagement from "./OrderManagement";
 import ProductManagement from "./ProductManagement";
 import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
 import StaffManagement from "./StaffManagement";
+import Dashboard from "./Dashboard";
 
 export default function Console() {
   return (
@@ -14,6 +15,9 @@ export default function Console() {
         </h5>
         <div className="row px-xl-4">
           <div className="col-lg-2">
+            <AuthorizedComponent requiredRoles={["MANAGER", "STAFF"]}>
+              <TabItem name="Dashboard" target="view_dashboard" />
+            </AuthorizedComponent>
             <TabItem name="Orders" target="manage_orders" />
             {/* MANAGER TAB */}
             <AuthorizedComponent requiredRoles={["MANAGER"]}>
@@ -33,6 +37,7 @@ export default function Console() {
                 element={<CategoryManagement />}
               />
               <Route path="manage_staff" element={<StaffManagement />} />
+              <Route path="view_dashboard" element={<Dashboard />} />
             </Routes>
           </div>
         </div>
