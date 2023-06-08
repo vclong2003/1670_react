@@ -128,7 +128,6 @@ function ProductManagementPopup({ editItem, closeCallback }) {
           .toISOString()
           .split("T")[0],
       });
-
       setDescription(editItem.description);
     }
   }, [editItem]);
@@ -141,7 +140,6 @@ function ProductManagementPopup({ editItem, closeCallback }) {
           thumbnailFile,
         })
       );
-
       return closeCallback();
     }
 
@@ -255,7 +253,11 @@ function ProductManagementPopup({ editItem, closeCallback }) {
         </div>
         <div className="col-md-6 form-group">
           <img
-            src={productData.thumbnailUrl}
+            src={
+              thumbnailFile
+                ? URL.createObjectURL(thumbnailFile)
+                : productData.thumbnailUrl
+            }
             alt="Thumbnail"
             className="mw-100"
           />

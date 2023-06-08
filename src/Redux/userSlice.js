@@ -56,17 +56,12 @@ const userSlice = createSlice({
   initialState: {
     fetchCurrentUserLoading: false,
     loading: false,
-    error: null,
     loggedIn: false,
     id: null,
     email: null,
     role: null,
   },
-  reducers: {
-    clearError: (state) => {
-      state.error = null;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     //Fetch current user
     builder.addCase(fetchCurrentUser.pending, (state) => {
@@ -95,7 +90,6 @@ const userSlice = createSlice({
       window.location.href = "/";
     });
     builder.addCase(signin.rejected, (state, action) => {
-      state.error = action.payload; // Error message
       state.loading = false;
     });
 
@@ -124,7 +118,5 @@ const userSlice = createSlice({
     });
   },
 });
-
-export const { clearError } = userSlice.actions;
 
 export default userSlice.reducer;

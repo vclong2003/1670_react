@@ -9,7 +9,7 @@ export default function CustomAlert({ message, type, closeCallback }) {
     setTimeout(() => {
       setShow(false);
       closeCallback();
-    }, 3000);
+    }, 5000);
   }, []);
 
   return show ? (

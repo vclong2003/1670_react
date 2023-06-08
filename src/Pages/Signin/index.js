@@ -2,19 +2,25 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LoadingLayer from "../../Components/LoadingLayer";
-import { clearError, signin } from "../../Redux/userSlice";
+import { signin } from "../../Redux/userSlice";
 import store from "../../Redux/store";
 import CustomAlert from "../../Components/Alert";
 
 export default function Signin() {
-  const { loading, error } = useSelector((state) => state.user);
+  const { loading } = useSelector((state) => state.user);
 
+  const [error, setError] = useState(null);
   // Signin form data
   const [data, setData] = useState({ email: "", password: "" });
 
   const handleSigninForm = async (evt) => {
     evt.preventDefault();
-    store.dispatch(signin(data));
+    store
+      .dispatch(signin(data))
+      .unwrap()
+      .catch((err) => {
+        setError(err);
+      });
   };
   return (
     <>
@@ -23,7 +29,7 @@ export default function Signin() {
           message={error}
           type="danger"
           closeCallback={() => {
-            store.dispatch(clearError());
+            setError(null);
           }}
         />
       ) : (
