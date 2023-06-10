@@ -7,7 +7,11 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { useEffect } from "react";
 import { Bar } from "react-chartjs-2";
+import store from "../../Redux/store";
+import { getOrderStatistic } from "../../Redux/dashboardSlice";
+import { useSelector } from "react-redux";
 
 ChartJS.register(
   CategoryScale,
@@ -19,9 +23,24 @@ ChartJS.register(
 );
 
 export default function Dashboard() {
-  const labels = ["January", "February", "March"];
-  const data = [100, 70, 60];
-  const _data = [90, 20, 36];
+  const { orderStatistic } = useSelector((state) => state.dashboard);
+  useEffect(() => {
+    store.dispatch(getOrderStatistic());
+  }, []);
+  // const labels = ["January", "February", "March"];
+  const labels = orderStatistic.map((item) => item.month);
+  const datasets = [
+    {
+      label: "Orders",
+      data: orderStatistic.map((item) => item.quantity),
+      backgroundColor: "#FFD333",
+    },
+    {
+      label: "Revenue ($)",
+      data: orderStatistic.map((item) => item.revenue),
+      backgroundColor: "#3D464D",
+    },
+  ];
 
   const options = {
     responsive: true,
@@ -38,6 +57,7 @@ export default function Dashboard() {
 
   return (
     <>
+      {console.log(orderStatistic)}
       <div className="container-fluid bg-light p-4">
         <div className="row">
           <div className="col-1" />
@@ -46,18 +66,7 @@ export default function Dashboard() {
               options={options}
               data={{
                 labels,
-                datasets: [
-                  {
-                    label: "Dataset 1",
-                    data: data,
-                    backgroundColor: "#FFD333",
-                  },
-                  {
-                    label: "Dataset 2",
-                    data: _data,
-                    backgroundColor: "#3D464D",
-                  },
-                ],
+                datasets,
               }}
             />
           </div>
