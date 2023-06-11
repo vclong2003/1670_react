@@ -6,12 +6,14 @@ import {
   Title,
   Tooltip,
   Legend,
+  ArcElement,
 } from "chart.js";
 import { useEffect } from "react";
-import { Bar } from "react-chartjs-2";
+import { Bar, Pie } from "react-chartjs-2";
 import store from "../../Redux/store";
-import { getOrderStatistic } from "../../Redux/dashboardSlice";
+import { getStatistic } from "../../Redux/dashboardSlice";
 import { useSelector } from "react-redux";
+import LoadingLayer from "../../Components/LoadingLayer";
 
 ChartJS.register(
   CategoryScale,
@@ -19,30 +21,33 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ArcElement
 );
 
 export default function Dashboard() {
-  const { orderStatistic } = useSelector((state) => state.dashboard);
+  const loading = useSelector((state) => state.dashboard.loading);
+  const { revenue, orders, users } = useSelector(
+    (state) => state.dashboard.statistic
+  );
   useEffect(() => {
-    store.dispatch(getOrderStatistic());
+    store.dispatch(getStatistic());
   }, []);
   // const labels = ["January", "February", "March"];
-  const labels = orderStatistic.map((item) => item.month);
-  const datasets = [
+  const barChartLabels = revenue.map((item) => item.month);
+  const barChartData = [
     {
-      label: "Orders",
-      data: orderStatistic.map((item) => item.quantity),
+      label: "Total (orders)",
+      data: revenue.map((item) => item.quantity),
       backgroundColor: "#FFD333",
     },
     {
       label: "Revenue ($)",
-      data: orderStatistic.map((item) => item.revenue),
+      data: revenue.map((item) => item.revenue),
       backgroundColor: "#3D464D",
     },
   ];
-
-  const options = {
+  const barChartOptions = {
     responsive: true,
     plugins: {
       legend: {
@@ -55,22 +60,51 @@ export default function Dashboard() {
     },
   };
 
+  const pieChartLabels = orders.map((item) => item.status);
+  const pieChartData = [
+    {
+      label: "# of orders",
+      data: orders.map((item) => item.quantity),
+      backgroundColor: ["#E0E0E0", "#FFD333", "#3D464D"],
+      borderWidth: 1,
+    },
+  ];
+  const pieChrartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Orders",
+      },
+    },
+  };
+
   return (
     <>
-      {console.log(orderStatistic)}
+      {loading ? <LoadingLayer /> : ""}
       <div className="container-fluid bg-light p-4">
         <div className="row">
-          <div className="col-1" />
-          <div className="col-10">
+          <div className="col-8">
             <Bar
-              options={options}
+              options={barChartOptions}
               data={{
-                labels,
-                datasets,
+                labels: barChartLabels,
+                datasets: barChartData,
               }}
             />
           </div>
-          <div className="col-1" />
+          <div className="col-4">
+            <Pie
+              options={pieChrartOptions}
+              data={{
+                labels: pieChartLabels,
+                datasets: pieChartData,
+              }}
+            />
+          </div>
         </div>
       </div>
     </>

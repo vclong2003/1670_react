@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { api_endpoint } from "../Services/config";
 
-export const getOrderStatistic = createAsyncThunk(
-  "dashboard/getOrderStatistic",
+export const getStatistic = createAsyncThunk(
+  "dashboard/getStatistic",
   async () => {
     const response = await axios.get(`${api_endpoint}/dashboard`, {
       withCredentials: true,
@@ -17,19 +17,23 @@ export const dashboardSlice = createSlice({
   name: "dashboard",
   initialState: {
     loading: false,
-    orderStatistic: [],
+    statistic: {
+      revenue: [],
+      orders: [],
+      users: [],
+    },
   },
   reducers: {},
   extraReducers: (builder) => {
     // Get order statistic
-    builder.addCase(getOrderStatistic.pending, (state) => {
+    builder.addCase(getStatistic.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(getOrderStatistic.fulfilled, (state, action) => {
-      state.orderStatistic = action.payload;
+    builder.addCase(getStatistic.fulfilled, (state, action) => {
+      state.statistic = { ...action.payload };
       state.loading = false;
     });
-    builder.addCase(getOrderStatistic.rejected, (state) => {
+    builder.addCase(getStatistic.rejected, (state) => {
       state.loading = false;
     });
   },
