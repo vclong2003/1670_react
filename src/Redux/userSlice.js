@@ -87,7 +87,6 @@ const userSlice = createSlice({
     });
     builder.addCase(signin.fulfilled, (state) => {
       state.loading = false;
-      window.location.href = "/";
     });
     builder.addCase(signin.rejected, (state, action) => {
       state.loading = false;
@@ -99,7 +98,6 @@ const userSlice = createSlice({
     });
     builder.addCase(signup.fulfilled, (state) => {
       state.loading = false;
-      window.location.href = "/";
     });
     builder.addCase(signup.rejected, (state) => {
       state.loading = false;
@@ -111,7 +109,6 @@ const userSlice = createSlice({
     });
     builder.addCase(signout.fulfilled, (state) => {
       state.loading = false;
-      window.location.href = "/";
     });
     builder.addCase(signout.rejected, (state, action) => {
       state.loading = false;
