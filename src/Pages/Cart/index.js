@@ -4,20 +4,23 @@ import { removeItemFromCart, updateItemInCart } from "../../Redux/cartSlice";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import AuthorizedPage from "../../Components/Authorization/authorizedPage";
 export default function Cart() {
   const { items } = useSelector((state) => state.cart);
 
   return (
-    <div className="container-fluid">
-      <div className="row px-xl-5">
-        <div className="col-lg-8 table-responsive mb-5">
-          <CartItemsList items={items} />
-        </div>
-        <div className="col-lg-4">
-          <CartSummary items={items} />
+    <AuthorizedPage requiredRoles={["CUSTOMER"]}>
+      <div className="container-fluid">
+        <div className="row px-xl-5">
+          <div className="col-lg-8 table-responsive mb-5">
+            <CartItemsList items={items} />
+          </div>
+          <div className="col-lg-4">
+            <CartSummary items={items} />
+          </div>
         </div>
       </div>
-    </div>
+    </AuthorizedPage>
   );
 }
 
@@ -67,13 +70,11 @@ function CartItem({ id, name, price, quantity }) {
       <td className="align-middle">
         <div
           className="input-group quantity mx-auto"
-          style={{ width: "100px" }}
-        >
+          style={{ width: "100px" }}>
           <div className="input-group-btn">
             <button
               className="btn btn-sm btn-primary btn-minus"
-              onClick={handleDecreaseQuantity}
-            >
+              onClick={handleDecreaseQuantity}>
               <i className="fa fa-minus" />
             </button>
           </div>
@@ -86,8 +87,7 @@ function CartItem({ id, name, price, quantity }) {
           <div className="input-group-btn">
             <button
               className="btn btn-sm btn-primary btn-plus"
-              onClick={handleIncreaseQuantity}
-            >
+              onClick={handleIncreaseQuantity}>
               <i className="fa fa-plus" />
             </button>
           </div>
@@ -127,14 +127,12 @@ function CartSummary({ items }) {
             <h5>${total}</h5>
           </div>
           <Link to="/checkout">
-          <button
-            className="btn btn-block btn-primary font-weight-bold my-3 py-3"
-            disabled={items.length === 0}
-          >
-            Proceed To Checkout
-          </button>
+            <button
+              className="btn btn-block btn-primary font-weight-bold my-3 py-3"
+              disabled={items.length === 0}>
+              Proceed To Checkout
+            </button>
           </Link>
-
         </div>
       </div>
     </>

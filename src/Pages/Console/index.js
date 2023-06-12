@@ -5,10 +5,11 @@ import ProductManagement from "./ProductManagement";
 import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
 import StaffManagement from "./StaffManagement";
 import Dashboard from "./Dashboard";
+import AuthorizedPage from "../../Components/Authorization/authorizedPage";
 
 export default function Console() {
   return (
-    <>
+    <AuthorizedPage requiredRoles={["MANAGER", "STAFF"]}>
       <div className="container-fluid">
         <h5 className="section-title position-relative text-uppercase mb-3">
           <span className="bg-secondary pr-3">Management Console</span>
@@ -16,33 +17,50 @@ export default function Console() {
         <div className="row px-xl-4">
           <div className="col-lg-2">
             <AuthorizedComponent requiredRoles={["MANAGER", "STAFF"]}>
-              <TabItem name="Dashboard" target="view_dashboard" />
+              <TabItem name="Dashboard" target="view-dashboard" />
             </AuthorizedComponent>
-            <TabItem name="Orders" target="manage_orders" />
+            <TabItem name="Orders" target="manage-orders" />
             {/* MANAGER TAB */}
             <AuthorizedComponent requiredRoles={["MANAGER"]}>
-              <TabItem name="Products" target="manage_products" />
-              <TabItem name="Categories" target="manage_categories" />
-              <TabItem name="Staff" target="manage_staff" />
+              <TabItem name="Products" target="manage-products" />
+              <TabItem name="Categories" target="manage-categories" />
+              <TabItem name="Staff" target="manage-staff" />
             </AuthorizedComponent>
           </div>
           <div className="col-lg-10 p-0">
             <Routes>
-              <Route path="manage_orders" element={<OrderManagement />} />
+              <Route path="view-dashboard" element={<Dashboard />} />
+              <Route path="manage-orders" element={<OrderManagement />} />
               {/* MANAGER ROUTE */}
-
-              <Route path="manage_products" element={<ProductManagement />} />
               <Route
-                path="manage_categories"
-                element={<CategoryManagement />}
+                path="manage-products"
+                element={
+                  <AuthorizedPage requiredRoles={["MANAGER"]}>
+                    <ProductManagement />
+                  </AuthorizedPage>
+                }
               />
-              <Route path="manage_staff" element={<StaffManagement />} />
-              <Route path="view_dashboard" element={<Dashboard />} />
+              <Route
+                path="manage-categories"
+                element={
+                  <AuthorizedPage requiredRoles={["MANAGER"]}>
+                    <CategoryManagement />
+                  </AuthorizedPage>
+                }
+              />
+              <Route
+                path="manage-staff"
+                element={
+                  <AuthorizedPage requiredRoles={["MANAGER"]}>
+                    <StaffManagement />
+                  </AuthorizedPage>
+                }
+              />
             </Routes>
           </div>
         </div>
       </div>
-    </>
+    </AuthorizedPage>
   );
 }
 

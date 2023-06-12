@@ -5,6 +5,7 @@ import { fetchAddresses } from "../../Redux/addressSlice";
 import { addOrder } from "../../Redux/orderSlice";
 import LoadingLayer from "../../Components/LoadingLayer";
 import { Link, useNavigate } from "react-router-dom";
+import AuthorizedPage from "../../Components/Authorization/authorizedPage";
 
 export default function Checkout() {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ export default function Checkout() {
   };
 
   return (
-    <>
+    <AuthorizedPage requiredRoles={["CUSTOMER"]}>
       {loading ? <LoadingLayer /> : ""}
       <div className="container-fluid">
         <div className="row px-xl-5">
@@ -92,7 +93,7 @@ export default function Checkout() {
           </div>
         </div>
       </div>
-    </>
+    </AuthorizedPage>
   );
 }
 

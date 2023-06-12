@@ -14,6 +14,7 @@ import store from "../../Redux/store";
 import { getStatistic } from "../../Redux/dashboardSlice";
 import { useSelector } from "react-redux";
 import LoadingLayer from "../../Components/LoadingLayer";
+import monthConverter from "../../Components/Converter/monthConverter";
 
 ChartJS.register(
   CategoryScale,
@@ -33,8 +34,8 @@ export default function Dashboard() {
   useEffect(() => {
     store.dispatch(getStatistic());
   }, []);
-  // const labels = ["January", "February", "March"];
-  const barChartLabels = revenue.map((item) => item.month);
+
+  const barChartLabels = revenue.map((item) => monthConverter(item.month));
   const barChartData = [
     {
       label: "Total (orders)",
