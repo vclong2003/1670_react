@@ -100,20 +100,57 @@ function StaffManagementPopup({ member, closeCallback }) {
     address: "",
   });
 
+  const regEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const regPhone = /^\d{10}$/;
+  const regName = /^[a-zA-Z ]{2,30}$/;
+  const regAddress = /^[a-zA-Z0-9\s,'-]*$/;
+
+  const [emailMessage, setEmailMessage] = useState("");
+  const [nameMessage, setNameMessage] = useState("");
+  const [phoneMessage, setPhoneMessage] = useState("");
+  const [addressMessage, setAddressMessage] = useState("");
+
+  const handleValidation = (e, message, setFunction, regType) =>{
+    if(!regType.test(e.target.value)){
+      setFunction(message);
+    }else{
+      setFunction("");
+    }
+  }
+
+  const isEmpty = (e,data) =>{
+    if(data.email ==="" || 
+    data.password ==="" ||
+    data.name === "" ||
+    data.phone === ""||
+    data.address === ""){
+      e.preventDefault();
+      return true;
+    }
+    return false;
+  }
+
   useEffect(() => {
     if (member) {
       setMemberData({ ...member });
     }
   }, [member]);
 
-  const handleSave = () => {
-    if (member) {
-      store.dispatch(updateStaff(memberData));
-      return closeCallback();
+  const handleSave = (e) => {
+    if(!isEmpty(e, memberData)){
+      if(emailMessage === "" && 
+        nameMessage === "" && 
+        phoneMessage === "" && 
+        addressMessage === ""){
+        if (member) {
+          store.dispatch(updateStaff(memberData));
+          return closeCallback();
+        }
+        store.dispatch(addStaff(memberData));
+        return closeCallback();
+      }
     }
 
-    store.dispatch(addStaff(memberData));
-    return closeCallback();
   };
 
   return (
@@ -129,18 +166,21 @@ function StaffManagementPopup({ member, closeCallback }) {
             <div className="col-md-6 form-group">
               <input
                 className="form-control"
-                type="text"
+                type="email"
                 placeholder="Email"
                 value={memberData.email}
                 onChange={(evt) => {
-                  setMemberData({ ...memberData, email: evt.target.value });
+                  setMemberData({ ...memberData, email: evt.target.value }); 
                 }}
+                onBlur = {(evt)=>handleValidation(evt, "Email Wrong", setEmailMessage, regEmail)}
               />
+              <p className="message" style={{color: "red", paddingLeft: "1px"}}>{emailMessage}</p>
             </div>
+            
             <div className="col-md-6 form-group">
               <input
                 className="form-control"
-                type="text"
+                type="password"
                 placeholder="Password"
                 value={memberData.password}
                 onChange={(evt) => {
@@ -162,7 +202,9 @@ function StaffManagementPopup({ member, closeCallback }) {
             onChange={(evt) => {
               setMemberData({ ...memberData, name: evt.target.value });
             }}
+            onBlur={(evt)=>handleValidation(evt, "Name Wrong", setNameMessage, regName)}
           />
+          <p className="message" style={{color: "red", paddingLeft: "1px"}}>{nameMessage}</p>
         </div>
         <div className="col-md-12 form-group">
           <input
@@ -173,7 +215,9 @@ function StaffManagementPopup({ member, closeCallback }) {
             onChange={(evt) => {
               setMemberData({ ...memberData, phone: evt.target.value });
             }}
+            onBlur={(evt)=>handleValidation(evt, "Phonenumber Wrong", setPhoneMessage, regPhone)}
           />
+          <p className="message" style={{color: "red", paddingLeft: "1px"}}>{phoneMessage}</p>
         </div>
         <div className="col-md-12 form-group">
           <input
@@ -184,12 +228,14 @@ function StaffManagementPopup({ member, closeCallback }) {
             onChange={(evt) => {
               setMemberData({ ...memberData, address: evt.target.value });
             }}
+            onBlur={(evt)=>handleValidation(evt, "Address Wrong", setAddressMessage, regAddress)}
           />
+          <p className="message" style={{color: "red", paddingLeft: "1px"}}>{addressMessage}</p>
         </div>
       </div>
       <button
         className="btn btn-block btn-primary font-weight-bold py-2"
-        onClick={handleSave}>
+        onClick={(e)=>handleSave(e)}>
         Save
       </button>
       <button
