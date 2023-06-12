@@ -65,7 +65,7 @@ export default function Dashboard() {
     {
       label: "# of orders",
       data: orders.map((item) => item.quantity),
-      backgroundColor: ["#E0E0E0", "#FFD333", "#3D464D"],
+      backgroundColor: ["#E0E0E0", "#FFD333", "#3D464D", "#4A5F63", "#433C4D"],
       borderWidth: 1,
     },
   ];

@@ -72,9 +72,9 @@ export default function CategoryManagement() {
   //
 }
 
+//
 function CategoryItem({ item, editCallback }) {
   const { name, description } = item;
-
   return (
     <tr>
       <td className="align-middle">{item.id}</td>
@@ -128,68 +128,47 @@ function CategoryPopup({ item, closeCallback }) {
 
   return (
     <Popup>
-      <div
-        className="fixed-top"
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <div
-          className="row"
-          style={{
-            boxShadow:
-              "rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px",
-            backgroundColor: "#FFFFFF",
-          }}
-        >
-          <div className="p-30">
-            <div className="row">
-              <div className="col-md-12 form-group">
-                <input
-                  className="form-control"
-                  type="text"
-                  placeholder="Enter name"
-                  value={categoryData.name}
-                  onChange={(evt) => {
-                    setCategoryData({
-                      ...categoryData,
-                      name: evt.target.value,
-                    });
-                  }}
-                />
-                <input
-                  className="form-control mt-3 "
-                  type="text"
-                  placeholder="Enter Description"
-                  value={categoryData.description}
-                  onChange={(evt) => {
-                    setCategoryData({
-                      ...categoryData,
-                      description: evt.target.value,
-                    });
-                  }}
-                />
-              </div>
-            </div>
-            <button
-              className="btn btn-block btn-primary font-weight-bold py-2"
-              onClick={handleSave}
-            >
-              Save
-            </button>
-            <button
-              className="btn btn-block btn-secondary font-weight-bold py-2"
-              onClick={closeCallback}
-            >
-              Cancel
-            </button>
-          </div>
+      <div className="row" style={{ width: "40vw" }}>
+        <div className="col-md-12 form-group">
+          <input
+            className="form-control mb-2"
+            type="text"
+            placeholder="Enter name"
+            value={categoryData.name}
+            onChange={(evt) => {
+              setCategoryData({
+                ...categoryData,
+                name: evt.target.value,
+              });
+            }}
+          />
+          <textarea
+            class="form-control"
+            id="exampleFormControlTextarea1"
+            rows="6"
+            placeholder="Enter Description"
+            value={categoryData.description}
+            onChange={(evt) => {
+              setCategoryData({
+                ...categoryData,
+                description: evt.target.value,
+              });
+            }}
+          />
         </div>
       </div>
+      <button
+        className="btn btn-block btn-primary font-weight-bold py-2"
+        onClick={handleSave}
+      >
+        Save
+      </button>
+      <button
+        className="btn btn-block btn-secondary font-weight-bold py-2"
+        onClick={closeCallback}
+      >
+        Cancel
+      </button>
     </Popup>
   );
 }
