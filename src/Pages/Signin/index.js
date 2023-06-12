@@ -44,7 +44,7 @@ export default function Signin() {
           <div className="col-4" />
           <div className="col-4">
             <div className="col-12 d-flex justify-content-center p-30">
-              <Link className="text-decoration-none">
+              <Link to="/" className="text-decoration-none">
                 <span className="h1 text-uppercase text-primary bg-dark px-2">
                   Book
                 </span>
@@ -83,9 +83,14 @@ export default function Signin() {
                 </div>
                 <button
                   type="submit"
-                  className="btn btn-block btn-primary font-weight-bold py-2">
+                  className="btn btn-block btn-primary font-weight-bold mt-2">
                   Signin
                 </button>
+                <Link
+                  to="/signup"
+                  className="text-decoration-none btn-block btn">
+                  Don't have an account? Click here
+                </Link>
               </form>
             </div>
           </div>
