@@ -40,6 +40,25 @@ export const signup = createAsyncThunk(
   }
 );
 
+export const updatePassword = createAsyncThunk(
+  "user/updatePassword",
+  async ({ oldPassword, newPassword }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${api_endpoint}/auth/update-password`,
+        {
+          oldPassword: oldPassword,
+          newPassword: newPassword,
+        },
+        { withCredentials: true }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const signout = createAsyncThunk("user/signout", async () => {
   await axios.delete(`${api_endpoint}/auth/logout`, { withCredentials: true });
   return;
@@ -115,6 +134,17 @@ const userSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(signout.rejected, (state) => {
+      state.loading = false;
+    });
+
+    // Update password
+    builder.addCase(updatePassword.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updatePassword.fulfilled, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(updatePassword.rejected, (state) => {
       state.loading = false;
     });
   },

@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import LoadingLayer from "../../Components/LoadingLayer";
 import { signin } from "../../Redux/userSlice";
 import store from "../../Redux/store";
-import CustomAlert from "../../Components/Alert";
 
 export default function Signin() {
   const { loading } = useSelector((state) => state.user);
@@ -27,17 +26,6 @@ export default function Signin() {
   };
   return (
     <>
-      {error ? (
-        <CustomAlert
-          message={error}
-          type="danger"
-          closeCallback={() => {
-            setError(null);
-          }}
-        />
-      ) : (
-        ""
-      )}
       {loading ? <LoadingLayer /> : ""}
       <div className="container-fluid ">
         <div className="row">
@@ -80,10 +68,13 @@ export default function Signin() {
                       }}
                     />
                   </div>
+                  <div className="col-md-12 form-group text-danger">
+                    {error}
+                  </div>
                 </div>
                 <button
                   type="submit"
-                  className="btn btn-block btn-primary font-weight-bold mt-2">
+                  className="btn btn-block btn-primary font-weight-bold">
                   Signin
                 </button>
                 <Link
