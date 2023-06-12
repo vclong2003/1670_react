@@ -6,6 +6,7 @@ import cartReducer from "./cartSlice";
 import addressReducer from "./addressSlice";
 import staffReducer from "./staffSlice";
 import orderReducer from "./orderSlice";
+import dashboardReducer from "./dashboardSlice";
 export default configureStore({
   reducer: {
     product: productReducer,
@@ -15,5 +16,6 @@ export default configureStore({
     address: addressReducer,
     staff: staffReducer,
     order: orderReducer,
+    dashboard: dashboardReducer,
   },
 });

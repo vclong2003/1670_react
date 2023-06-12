@@ -19,7 +19,9 @@ export default function PersonalInformation() {
           <button
             className="btn btn-secondary pl-3 pr-3 ml-3"
             onClick={() => {
-              store.dispatch(signout());
+              store.dispatch(signout()).then(() => {
+                window.location.href = "/";
+              });
             }}>
             Sign out
           </button>

@@ -49,7 +49,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="signin" element={<Signin />} />
-        <Route path="singup" element={<Signup />} />
+        <Route path="signup" element={<Signup />} />
         <Route element={<StandardLayout />}>
           <Route index element={<Home />} />
           <Route path="cart" element={<Cart />} />

@@ -18,6 +18,9 @@ export default function Signin() {
     store
       .dispatch(signin(data))
       .unwrap()
+      .then(() => {
+        window.location.href = "/";
+      })
       .catch((err) => {
         setError(err);
       });
@@ -38,10 +41,10 @@ export default function Signin() {
       {loading ? <LoadingLayer /> : ""}
       <div className="container-fluid ">
         <div className="row">
-          <div className="col-lg-4" />
-          <div className="col-lg-4">
-            <div className="row d-flex justify-content-center p-30">
-              <Link className="text-decoration-none">
+          <div className="col-4" />
+          <div className="col-4">
+            <div className="col-12 d-flex justify-content-center p-30">
+              <Link to="/" className="text-decoration-none">
                 <span className="h1 text-uppercase text-primary bg-dark px-2">
                   Book
                 </span>
@@ -50,10 +53,10 @@ export default function Signin() {
                 </span>
               </Link>
             </div>
-            <div className="row">
+            <div className="col-12">
               <form className="bg-light p-30 mb-5" onSubmit={handleSigninForm}>
                 <div className="row">
-                  <div className="col-md-12 form-group">
+                  <div className="col-12 form-group">
                     <label>Email</label>
                     <input
                       className="form-control"
@@ -65,7 +68,7 @@ export default function Signin() {
                       }}
                     />
                   </div>
-                  <div className="col-md-12 form-group">
+                  <div className="col-12 form-group">
                     <label>Password</label>
                     <input
                       className="form-control"
@@ -80,13 +83,18 @@ export default function Signin() {
                 </div>
                 <button
                   type="submit"
-                  className="btn btn-block btn-primary font-weight-bold py-2">
+                  className="btn btn-block btn-primary font-weight-bold mt-2">
                   Signin
                 </button>
+                <Link
+                  to="/signup"
+                  className="text-decoration-none btn-block btn">
+                  Don't have an account? Click here
+                </Link>
               </form>
             </div>
           </div>
-          <div className="col-lg-4" />
+          <div className="col-4" />
         </div>
       </div>
     </>
