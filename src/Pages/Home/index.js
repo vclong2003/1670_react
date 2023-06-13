@@ -4,6 +4,7 @@ import AuthorizedComponent from "../../Components/Authorization/authorizedCompon
 import { useEffect } from "react";
 import { fetchFeaturedProducts } from "../../Redux/productSlice";
 import store from "../../Redux/store";
+import { addItemToCart } from "../../Redux/cartSlice";
 
 export default function Home() {
   useEffect(() => {
@@ -286,7 +287,11 @@ function ProductItem({ item }) {
           <div className="product-action">
             {/* Cart button */}
             <AuthorizedComponent requiredRoles={["CUSTOMER"]}>
-              <Link className="btn btn-outline-dark btn-square">
+              <Link
+                className="btn btn-outline-dark btn-square"
+                onClick={() => {
+                  store.dispatch(addItemToCart({ id }));
+                }}>
                 <i className="fa fa-shopping-cart" />
               </Link>
             </AuthorizedComponent>
