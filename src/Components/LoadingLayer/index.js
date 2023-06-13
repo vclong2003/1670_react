@@ -9,7 +9,7 @@ export default function LoadingLayer() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        backgroundColor: "rgba(0, 0, 0, 0.3)",
       }}>
       <div
         className="spinner-border text-primary"

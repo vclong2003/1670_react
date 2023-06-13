@@ -19,6 +19,7 @@ export default function ProductDetail() {
       .then((productData) => {
         setSelectedItem(productData);
       });
+    window.scrollTo(0, 0);
   }, [id]);
 
   return selectedItem ? (

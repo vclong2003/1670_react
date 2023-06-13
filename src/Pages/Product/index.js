@@ -12,6 +12,7 @@ export default function Product() {
   const search = new URLSearchParams(url.search).get("search");
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     store.dispatch(fetchProducts({ category, search }));
   }, [category, search]);
 
@@ -65,16 +66,18 @@ function CategoryItem({ id, name }) {
 
 function ProductList() {
   const { items, loading } = useSelector((state) => state.product);
+
   return (
     <>
       <div className="col-12 pb-1">
-        <div className="d-flex align-items-center justify-content-between mb-4">
+        <div className="d-flex align-items-center mb-4">
           <button
             type="button"
-            className="btn btn-sm btn-light dropdown-toggle pl-3 pr-3 p-2"
+            className="btn btn-sm btn-light dropdown-toggle pl-3 pr-3 p-2 mr-3"
             data-toggle="dropdown">
             Sorting
           </button>
+          {loading ? <div className="spinner-border text-primary" /> : ""}
           <div className="dropdown-menu dropdown-menu-right">
             <Link className="dropdown-item">Latest</Link>
             <Link className="dropdown-item">Name A-Z</Link>
@@ -96,12 +99,6 @@ function ProductList() {
 
       {items.length === 0 && !loading ? (
         <div className="col-lg-3 col-md-4 col-sm-6 pb-1">No product found!</div>
-      ) : (
-        ""
-      )}
-
-      {loading ? (
-        <div className="col-lg-3 col-md-4 col-sm-6 pb-1">Loading...</div>
       ) : (
         ""
       )}
