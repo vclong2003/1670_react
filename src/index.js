@@ -11,7 +11,6 @@ import Cart from "./Pages/Cart";
 import Checkout from "./Pages/Checkout";
 import Signin from "./Pages/Signin";
 import Signup from "./Pages/Signup";
-import OrderDetail from "./Pages/OrderDetail";
 import Product from "./Pages/Product";
 import Console from "./Pages/Console";
 import Profile from "./Pages/Profile";
@@ -22,30 +21,15 @@ import { Provider, useSelector } from "react-redux";
 import store from "./Redux/store";
 import { fetchCurrentUser } from "./Redux/userSlice";
 import { fetchCategories } from "./Redux/categorySlice";
-import { fetchCartItems } from "./Redux/cartSlice";
-import { fetchStaffs } from "./Redux/staffSlice";
 
 function App() {
-  const { fetchCurrentUserLoading, loggedIn } = useSelector(
-    (state) => state.user
-  );
-
   // Fetch current user and categories
   useEffect(() => {
     store.dispatch(fetchCurrentUser());
     store.dispatch(fetchCategories());
   }, []);
 
-  // Fetch cart items if user logged in
-  useEffect(() => {
-    if (loggedIn) {
-      store.dispatch(fetchCartItems());
-    }
-  }, [loggedIn]);
-
-  return fetchCurrentUserLoading ? (
-    ""
-  ) : (
+  return (
     <BrowserRouter>
       <Routes>
         <Route path="signin" element={<Signin />} />
