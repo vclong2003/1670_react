@@ -281,7 +281,16 @@ function ProductManagementPopup({ editItem, closeCallback }) {
       </div>
       <button
         className="btn btn-block btn-primary font-weight-bold py-2"
-        onClick={handleSave}>
+        onClick={handleSave}
+        disabled={
+          !productData.name ||
+          !productData.author ||
+          !productData.publisher ||
+          !productData.publishcationDate ||
+          !productData.price ||
+          !productData.quantity ||
+          !thumbnailFile
+        }>
         Save
       </button>
       <button
