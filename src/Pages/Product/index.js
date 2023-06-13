@@ -12,7 +12,10 @@ export default function Product() {
   const search = new URLSearchParams(url.search).get("search");
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     store.dispatch(fetchProducts({ category, search }));
   }, [category, search]);
 
