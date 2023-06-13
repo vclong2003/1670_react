@@ -114,7 +114,15 @@ function ProductItem({ id, thumbnailUrl, name, author, price }) {
     <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
       <div className="product-item bg-light mb-4">
         <div className="product-img position-relative overflow-hidden">
-          <img className="img-fluid w-100" src={thumbnailUrl} alt="" />
+          <div className="embed-responsive embed-responsive-1by1">
+            <img
+              className="img-fluid w-100 embed-responsive-item"
+              src={thumbnailUrl}
+              alt=""
+              style={{ objectFit: "contain" }}
+            />
+          </div>
+
           <div className="product-action">
             {/* Cart button */}
             <AuthorizedComponent requiredRoles={["CUSTOMER"]}>

@@ -32,81 +32,81 @@ function Carousel() {
               <li data-target="#header-carousel" data-slide-to={2} />
             </ol>
             <div className="carousel-inner">
+              {/* Item 1 */}
               <div
                 className="carousel-item position-relative active"
                 style={{ height: "430px" }}>
                 <img
                   alt=""
                   className="position-absolute w-100 h-100"
-                  src="https://picsum.photos/500"
+                  src={require("./2560.webp")}
                   style={{ objectFit: "cover" }}
                 />
                 <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
                   <div className="p-3" style={{ maxWidth: "700px" }}>
                     <h1 className="display-4 text-white mb-3 animate__animated animate__fadeInDown">
-                      Men Fashion
+                      Discover the best Novel
                     </h1>
                     <p className="mx-md-5 px-5 animate__animated animate__bounceIn">
-                      Lorem rebum magna amet lorem magna erat diam stet. Sadips
-                      duo stet amet amet ndiam elitr ipsum diam
+                      View all novels
                     </p>
-                    <div
+                    <Link
                       className="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp"
-                      href="#">
-                      Shop Now
-                    </div>
+                      to="/product?category=2">
+                      View
+                    </Link>
                   </div>
                 </div>
               </div>
+              {/* Item 2 */}
               <div
                 className="carousel-item position-relative"
                 style={{ height: "430px" }}>
                 <img
                   alt=""
                   className="position-absolute w-100 h-100"
-                  src="https://picsum.photos/500"
+                  src={require("./shiromani-kant-mo3fotg62ao-unsplash.jpg")}
                   style={{ objectFit: "cover" }}
                 />
                 <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
                   <div className="p-3" style={{ maxWidth: "700px" }}>
                     <h1 className="display-4 text-white mb-3 animate__animated animate__fadeInDown">
-                      Women Fashion
+                      Discover the best Self-help books
                     </h1>
                     <p className="mx-md-5 px-5 animate__animated animate__bounceIn">
-                      Lorem rebum magna amet lorem magna erat diam stet. Sadips
-                      duo stet amet amet ndiam elitr ipsum diam
+                      View all Self-help books
                     </p>
-                    <div
+                    <Link
                       className="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp"
-                      href="#">
-                      Shop Now
-                    </div>
+                      to="/product?category=6">
+                      View
+                    </Link>
                   </div>
                 </div>
               </div>
+              {/* Item 3 */}
               <div
                 className="carousel-item position-relative"
                 style={{ height: "430px" }}>
                 <img
                   alt=""
                   className="position-absolute w-100 h-100"
-                  src="https://picsum.photos/500"
+                  src={require("./best-romance-novels-featured-1280x720.jpg")}
                   style={{ objectFit: "cover" }}
                 />
                 <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
                   <div className="p-3" style={{ maxWidth: "700px" }}>
                     <h1 className="display-4 text-white mb-3 animate__animated animate__fadeInDown">
-                      Kids Fashion
+                      Discover the best Romance novels
                     </h1>
                     <p className="mx-md-5 px-5 animate__animated animate__bounceIn">
-                      Lorem rebum magna amet lorem magna erat diam stet. Sadips
-                      duo stet amet amet ndiam elitr ipsum diam
+                      View all Romance novels
                     </p>
-                    <div
+                    <Link
                       className="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp"
-                      href="#">
-                      Shop Now
-                    </div>
+                      to="/product?category=3">
+                      View
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -115,12 +115,14 @@ function Carousel() {
         </div>
         <div className="col-lg-4">
           <div className="product-offer mb-30" style={{ height: "200px" }}>
-            <img className="img-fluid" src={require("./stores.avif")} alt="" />
+            <img
+              className="img-fluid"
+              src={require("./pngtree-delivery-truck-is-parked-next-to-a-3d-smartphone-image_2659337.png")}
+              alt=""
+            />
             <div className="offer-text">
-              <h3 className="text-white mb-3">Explore our stores</h3>
-              <Link to="/stores" className="btn btn-primary">
-                Stores
-              </Link>
+              <h1 className="text-white mb-3">Free shipping</h1>
+              <p className="text-secondary small">for all order over $200</p>
             </div>
           </div>
           <div className="product-offer mb-30" style={{ height: "200px" }}>
@@ -193,7 +195,7 @@ function Featured() {
 function Categories() {
   const items = useSelector((state) => state.category.items);
   return (
-    <div className="container-fluid pt-5">
+    <div className="container-fluid">
       <h2 className="section-title position-relative text-uppercase mx-xl-5 mb-4">
         <span className="bg-secondary pr-3">Categories</span>
       </h2>
@@ -228,7 +230,7 @@ function NewProducts() {
   return (
     <div className="container-fluid">
       <h2 className="section-title position-relative text-uppercase mx-xl-5 mb-4">
-        <span className="bg-secondary pr-3">Recently added books</span>
+        <span className="bg-secondary pr-3">Recently published books</span>
       </h2>
       <div className="row px-xl-5">
         <ProductItem />
@@ -248,7 +250,14 @@ function ProductItem() {
     <div className="col-lg-2 col-md-4 col-sm-6 pb-1">
       <div className="product-item bg-light mb-4">
         <div className="product-img position-relative overflow-hidden">
-          <img className="img-fluid w-100" src={require("./ok.png")} alt="" />
+          <div className="embed-responsive embed-responsive-1by1">
+            <img
+              className="img-fluid w-100 embed-responsive-item"
+              style={{ objectFit: "contain" }}
+              src={require("./ok.png")}
+              alt=""
+            />
+          </div>
           <div className="product-action">
             {/* Cart button */}
             <AuthorizedComponent requiredRoles={["CUSTOMER"]}>
