@@ -4,6 +4,15 @@ import { api_endpoint, storage } from "../Services/config";
 import { v4 as uuidv4 } from "uuid"; // For unique thumbnail file name
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 
+export const fetchFeaturedProducts = createAsyncThunk(
+  "product/fetchFeaturedProducts",
+  async () => {
+    const response = await axios.get(`${api_endpoint}/product/featured`);
+
+    return response.data;
+  }
+);
+
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
   async ({ category, search }) => {
@@ -90,6 +99,10 @@ const productsSlice = createSlice({
   initialState: {
     loading: false,
     items: [],
+    featuredItems: {
+      bestSelling: [],
+      newlyProduct: [],
+    },
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -103,6 +116,11 @@ const productsSlice = createSlice({
     });
     builder.addCase(fetchProducts.rejected, (state) => {
       state.loading = false;
+    });
+
+    // Fetch featured products
+    builder.addCase(fetchFeaturedProducts.fulfilled, (state, action) => {
+      state.featuredItems = action.payload;
     });
 
     // Fetch product by id

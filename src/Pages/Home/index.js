@@ -1,14 +1,22 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import AuthorizedComponent from "../../Components/Authorization/authorizedComponent";
+import { useEffect } from "react";
+import { fetchFeaturedProducts } from "../../Redux/productSlice";
+import store from "../../Redux/store";
 
 export default function Home() {
+  useEffect(() => {
+    store.dispatch(fetchFeaturedProducts());
+  }, []);
+
   return (
     <>
       <Carousel />
       <Featured />
       <Categories />
       <NewProducts />
+      <BestSellingProducts />
     </>
   );
 }
@@ -227,25 +235,42 @@ function CategoryItem({ name, id }) {
 }
 
 function NewProducts() {
+  const { newlyProduct } = useSelector((state) => state.product.featuredItems);
+
   return (
     <div className="container-fluid">
       <h2 className="section-title position-relative text-uppercase mx-xl-5 mb-4">
         <span className="bg-secondary pr-3">Recently published books</span>
       </h2>
       <div className="row px-xl-5">
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
+        {newlyProduct.map((item, index) => (
+          <ProductItem key={index} item={item} />
+        ))}
       </div>
     </div>
   );
 }
 
-function ProductItem() {
+function BestSellingProducts() {
+  const { bestSelling } = useSelector((state) => state.product.featuredItems);
+
+  return (
+    <div className="container-fluid">
+      <h2 className="section-title position-relative text-uppercase mx-xl-5 mb-4">
+        <span className="bg-secondary pr-3">Best Selling</span>
+      </h2>
+      <div className="row px-xl-5">
+        {bestSelling.map((item, index) => (
+          <ProductItem key={index} item={item} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ProductItem({ item }) {
+  const { id, name, author, price, thumbnailUrl } = item;
+
   return (
     <div className="col-lg-2 col-md-4 col-sm-6 pb-1">
       <div className="product-item bg-light mb-4">
@@ -254,7 +279,7 @@ function ProductItem() {
             <img
               className="img-fluid w-100 embed-responsive-item"
               style={{ objectFit: "contain" }}
-              src={require("./ok.png")}
+              src={thumbnailUrl}
               alt=""
             />
           </div>
@@ -265,22 +290,24 @@ function ProductItem() {
                 <i className="fa fa-shopping-cart" />
               </Link>
             </AuthorizedComponent>
-            <Link className="btn btn-outline-dark btn-square" to="product/1">
+            <Link
+              className="btn btn-outline-dark btn-square"
+              to={`product/${id}`}>
               <i className="fa fa-info" />
             </Link>
           </div>
         </div>
         <div className="text-center py-4">
           <Link
-            className="h6 text-decoration-none text-truncate"
-            to="product/1">
-            Product Name Goes Here
+            className="h6 text-decoration-none text-truncate d-inline-block w-100 pl-3 pr-3"
+            to={`product/${id}`}>
+            {name}
           </Link>
-          <div className="d-flex align-items-center justify-content-center mt-2">
-            <p>Conan Doyle</p>
+          <div className="d-flex align-items-center justify-content-center d-inline-block w-100 pl-3 pr-3">
+            <p>{author}</p>
           </div>
           <div className="d-flex align-items-center justify-content-center mt-2">
-            <small>$99.99</small>
+            <small>${price}</small>
           </div>
         </div>
       </div>

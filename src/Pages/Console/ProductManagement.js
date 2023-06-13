@@ -289,7 +289,7 @@ function ProductManagementPopup({ editItem, closeCallback }) {
           !productData.publishcationDate ||
           !productData.price ||
           !productData.quantity ||
-          !thumbnailFile
+          (!thumbnailFile && !productData.thumbnailUrl)
         }>
         Save
       </button>

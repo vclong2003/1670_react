@@ -140,10 +140,12 @@ function ProductItem({ id, thumbnailUrl, name, author, price }) {
           </div>
         </div>
         <div className="text-center py-4">
-          <Link className="h6 text-decoration-none text-truncate" to={`${id}`}>
+          <Link
+            className="h6 text-decoration-none text-truncate d-inline-block w-100 pl-3 pr-3"
+            to={`${id}`}>
             {name}
           </Link>
-          <div className="d-flex align-items-center justify-content-center mt-2">
+          <div className="d-flex align-items-center justify-content-center d-inline-block w-100 pl-3 pr-3">
             <p>{author}</p>
           </div>
           <div className="d-flex align-items-center justify-content-center mt-2">
