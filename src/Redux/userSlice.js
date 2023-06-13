@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { api_endpoint } from "../Services/config";
+import { fetchCartItems } from "./cartSlice";
 
 export const signin = createAsyncThunk(
   "user/signin",
@@ -66,10 +67,11 @@ export const signout = createAsyncThunk("user/signout", async () => {
 
 export const fetchCurrentUser = createAsyncThunk(
   "user/fetchCurrentUser",
-  async () => {
+  async (_, { dispatch }) => {
     const response = await axios.get(`${api_endpoint}/auth`, {
       withCredentials: true,
     });
+    dispatch(fetchCartItems()); // Fetch cart items after fetching current user
     return response.data;
   }
 );
