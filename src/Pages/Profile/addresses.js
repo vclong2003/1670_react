@@ -200,7 +200,14 @@ function AddressPopup({ editItem, closeCallback }) {
       </div>
       <button
         className="btn btn-block btn-primary font-weight-bold py-2"
-        onClick={handleSave}>
+        onClick={handleSave}
+        disabled={
+          !data.name ||
+          !data.phone ||
+          !data.address ||
+          !data.city ||
+          !data.country
+        }>
         Save
       </button>
       <button
