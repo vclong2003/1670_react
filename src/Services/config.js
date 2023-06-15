@@ -23,5 +23,5 @@ const analytics = getAnalytics(app);
 
 export const storage = getStorage(app);
 
-export const api_endpoint = "https://localhost:7014/api";
-// export const api_endpoint = "https://1670api.azurewebsites.net/api";
+// export const api_endpoint = "https://localhost:7014/api";
+export const api_endpoint = "https://1670api.azurewebsites.net/api";
