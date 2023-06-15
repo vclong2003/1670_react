@@ -74,18 +74,19 @@ function ProductList() {
     <>
       <div className="col-12 pb-1">
         <div className="d-flex align-items-center mb-4">
-          <button
+          {/* <button
             type="button"
             className="btn btn-sm btn-light dropdown-toggle pl-3 pr-3 p-2 mr-3"
             data-toggle="dropdown">
             Sorting
-          </button>
-          {loading ? <div className="spinner-border text-primary" /> : ""}
-          <div className="dropdown-menu dropdown-menu-right">
+          </button> */}
+
+          {/* <div className="dropdown-menu dropdown-menu-right">
             <Link className="dropdown-item">Latest</Link>
             <Link className="dropdown-item">Name A-Z</Link>
             <Link className="dropdown-item">Price: Low to High</Link>
-          </div>
+          </div> */}
+          {loading ? <div className="spinner-border text-primary" /> : ""}
         </div>
       </div>
 
