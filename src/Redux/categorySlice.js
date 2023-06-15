@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { api_endpoint } from "../Services/config";
+import { act } from "react-dom/test-utils";
 
 export const fetchCategories = createAsyncThunk(
   "category/fetchCategories",
@@ -37,8 +38,12 @@ export const updateCategory = createAsyncThunk(
 
 const categorySlice = createSlice({
   name: "category",
-  initialState: { loading: false, items: [] },
-  reducers: {},
+  initialState: { loading: false, items: [], navCatOpen: false },
+  reducers: {
+    toggleNavCat: (state) => {
+      state.navCatOpen = !state.navCatOpen;
+    },
+  },
   extraReducers: (builder) => {
     // Fetch category
     builder.addCase(fetchCategories.pending, (state, action) => {
@@ -64,5 +69,7 @@ const categorySlice = createSlice({
     });
   },
 });
+
+export const { toggleNavCat } = categorySlice.actions;
 
 export default categorySlice.reducer;

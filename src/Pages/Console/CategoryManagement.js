@@ -16,6 +16,8 @@ export default function CategoryManagement() {
   const [showPopUp, setShowPopUp] = useState(false);
   const [selecteCategory, setselecteCategory] = useState(null);
 
+
+
   useEffect(() => {
     store.dispatch(fetchCategories());
   }, []);
@@ -36,6 +38,7 @@ export default function CategoryManagement() {
 
   return (
     <>
+    {console.log(items)}
       {loading ? <LoadingLayer /> : ""}
       {showPopUp ? (
         <CategoryPopup

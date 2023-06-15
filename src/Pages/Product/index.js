@@ -38,14 +38,23 @@ export default function Product() {
 }
 
 function CategoryFilter() {
+  const { navCatOpen } = useSelector((state) => state.category);
   const categories = useSelector((state) => state.category.items);
+
   return (
     <>
       <h5 className="section-title position-relative text-uppercase mb-3">
         <span className="bg-secondary pr-3">Category</span>
       </h5>
-      <div className="bg-light mb-30 d-flex flex-column">
-        <Link className="text-dark nav-item nav-link bg-light p-3" to="">
+      <div className=" mb-30 d-flex flex-column">
+        <Link
+          className="  text-dark nav-item nav-link p-3"
+          to=""
+          style={{
+            backgroundColor: navCatOpen ? "#edebeb" : "white",
+            backdropFiter: navCatOpen ? "blur(10px) " : "blur(50px)",
+          }}
+        >
           All
         </Link>
 
@@ -58,10 +67,17 @@ function CategoryFilter() {
 }
 
 function CategoryItem({ id, name }) {
+  const { navCatOpen } = useSelector((state) => state.category);
+
   return (
     <Link
-      className="text-dark nav-item nav-link bg-light p-3"
-      to={{ search: `category=${id}` }}>
+      className="text-dark nav-item nav-link  p-3"
+      to={{ search: `category=${id}` }}
+      style={{
+        backgroundColor: navCatOpen ? "#edebeb" : "white",
+        filter: navCatOpen ? "blur(5px) " : "blur(0px)",
+      }}
+    >
       {name}
     </Link>
   );
@@ -131,7 +147,8 @@ function ProductItem({ id, thumbnailUrl, name, author, price }) {
                 className="btn btn-outline-dark btn-square"
                 onClick={() => {
                   store.dispatch(addItemToCart({ id }));
-                }}>
+                }}
+              >
                 <i className="fa fa-shopping-cart" />
               </Link>
             </AuthorizedComponent>
@@ -143,7 +160,8 @@ function ProductItem({ id, thumbnailUrl, name, author, price }) {
         <div className="text-center py-4">
           <Link
             className="h6 text-decoration-none text-truncate d-inline-block w-100 pl-3 pr-3"
-            to={`${id}`}>
+            to={`${id}`}
+          >
             {name}
           </Link>
           <div className="d-flex align-items-center justify-content-center d-inline-block w-100 pl-3 pr-3">

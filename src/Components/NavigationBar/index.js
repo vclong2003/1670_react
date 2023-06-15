@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import AuthorizedComponent from "../Authorization/authorizedComponent";
+import store from "../../Redux/store";
+import { toggleNavCat } from "../../Redux/categorySlice";
 
 export default function NavigationBar() {
   return (
@@ -26,12 +28,14 @@ export default function NavigationBar() {
                 type="button"
                 className="navbar-toggler"
                 data-toggle="collapse"
-                data-target="#navbarCollapse">
+                data-target="#navbarCollapse"
+              >
                 <span className="navbar-toggler-icon" />
               </button>
               <div
                 className="collapse navbar-collapse justify-content-between"
-                id="navbarCollapse">
+                id="navbarCollapse"
+              >
                 <div className="navbar-nav mr-auto py-0">
                   <Pages />
                 </div>
@@ -76,7 +80,8 @@ function TopBar() {
             />
             <Link
               className="input-group-append"
-              to={{ pathname: "product", search: `search=${searchValue}` }}>
+              to={{ pathname: "product", search: `search=${searchValue}` }}
+            >
               <span className="input-group-text bg-transparent text-primary">
                 <i className="fa fa-search" />
               </span>
@@ -86,7 +91,8 @@ function TopBar() {
               to={{ pathname: "product" }}
               onClick={() => {
                 setSearchValue("");
-              }}>
+              }}
+            >
               <span className="input-group-text bg-transparent text-primary">
                 <i className="fas fa-window-close" />
               </span>
@@ -111,7 +117,11 @@ function Categories() {
         className="btn d-flex align-items-center justify-content-between bg-primary w-100"
         data-toggle="collapse"
         href="#navbar-vertical"
-        style={{ height: "65px", padding: "0 30px" }}>
+        onClick={() => {
+          store.dispatch(toggleNavCat());
+        }}
+        style={{ height: "65px", padding: "0 30px" }}
+      >
         <h6 className="text-dark m-0">
           <i className="fa fa-bars mr-2" />
           Categories
@@ -121,10 +131,16 @@ function Categories() {
       <nav
         className="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light"
         id="navbar-vertical"
-        style={{ width: "calc(100% - 30px)", zIndex: 999 }}>
+        style={{ width: "calc(100% - 30px)", zIndex: 999 }}
+      >
         <div className="navbar-nav w-100">
           {categories.map((item, index) => (
-            <CategoryItem key={index} name={item.name} id={item.id} />
+            <CategoryItem
+              key={index}
+              name={item.name}
+              id={item.id}
+              count={item.count}
+            />
           ))}
         </div>
       </nav>
@@ -139,14 +155,16 @@ function Pages() {
         to="/"
         className={({ isActive }) =>
           isActive ? "nav-item nav-link active" : "nav-item nav-link"
-        }>
+        }
+      >
         Home
       </NavLink>
       <NavLink
         to="/product"
         className={({ isActive }) =>
           isActive ? "nav-item nav-link active" : "nav-item nav-link"
-        }>
+        }
+      >
         Product
       </NavLink>
     </>
@@ -181,7 +199,8 @@ function ActionButtons() {
       ) : (
         <Link
           to="/signin"
-          className="btn px-0 ml-3 text-secondary border border-primary pl-2 pr-2 bg-primary">
+          className="btn px-0 ml-3 text-secondary border border-primary pl-2 pr-2 bg-primary"
+        >
           <span className="badge text-dark">Sign In</span>
         </Link>
       )}
@@ -189,7 +208,8 @@ function ActionButtons() {
       <AuthorizedComponent requiredRoles={["MANAGER", "STAFF"]}>
         <Link
           to="/console"
-          className="btn px-0 ml-3 text-secondary border border-primary pl-2 pr-2 bg-primary">
+          className="btn px-0 ml-3 text-secondary border border-primary pl-2 pr-2 bg-primary"
+        >
           <i className="fa fa-cogs text-dark" />
           <span className="badge text-dark  ml-1">Manage</span>
         </Link>
@@ -198,12 +218,15 @@ function ActionButtons() {
   );
 }
 
-function CategoryItem({ name, id }) {
+function CategoryItem({ name, id, count }) {
   return (
     <Link
       to={{ pathname: "/product", search: `category=${id}` }}
-      className="nav-item nav-link">
-      {name}
+      className="nav-item nav-link"
+      style={{ display: "flex", justifyContent: "space-between" }}
+    >
+      <div>{name}</div>
+      <div className="">{count} </div>
     </Link>
   );
 }
