@@ -12,11 +12,8 @@ import Popup from "../../Components/Popup";
 
 export default function CategoryManagement() {
   const { loading, items } = useSelector((state) => state.category);
-
   const [showPopUp, setShowPopUp] = useState(false);
   const [selecteCategory, setselecteCategory] = useState(null);
-
-
 
   useEffect(() => {
     store.dispatch(fetchCategories());
@@ -38,7 +35,7 @@ export default function CategoryManagement() {
 
   return (
     <>
-    {console.log(items)}
+      {console.log(items)}
       {loading ? <LoadingLayer /> : ""}
       {showPopUp ? (
         <CategoryPopup

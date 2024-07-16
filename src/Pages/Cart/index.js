@@ -26,28 +26,27 @@ export default function Cart() {
 
 function CartItemsList({ items }) {
   return (
-    <table className="table table-light table-borderless table-hover text-center mb-0">
-      <thead className="thead-dark">
-        <tr>
-          <th>Products</th>
-          <th>Price</th>
-          <th>Quantity</th>
-          <th>Total</th>
-          <th>Remove</th>
-        </tr>
-      </thead>
-      <tbody className="align-middle">
-        {items.map((item, index) => (
-          <CartItem
-            key={index}
-            id={item.id}
-            name={item.name}
-            price={item.price}
-            quantity={item.quantity}
-          />
-        ))}
-      </tbody>
-    </table>
+    <>
+      <h5 className="section-title position-relative text-uppercase mb-3">
+        <span className="bg-secondary pr-3">Shopping Cart</span>
+      </h5>
+      <table className="table table-bordered">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((item) => (
+            <CartItem key={item.id} {...item} />
+          ))}
+        </tbody>
+      </table>
+    </>
   );
 }
 
