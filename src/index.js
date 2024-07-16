@@ -14,7 +14,7 @@ import Signup from "./Pages/Signup";
 import Product from "./Pages/Product";
 import Console from "./Pages/Console";
 import Profile from "./Pages/Profile";
-import ProductDetail from "./Pages/ProductDetail";
+import ProductDetail from "./Pages/ProductDetail" ;
 
 import StandardLayout from "./Components/Layout/StandardLayout";
 import { Provider } from "react-redux";
